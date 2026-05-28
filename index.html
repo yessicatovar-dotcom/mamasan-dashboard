@@ -1,148 +1,840 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dashboard semanal autoactualizable</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MamaSan — Sistema de Email + WhatsApp · Predictive Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--pg:#3A4C67;--pgd:#242F42;--pgl:#EDF0F4;--pgm:#6B7E9A;--gr:#1B5E20;--grb:#E8F5E9;--rd:#be3a2c;--rdb:#FFEBEE;--am:#7C4700;--amb:#FFF8E1;--bl:#1565C0;--blb:#E3F2FD;--ink:#1a1a1a;--mut:#595959;--bdr:#e0e4ea;--sur:#f7f8fa}*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2f4f7;color:var(--ink);font-size:14px}.hdr{background:var(--pg)}.hi{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 28px}.logo{width:40px;height:40px;border-radius:9px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:monospace}.hl{display:flex;align-items:center;gap:12px}.hl h1{font-size:18px;font-weight:600;color:#fff}.hl p{font-size:12px;color:rgba(255,255,255,.72);margin-top:1px}.hr{text-align:right}.hr .dt{font-size:11px;color:rgba(255,255,255,.65)}.hr .per{font-size:13px;font-weight:500;color:#fff;margin-top:1px}.tabs{background:var(--pgd);border-bottom:1px solid rgba(255,255,255,.07)}.ti{max-width:1180px;margin:0 auto;padding:0 28px;display:flex;gap:1px;overflow-x:auto}.tab{padding:10px 16px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.5);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;font-family:inherit}.tab:hover{color:rgba(255,255,255,.85)}.tab.on{color:#fff;border-bottom-color:#fff}.ubar{background:#fff;border-bottom:1px solid var(--bdr);padding:10px 28px}.ui{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.ul{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mut)}.chip{background:var(--grb);color:var(--gr);padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}.chip.warn{background:var(--amb);color:var(--am)}.btn-u{background:var(--pg);color:#fff;border:none;border-radius:7px;padding:8px 15px;font-size:12px;font-weight:700;cursor:pointer}.btn-u:hover{background:var(--pgd)}.main{max-width:1180px;margin:0 auto;padding:22px 28px 60px}.sec{display:none}.sec.on{display:block}.sh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;gap:12px}.sh h2{font-size:16px;font-weight:650;letter-spacing:-.3px}.sh p{font-size:12px;color:var(--mut);text-align:right}.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px}.kc{background:#fff;border-radius:11px;border:1px solid var(--bdr);padding:16px 18px;position:relative;overflow:hidden}.kb{position:absolute;top:0;left:0;right:0;height:3px}.kl{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;margin-top:4px}.kv{font-size:27px;font-weight:750;letter-spacing:-1px;line-height:1;color:var(--pg)}.kd{font-size:11px;margin-top:5px;font-weight:600;color:var(--mut);line-height:1.35}.ks{font-size:11px;color:var(--mut);margin-top:3px;line-height:1.35}.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}.card{background:#fff;border-radius:11px;border:1px solid var(--bdr);padding:18px 20px}.full{grid-column:1/-1}.ct{font-size:11px;font-weight:800;color:var(--pg);text-transform:uppercase;letter-spacing:.07em;margin-bottom:13px}.t{width:100%;border-collapse:collapse;font-size:12.5px}.t th{text-align:left;font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;padding:6px 8px;border-bottom:1.5px solid var(--bdr)}.t td{padding:8px 8px;border-bottom:1px solid #f0f2f5;vertical-align:top}.t tr:last-child td{border-bottom:none}.t tr:hover td{background:var(--sur)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}.bg,.br,.ba,.bb,.bp{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}.bg{background:var(--grb);color:var(--gr)}.br{background:var(--rdb);color:var(--rd)}.ba{background:var(--amb);color:var(--am)}.bb{background:var(--blb);color:var(--bl)}.bp{background:var(--pgl);color:var(--pg)}.cl{border-radius:9px;padding:11px 15px;margin-bottom:10px;font-size:13px;line-height:1.6;border-left:3px solid}.cg{background:var(--grb);border-color:var(--gr);color:#1B4020}.ca{background:var(--amb);border-color:var(--am);color:#5C3400}.cb{background:var(--blb);border-color:var(--bl);color:#0D3A7A}.cr{background:var(--rdb);border-color:var(--rd);color:#7A1A1A}.mr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f0f2f5;font-size:12.5px;gap:10px}.mr:last-child{border-bottom:none}.em5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}.emc{background:#fff;border-radius:10px;border:1px solid var(--bdr);padding:14px;text-align:center}.eml{font-size:11px;color:var(--mut);font-weight:600;margin-bottom:5px}.emv{font-size:22px;font-weight:750;letter-spacing:-.5px}.ai-box{background:linear-gradient(135deg,#242F42 0%,#3A4C67 100%);border-radius:12px;padding:18px 22px;margin-bottom:18px;color:#fff}.ai-tag{background:rgba(255,255,255,.15);padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.05em}.ai-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}.ai-body{font-size:13px;line-height:1.7;color:rgba(255,255,255,.9)}.ai-btn,.qa-btn{font-family:inherit}.ai-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px}.qa-btn{text-align:left;background:var(--sur);border:1px solid var(--bdr);border-radius:8px;padding:9px 13px;cursor:pointer;font-size:12.5px;color:var(--ink);transition:background .15s;width:100%;line-height:1.35}.qa-btn:hover{background:#e8ecf2}.note{font-size:12px;color:var(--mut);line-height:1.55}.status{font-size:12px;color:var(--mut);margin-top:5px}.drop{border:1px dashed var(--pgm);background:#fff;border-radius:11px;padding:12px 14px;font-size:12.5px;color:var(--mut);margin-bottom:14px;line-height:1.5}.hidden{display:none}@media(max-width:860px){.kg,.em5{grid-template-columns:1fr 1fr}.g2,.g3{grid-template-columns:1fr}.main{padding:12px 12px 40px}.hi,.ui{padding:12px 12px}.ti{padding:0 12px}.sh{align-items:flex-start;flex-direction:column}.sh p{text-align:left}.hr{display:none}}
+/* ─── RESET + VARIABLES ─────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#7c3aed; --purple-mid:#ede9fe; --purple-light:#f5f3ff;
+  --mag:#9d174d; --mag-light:#fdf2f8;
+  --yellow:#d97706; --yellow-light:#fef9ec;
+  --green:#059669; --green-light:#ecfdf5;
+  --red:#dc2626; --red-light:#fef2f2;
+  --wa:#128C7E; --wa-light:#f0fdf4;
+  --dark:#111827; --dark-mid:#374151; --mid:#6b7280; --light-mid:#9ca3af;
+  --bg:#ffffff; --bg-alt:#f9fafb; --bg-accent:#f5f3ff;
+  --border:#e5e7eb; --border-dark:#d1d5db;
+  --ff-h:'Bricolage Grotesque',sans-serif;
+  --ff-b:'Plus Jakarta Sans',sans-serif;
+  --ff-m:'Space Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--dark);font-family:var(--ff-b);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ─── STICKY HEADER ─────────────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-brands{display:flex;align-items:center;gap:12px}
+.brand-ms{font-family:var(--ff-h);font-weight:800;font-size:15px;color:var(--purple);letter-spacing:-.01em}
+.brand-sep{width:1px;height:18px;background:var(--border-dark)}
+.brand-pg{font-family:var(--ff-h);font-weight:700;font-size:13px;color:var(--yellow)}
+.header-date{font-family:var(--ff-m);font-size:11px;color:var(--mid)}
+.header-nav{display:flex;gap:20px}
+.header-nav a{font-size:12px;color:var(--mid);text-decoration:none;font-weight:500;transition:color .2s}
+.header-nav a:hover{color:var(--purple)}
+
+/* ─── LAYOUT HELPERS ─────────────────────────────────────────────── */
+.container{max-width:860px;margin:0 auto;padding:0 32px}
+.section{padding:72px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border:none}
+.label{font-family:var(--ff-m);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.section-h{font-family:var(--ff-h);font-weight:800;font-size:32px;line-height:1.15;letter-spacing:-.02em;margin-bottom:12px}
+.section-sub{font-size:15px;color:var(--dark-mid);line-height:1.75;max-width:600px;margin-bottom:36px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-family:var(--ff-m);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* ─── COVER ─────────────────────────────────────────────────────── */
+#cover{padding:80px 0 64px;background:var(--bg);border-bottom:1px solid var(--border)}
+.cover-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.cover-h1{font-family:var(--ff-h);font-weight:800;font-size:clamp(34px,5vw,54px);line-height:1.05;letter-spacing:-.03em;margin-bottom:20px}
+.cover-h1 em{font-style:normal;background:linear-gradient(135deg,var(--purple),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cover-p{font-size:16px;color:var(--dark-mid);line-height:1.75;max-width:560px;margin-bottom:40px}
+.cover-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:640px}
+.pillar{padding:18px 20px;border-radius:12px;border:1px solid var(--border)}
+.pillar-n{font-family:var(--ff-h);font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.pillar-l{font-size:12px;color:var(--mid)}
+.pillar-s{font-size:11px;color:var(--mid);margin-top:2px;font-style:italic}
+
+/* ─── THE MAP ─────────────────────────────────────────────────────── */
+#mapa{background:var(--bg-alt)}
+.map-wrapper{overflow-x:auto;padding-bottom:12px}
+.map-track{display:flex;align-items:stretch;gap:0;min-width:700px;position:relative}
+.map-column{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.map-col-label{font-family:var(--ff-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--light-mid);text-align:center;margin-bottom:14px;height:24px;display:flex;align-items:center}
+.map-node{
+  width:100%;max-width:130px;padding:12px 14px;border-radius:12px;border:2px solid;
+  text-align:center;cursor:pointer;transition:all .25s;position:relative;
+  background:var(--bg);
+}
+.map-node:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.map-node-icon{font-size:22px;display:block;margin-bottom:4px}
+.map-node-name{font-family:var(--ff-h);font-size:11px;font-weight:700;line-height:1.3}
+.map-node-count{font-family:var(--ff-m);font-size:10px;margin-top:3px}
+.map-node-flow{font-size:10px;margin-top:5px;padding:2px 7px;border-radius:10px;display:inline-block;font-weight:600}
+.map-connector{display:flex;align-items:center;justify-content:center;width:36px;flex-shrink:0;margin-top:48px}
+.map-arrow{color:var(--border-dark);font-size:18px}
+.map-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+
+/* ─── FLOWS ─────────────────────────────────────────────────────── */
+.flow-card{border:1px solid var(--border);border-radius:16px;margin-bottom:12px;overflow:hidden;transition:box-shadow .25s}
+.flow-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.flow-card-head{padding:20px 24px;cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:16px}
+.flow-card-head:hover .flow-toggle{background:var(--purple-light)}
+.flow-emoji{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.flow-meta{flex:1}
+.flow-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.flow-name{font-family:var(--ff-h);font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.flow-story{font-size:13px;color:var(--mid);font-style:italic;margin-top:2px}
+.flow-desc{font-size:13px;color:var(--dark-mid);line-height:1.65;margin-top:8px}
+.flow-trigger-row{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.trigger-pill{padding:5px 12px;border-radius:8px;background:var(--bg-alt);border:1px solid var(--border);font-family:var(--ff-m);font-size:11px;color:var(--dark);font-weight:700}
+.flow-toggle{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:4px;transition:all .25s;color:var(--mid)}
+
+/* Flow body */
+.flow-body{display:none;border-top:2px solid var(--border);padding:24px;background:var(--bg-alt)}
+.flow-body.open{display:block}
+.sequence-label{font-family:var(--ff-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:16px}
+
+/* Touch block */
+.touch-block{position:relative;margin-bottom:16px;padding-left:20px}
+.touch-block::before{content:'';position:absolute;left:7px;top:40px;bottom:-10px;width:1px;background:var(--border-dark)}
+.touch-block:last-child::before{display:none}
+.touch-dot{position:absolute;left:0;top:12px;width:14px;height:14px;border-radius:50%;border:2px solid;background:var(--bg)}
+.touch-inner{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg)}
+.touch-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.touch-channel-badge{padding:2px 8px;border-radius:20px;font-family:var(--ff-m);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.touch-day{font-family:var(--ff-m);font-size:10px;color:var(--mid)}
+.touch-subject{font-family:var(--ff-h);font-size:14px;font-weight:700;color:var(--dark);margin-bottom:4px;line-height:1.3}
+.touch-note{font-size:11.5px;color:var(--mid);font-style:italic;margin-bottom:10px;line-height:1.5;padding:6px 10px;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--border-dark)}
+
+/* Branches */
+.branches{display:flex;flex-direction:column;gap:0;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.branch-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--bg)}
+.branch-row:last-child{border:none}
+.branch-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.branch-right{flex:1}
+.branch-cond{font-size:11px;font-weight:700;line-height:1.3}
+.branch-act{font-size:11.5px;color:var(--dark-mid);line-height:1.5;margin-top:2px}
+
+/* Notes */
+.flow-notes{margin-top:14px;padding:14px 16px;border-radius:10px;background:var(--bg)}
+.notes-title{font-family:var(--ff-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.note-line{font-size:12px;color:var(--dark-mid);padding:2px 0;line-height:1.6}
+
+/* ─── ORQUESTACIÓN ─────────────────────────────────────────────── */
+.channel-card{padding:22px;border-radius:14px;border:1px solid var(--border)}
+.channel-title{font-family:var(--ff-h);font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.rule-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.rule-item:last-child{border:none}
+.rule-mark{flex-shrink:0;font-size:14px;margin-top:1px}
+
+/* ─── ROADMAP ─────────────────────────────────────────────────── */
+.phase-row{display:flex;gap:0;position:relative}
+.phase-row::before{content:'';position:absolute;left:19px;top:38px;bottom:0;width:2px;background:var(--border)}
+.phase-row:last-child::before{display:none}
+.phase-dot{width:38px;height:38px;border-radius:50%;border:2px solid;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;z-index:1;margin-top:4px}
+.phase-body{padding:4px 0 28px 20px;flex:1}
+.phase-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.phase-title{font-family:var(--ff-h);font-size:16px;font-weight:800}
+.phase-when{font-family:var(--ff-m);font-size:10px;color:var(--mid)}
+.phase-item{font-size:13px;color:var(--dark-mid);padding:3px 0;line-height:1.6}
+.phase-item::before{content:'·  '}
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+footer{padding:40px 32px;background:var(--dark);color:#e5e7eb}
+.footer-inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-brands{display:flex;align-items:center;gap:10px}
+.footer-ms{font-family:var(--ff-h);font-weight:800;color:#a78bfa;font-size:15px}
+.footer-pg{font-family:var(--ff-h);font-weight:700;color:#fbbf24;font-size:13px}
+.footer-right{font-size:12px;color:#6b7280;text-align:right}
+
+/* ─── UTILS ─────────────────────────────────────────────────── */
+@media(max-width:640px){
+  .container{padding:0 20px}
+  .section{padding:52px 0}
+  .section-h{font-size:24px}
+  .grid-2,.grid-4,.cover-pillars{grid-template-columns:1fr}
+  .header-nav{display:none}
+}
 </style>
 </head>
 <body>
-<div class="hdr"><div class="hi"><div class="hl"><div class="logo" id="logo">ms</div><div><h1 id="dashTitle">Dashboard semanal</h1><p id="dashSub">Carga un reporte semanal `.xlsx` para actualizar todo el dashboard</p></div></div><div class="hr"><div class="dt" id="updatedAt">Sin archivo cargado</div><div class="per" id="periodLabel">Esperando datos</div></div></div></div>
-<div class="tabs"><div class="ti"><button class="tab on" onclick="go('ventas',this)">📈 Ventas</button><button class="tab" onclick="go('pg',this)">🚀 Impacto PG</button><button class="tab" onclick="go('adq',this)">👥 Adquisición</button><button class="tab" onclick="go('fin',this)">💰 Financiero</button><button class="tab" onclick="go('meta',this)">📣 Meta Ads</button><button class="tab" onclick="go('email',this)">✉️ Email</button><button class="tab" onclick="go('pasos',this)">📋 Próximos pasos</button><button class="tab" onclick="go('ia',this)">✨ Análisis</button></div></div>
-<div class="ubar"><div class="ui"><div class="ul"><span>📊</span><span><strong>Datos activos:</strong> <span id="activeFile">reporte base de ejemplo</span> <span class="chip" id="loadChip">✓ Cargado</span><div class="status" id="loadStatus">Puedes subir el reporte semanal con la misma estructura del Excel ficticio/original.</div></span></div><button class="btn-u" onclick="document.getElementById('fi').click()">⬆ Actualizar datos</button><input type="file" id="fi" accept=".xlsx,.xls" style="display:none"></div></div>
-<div class="main">
-<div class="drop"><strong>Formato esperado:</strong> usa el mismo template del reporte semanal: secciones de ventas generales, comparativa por período, ventas diarias, impacto PG, adquisición, categorías, financiero, GMV, cuotas, Meta Ads, creativos, edad, detalle diario, próximos pasos y email. Al subir el `.xlsx`, esta versión recalcula tarjetas, tablas, gráficos y análisis sin recargar la página.</div>
-<section id="s-ventas" class="sec on"><div class="sh"><h2 id="ventasH">Ventas</h2><p id="ventasP">Resumen actualizado</p></div><div id="ventasKpis" class="kg"></div><div class="card full" style="margin-bottom:16px"><div class="ct" id="dailyTitle">Ventas diarias</div><div style="height:280px"><canvas id="cVentas"></canvas></div></div><div class="g2"><div class="card"><div class="ct">Comparativa por período</div><div id="periodTable"></div></div><div class="card"><div class="ct">Proyección vs meta</div><div style="height:220px"><canvas id="cProy"></canvas></div><div class="note" id="projectionNote"></div></div></div><div id="ventasAlerts"></div></section>
-<section id="s-pg" class="sec"><div class="sh"><h2>Impacto Predictive Growth</h2><p id="pgP">Comparativa del período PG</p></div><div id="pgKpis" class="kg"></div><div class="card full" style="margin-bottom:16px"><div class="ct">Día a día del período PG</div><div style="height:260px"><canvas id="cPG"></canvas></div></div><div class="g2"><div class="card"><div class="ct">Detalle diario reciente</div><div id="dailyDetailTable"></div></div><div class="card"><div class="ct">Lectura automática</div><div id="pgInsights"></div></div></div></section>
-<section id="s-adq" class="sec"><div class="sh"><h2>Adquisición y base de usuarios</h2><p>Usuarios, ventas históricas y categorías</p></div><div id="adqKpis" class="kg"></div><div class="g2"><div class="card"><div class="ct">Categorías de producto</div><div style="height:230px"><canvas id="cCats"></canvas></div></div><div class="card"><div class="ct">Estado de ventas históricas</div><div id="adqRows"></div></div></div><div class="card full"><div class="ct">Categorías: ventas vs carritos activos</div><div id="catTable"></div></div></section>
-<section id="s-fin" class="sec"><div class="sh"><h2>Estado financiero</h2><p>Revenue, GMV, cuotas y proyecciones</p></div><div id="finKpis" class="kg"></div><div class="g2"><div class="card"><div class="ct">GMV mensual histórico</div><div style="height:230px"><canvas id="cGMV"></canvas></div></div><div class="card"><div class="ct">Calendario de cuotas por cobrar</div><div id="cuotasTable"></div></div></div><div class="g2"><div class="card"><div class="ct">Revenue vs costo de artículos</div><div style="height:220px"><canvas id="cRevCost"></canvas></div></div><div class="card"><div class="ct">Indicadores financieros</div><div id="finRows"></div></div></div></section>
-<section id="s-meta" class="sec"><div class="sh"><h2>Campañas Meta Ads</h2><p id="metaP">Rendimiento pagado</p></div><div id="metaKpis" class="kg"></div><div class="card full" style="margin-bottom:16px"><div class="ct">Rendimiento por creativo</div><div id="creativeTable"></div></div><div class="g2"><div class="card"><div class="ct">CPP por segmento de edad</div><div style="height:230px"><canvas id="cEdad"></canvas></div></div><div class="card"><div class="ct">Decisiones de optimización</div><div id="metaInsights"></div></div></div></section>
-<section id="s-email" class="sec"><div class="sh"><h2>Email Marketing</h2><p id="emailP">Campaña semanal</p></div><div id="emailKpis" class="em5"></div><div class="g2"><div class="card"><div class="ct">KPIs de rendimiento</div><div id="emailKpiTable"></div></div><div class="card"><div class="ct">Rendimiento por enlace</div><div id="linkTable"></div></div></div><div class="g2"><div class="card"><div class="ct">Funnel de campaña</div><div style="height:230px"><canvas id="cEmailFunnel"></canvas></div></div><div class="card"><div class="ct">Recomendaciones automáticas</div><div id="emailInsights"></div></div></div></section>
-<section id="s-pasos" class="sec"><div class="sh"><h2>Próximos pasos y decisiones</h2><p>Acciones priorizadas desde el reporte</p></div><div class="g2"><div class="card"><div class="ct">🔴 Prioridad alta</div><div id="actionsHigh"></div></div><div class="card"><div class="ct">🟡 Prioridad media / seguimiento</div><div id="actionsOther"></div></div></div></section>
-<section id="s-ia" class="sec"><div class="sh"><h2>Análisis automático</h2><p>Sin API key expuesta en el navegador</p></div><div class="ai-box"><div class="ai-hdr"><span class="ai-tag">LOCAL</span><span style="font-size:14px;font-weight:700">Análisis ejecutivo generado con reglas del dashboard</span></div><div class="ai-body" id="aiBody"></div><button class="ai-btn" onclick="renderAI()">🔄 Regenerar análisis</button></div><div class="g2"><div class="card"><div class="ct">Preguntas rápidas</div><div style="display:flex;flex-direction:column;gap:7px"><button class="qa-btn" onclick="answerQuick('meta')">🎯 ¿Llegamos a la meta?</button><button class="qa-btn" onclick="answerQuick('pg')">🚀 ¿Cuál fue el impacto PG?</button><button class="qa-btn" onclick="answerQuick('email')">✉️ ¿Qué pasa con email?</button><button class="qa-btn" onclick="answerQuick('fin')">💵 ¿Cómo va la salud financiera?</button></div></div><div class="card"><div class="ct">Nota sobre IA externa</div><p class="note">La versión anterior intentaba llamar a Claude desde el navegador con una API key visible. Eso suele fallar por seguridad/CORS y además expone la clave. Para usar Claude real, conecta este dashboard a un backend o función serverless que guarde la key en servidor y devuelva solo el análisis.</p></div></div></section>
-</div>
+
+<!-- ══════ HEADER ══════ -->
+<header>
+  <div class="header-brands">
+    <span class="brand-ms">MamaSan</span>
+    <div class="brand-sep"></div>
+    <span class="brand-pg">Predictive Growth</span>
+  </div>
+  <nav class="header-nav">
+    <a href="#mapa">El Mapa</a>
+    <a href="#flujos">Los Flujos</a>
+    <a href="#orquestacion">Orquestación</a>
+    <a href="#norte">El Norte</a>
+  </nav>
+  <span class="header-date">Mayo 2026</span>
+</header>
+
+<!-- ══════ COVER ══════ -->
+<section id="cover">
+  <div class="container">
+    <div class="cover-eyebrow">
+      <span class="tag" style="color:var(--purple);border-color:rgba(124,58,237,.3);background:var(--purple-light)">Sistema de CRM Lifecycle</span>
+      <span class="tag" style="color:var(--yellow);border-color:rgba(217,119,6,.25);background:var(--yellow-light)">Email + WhatsApp</span>
+    </div>
+    <h1 class="cover-h1">Cada usuario está en<br>un estado exacto.<br><em>El sistema responde.</em></h1>
+    <p class="cover-p">MamaSan tiene 47,878 contactos y datos en tiempo real. Este documento convierte esa infraestructura en un sistema vivo: un mecanismo que detecta dónde está cada usuario, qué acaba de pasar, y ejecuta la comunicación correcta — sin intervención manual.</p>
+
+    <div class="cover-pillars">
+      <div class="pillar" style="border-color:rgba(124,58,237,.25);background:var(--purple-light)">
+        <div class="pillar-n" style="color:var(--purple)">6</div>
+        <div class="pillar-l" style="color:var(--purple)">Flujos activos</div>
+        <div class="pillar-s">cada uno con su trabajo único</div>
+      </div>
+      <div class="pillar" style="border-color:rgba(18,140,126,.25);background:var(--wa-light)">
+        <div class="pillar-n" style="color:var(--wa)">2</div>
+        <div class="pillar-l" style="color:var(--wa)">Canales orquestados</div>
+        <div class="pillar-s">email + WhatsApp como uno solo</div>
+      </div>
+      <div class="pillar" style="border-color:rgba(217,119,6,.25);background:var(--yellow-light)">
+        <div class="pillar-n" style="color:var(--yellow)">0</div>
+        <div class="pillar-l" style="color:var(--yellow)">Mensajes genéricos</div>
+        <div class="pillar-s">todo activado por datos reales</div>
+      </div>
+    </div>
+
+        <p style="margin-top:16px;font-size:13px;color:var(--dark);line-height:1.7;max-width:560px;padding:14px 18px;border-radius:10px;background:#fef9ec;border-left:3px solid var(--yellow)">
+      <strong style="color:var(--yellow)">📈 El negocio está creciendo rápido.</strong> Solo en mayo 2026 se registraron <strong>15,266 nuevos usuarios</strong>. Casi todos entran al estado "bloqueado". Cada semana que WF-01A no está activo, ese número crece.
+    </p>
+    <p style="margin-top:16px;font-size:13px;color:var(--mid);line-height:1.7;max-width:520px;padding:14px 18px;border-radius:10px;background:var(--bg-alt);border-left:3px solid var(--purple)">
+      <strong style="color:var(--dark)">La infraestructura ya está activa.</strong> Supabase es la fuente de verdad. n8n sincroniza en tiempo real. GHL ejecuta los flujos. AppLevel orquesta WhatsApp. El trabajo ahora es encender la inteligencia encima de todo esto.
+    </p>
+  </div>
+</section>
+
+<!-- ══════ EL MAPA ══════ -->
+<section id="mapa" class="section">
+  <div class="container">
+    <div class="label" style="color:var(--purple)">El mapa del sistema</div>
+    <h2 class="section-h">Ningún usuario sin respuesta.</h2>
+    <p class="section-sub">Este es el mapa completo del ciclo de vida de un usuario en MamaSan. Cada nodo es un estado. Cada flecha es un evento que dispara una acción. El sistema cubre cada transición.</p>
+
+    <div class="map-wrapper">
+      <div style="display:flex;gap:0;align-items:flex-start;min-width:780px">
+
+        <!-- COL 1: Registro -->
+        <div class="map-column" style="flex:.9">
+          <div class="map-col-label">01 · Registro</div>
+          <div class="map-node" style="border-color:rgba(124,58,237,.4);background:var(--purple-light);max-width:120px" title="Usuario recién registrado">
+            <span class="map-node-icon">👤</span>
+            <div class="map-node-name" style="color:var(--purple)">Usuario nuevo</div>
+            <div class="map-node-count" style="color:var(--purple)">47,878</div>
+          </div>
+        </div>
+
+        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
+
+        <!-- COL 2: Activación -->
+        <div class="map-column" style="flex:1.1;gap:8px">
+          <div class="map-col-label" style="text-align:center">02 · Activación</div>
+          <div class="map-node" style="border-color:rgba(220,38,38,.35);background:var(--red-light);margin-bottom:8px" title="No completó cédula/teléfono/términos">
+            <span class="map-node-icon">🔒</span>
+            <div class="map-node-name" style="color:var(--red)">Bloqueado</div>
+            <div class="map-node-count" style="color:var(--red)">45,415 · 94.9%</div>
+            <span class="map-node-flow" style="background:rgba(220,38,38,.1);color:var(--red)">WF-01A</span>
+          </div>
+          <div class="map-node" style="border-color:rgba(217,119,6,.35);background:var(--yellow-light)">
+            <span class="map-node-icon">🔓</span>
+            <div class="map-node-name" style="color:var(--yellow)">Listo · F0</div>
+            <div class="map-node-count" style="color:var(--yellow)">~1,993</div>
+            <span class="map-node-flow" style="background:rgba(217,119,6,.1);color:var(--yellow)">WF-01B</span>
+          </div>
+        </div>
+
+        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
+
+        <!-- COL 3: Intención -->
+        <div class="map-column" style="flex:1;gap:8px">
+          <div class="map-col-label">03 · Intención</div>
+          <div class="map-node" style="border-color:rgba(124,58,237,.4);background:var(--purple-light)" title="Agregó producto al carrito, no completó la compra">
+            <span class="map-node-icon">🛒</span>
+            <div class="map-node-name" style="color:var(--purple)">Carrito activo</div>
+            <div class="map-node-count" style="color:var(--purple)">94.9% bloqueados</div>
+            <span class="map-node-flow" style="background:rgba(124,58,237,.1);color:var(--purple)">WF-02</span>
+          </div>
+        </div>
+
+        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
+
+        <!-- COL 4: Primera compra -->
+        <div class="map-column" style="flex:1">
+          <div class="map-col-label">04 · 1ª Compra</div>
+          <div class="map-node" style="border-color:rgba(157,23,77,.35);background:var(--mag-light)" title="Pago inicial validado · primera compra realizada">
+            <span class="map-node-icon">✅</span>
+            <div class="map-node-name" style="color:var(--mag)">F1 · Cliente</div>
+            <div class="map-node-count" style="color:var(--mag)">470 compradores</div>
+            <span class="map-node-flow" style="background:rgba(157,23,77,.1);color:var(--mag)">WF-03 + WF-04</span>
+          </div>
+        </div>
+
+        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
+
+        <!-- COL 5: Recurrencia -->
+        <div class="map-column" style="flex:1.1;gap:8px">
+          <div class="map-col-label">05 · Recurrencia</div>
+          <div class="map-node" style="border-color:rgba(5,150,105,.4);background:var(--green-light)">
+            <span class="map-node-icon">🏆</span>
+            <div class="map-node-name" style="color:var(--green)">F2+ · Recurrente</div>
+            <div class="map-node-count" style="color:var(--green)">~178 · dashboard</div>
+            <span class="map-node-flow" style="background:rgba(5,150,105,.1);color:var(--green)">WF-04 + Ref.</span>
+          </div>
+          <div class="map-node" style="border-color:rgba(124,58,237,.35);background:var(--purple-light);margin-top:8px">
+            <span class="map-node-icon">📈</span>
+            <div class="map-node-name" style="color:var(--purple)">Nivel ↑</div>
+            <div class="map-node-count" style="color:var(--purple)">Plata 22 · Oro 5</div>
+            <span class="map-node-flow" style="background:rgba(124,58,237,.1);color:var(--purple)">WF-04</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Evergreen bar -->
+      <div style="margin-top:20px;padding:12px 16px;border-radius:10px;background:var(--bg-alt);border:1px dashed var(--border-dark);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:20px">♾️</span>
+        <div style="flex:1">
+          <div style="font-family:var(--ff-h);font-size:13px;font-weight:700;color:var(--dark)">Evergreen — el hogar de toda la base</div>
+          <div style="font-size:12px;color:var(--mid)">Todo contacto que sale de un flujo sin convertir vive aquí. Loop rotativo. Detecta señales en tiempo real y despacha al flujo correcto.</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="tag" style="color:var(--purple);border-color:rgba(124,58,237,.3);background:var(--purple-light);font-size:9px">carrito → WF-02</span>
+          <span class="tag" style="color:var(--yellow);border-color:rgba(217,119,6,.3);background:var(--yellow-light);font-size:9px">compra → WF-04</span>
+          <span class="tag" style="color:var(--red);border-color:rgba(220,38,38,.3);background:var(--red-light);font-size:9px">45d sin abrir → WF-06</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Sin poder comprar</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>En activación</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Con intención activa</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--mag)"></div>Primera compra</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Recurrente</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ LOS FLUJOS ══════ -->
+<section id="flujos" class="section">
+  <div class="container">
+    <div class="label" style="color:var(--purple)">Los 6 flujos</div>
+    <h2 class="section-h">Una historia para cada momento.</h2>
+    <p class="section-sub">Cada flujo tiene un protagonista, un momento de activación y una transformación concreta. No son campañas — son respuestas diseñadas para el estado exacto del usuario.</p>
+    <div id="flows-container"></div>
+  </div>
+</section>
+
+<!-- ══════ ORQUESTACIÓN ══════ -->
+<section id="orquestacion" class="section" style="background:var(--bg-alt)">
+  <div class="container">
+    <div class="label" style="color:var(--wa)">Orquestación de canales</div>
+    <h2 class="section-h">Email y WhatsApp como<br>un solo sistema.</h2>
+    <p class="section-sub">No son dos canales paralelos. Son dos voces del mismo sistema. El email hace el volumen y la narración. WhatsApp hace el toque humano en el momento preciso.</p>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="channel-card">
+        <div class="channel-title" style="color:var(--purple)">
+          <span style="font-size:22px">✉️</span> Email — La narrativa
+        </div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Sequencias largas (onboarding, upsell, reactivación)</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Contenido educativo (el sistema de niveles, cómo funciona)</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Campañas masivas estacionales (Día del Padre, Prime Day)</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>HTML con carrito_html real: imagen, precio, cuotas</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>A/B testing sistemático de asuntos y CTAs</span></div>
+      </div>
+      <div class="channel-card" style="border-color:rgba(18,140,126,.25)">
+        <div class="channel-title" style="color:var(--wa)">
+          <span style="font-size:22px">📱</span> WhatsApp — El toque humano
+        </div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Rescate cuando el email no fue abierto</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Seguimiento de clics de alta intención (&lt;4h)</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Confirmación de entrega + celebración de nivel</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Toque de Vanessa en registro incompleto (D+6)</span></div>
+        <div class="rule-item"><span class="rule-mark" style="color:var(--red)">✗</span><span>Newsletters masivas — eso es territorio del email</span></div>
+      </div>
+    </div>
+
+    <div style="padding:16px 20px;border-radius:12px;background:rgba(18,140,126,.06);border:1px solid rgba(18,140,126,.2)">
+      <strong style="font-size:13px;color:var(--wa)">⚠️ Regla AppLevel — goteo obligatorio:</strong>
+      <span style="font-size:13px;color:var(--dark-mid)"> Máximo 10 mensajes por hora. Si Meta detecta envíos masivos simultáneos puede bloquear la cuenta. AppLevel gestiona el drip automáticamente — solo hay que configurarlo correctamente.</span>
+    </div>
+
+    <!-- Behavior matrix -->
+    <div style="margin-top:28px">
+      <div class="label" style="color:var(--dark-mid);margin-bottom:16px">Matriz de respuesta por acción del usuario</div>
+      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;background:var(--dark)">
+          <div style="padding:10px 14px;font-size:11px;font-family:var(--ff-m);color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Acción del usuario</div>
+          <div style="padding:10px 14px;font-size:11px;font-family:var(--ff-m);color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Respuesta inmediata</div>
+          <div style="padding:10px 14px;font-size:11px;font-family:var(--ff-m);color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Siguiente paso</div>
+        </div>
+        <div id="matrix-rows"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ EL NORTE ══════ -->
+<section id="norte" class="section">
+  <div class="container">
+    <div class="label" style="color:var(--yellow)">El norte · Roadmap</div>
+    <h2 class="section-h">El camino, en orden<br>de impacto.</h2>
+    <p class="section-sub">El orden no es arbitrario. Se activa primero lo que libera el mayor valor con el menor esfuerzo adicional — sobre una infraestructura que ya corre.</p>
+
+    <div id="roadmap-container"></div>
+
+    <!-- Pending data -->
+    <div style="margin-top:40px;padding:22px;border-radius:14px;border:1px solid var(--border);background:var(--bg-alt)">
+      <div class="label" style="color:var(--yellow);margin-bottom:14px">4 datos que cierran el modelo</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="datos-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brands">
+      <span class="footer-ms">MamaSan</span>
+      <span style="color:#4b5563;margin:0 8px">×</span>
+      <span class="footer-pg">Predictive Growth</span>
+    </div>
+    <div class="footer-right">
+      <div>predictivegrowth.io</div>
+      <div>Sistema de Email + WhatsApp · Mayo 2026</div>
+    </div>
+  </div>
+</footer>
+
 <script>
-const SAMPLE_ROWS = [["MamaSan · Reporte de Ventas · Mayo 2026"],["Predictive Growth · Mayo 1–26, 2026 vs Abril 2026 (baseline)  ·  Actualizado: 26 mayo 2026"],[],["1. VENTAS GENERALES — Mayo 2026 (26 días)"],["Métrica","Mayo 2026","Abril 2026 (ref.)","Variación","Notas"],["Ventas totales",318,287,"+10.8%","Mejor mes histórico de MamaSan"],["Ventas / día promedio",12.2,9.57,"+27%","Con PG activo (15-26): 17.2/día"],["Proyección cierre (ritmo gral)",379,287,"+32%","12.2 v/día × 31 días"],["Proyección cierre (ritmo PG)",404,287,"+41%","17.2 v/día desde día 15"],["Meta PG Mayo",413,null,null,"Brecha: 95v en 5 días restantes (19/día)"],["Récord histórico diario",32,19,"+68%","19 Mayo 2026 · Anterior: 19v (Abr 15)"],[],["2. COMPARATIVA POR PERÍODO"],["Período","Ventas","Revenue total","V/día","vs Abril"],["Mayo 1-14 (pre-PG)",112,"$10,230",8,"-16%"],["Mayo 15-26 (con PG)",206,"$15,393",17.2,"+50%"],["Mayo 22-26 ($82/día)",77,"$6,473",15.4,"+51%"],["Mayo total (26 días)",318,"$25,622",12.2,"+27%"],["Abril completo (ref.)",287,"$22,237",9.57,"—"],[],["3. VENTAS DIARIAS — Mayo vs Abril (días 1–26)"],["Día","Mayo 2026","Abril 2026","Delta","Etapa Mayo"],["Día 01",14,9,"+5","Pre-PG"],["Día 02",17,9,"+8","Pre-PG"],["Día 03",6,8,"-2","Pre-PG"],["Día 04",1,8,"-7","Pre-PG"],["Día 05",14,12,"+2","Pre-PG"],["Día 06",11,9,"+2","Pre-PG"],["Día 07",6,8,"-2","Pre-PG"],["Día 08",0,7,"-7","Pre-PG"],["Día 09",5,7,"-2","Pre-PG"],["Día 10",7,5,"+2","Pre-PG"],["Día 11",8,5,"+3","Pre-PG"],["Día 12",5,5,"0","Pre-PG"],["Día 13",13,5,"+8","Pre-PG"],["Día 14",5,12,"-7","Pre-PG"],["Día 15",19,19,"0","PG $40/día"],["Día 16",11,12,"-1","PG $40/día"],["Día 17",21,7,"+14","PG $40/día"],["Día 18",9,12,"-3","PG $40/día"],["Día 19",32,13,"+19","PG $40/día"],["Día 20",22,8,"+14","PG $40/día"],["Día 21",15,15,"0","PG $40/día"],["Día 22",10,14,"-4","PG $82/día"],["Día 23",17,9,"+8","PG $82/día"],["Día 24",19,9,"+10","PG $82/día"],["Día 25",22,11,"+11","PG $82/día"],["Día 26",9,8,"+1","PG $82/día"],[],["4. IMPACTO PREDICTIVE GROWTH — Mayo 15-26 vs Abril 15-26"],["KPI","Mayo PG","Abril (baseline)","Variación","Notas"],["Ventas período (15-26)",206,137,"+50%","69 ventas extra vs baseline"],["Revenue período","$15,393","$12,400","+24%","Estimado Abril mismo período"],["Ventas / día promedio",17.2,9.57,"+80%","Durante período PG activo"],["Ventas / día (22-26)",15.4,9.57,"+60%","Post-efecto atribución diferida"],["ROAS real período","~27x",null,null,"$15,393 rev / ~$570 gasto est."],["Mejor día revenue","$2,120",null,null,"24 Mayo — récord histórico diario"],["Installs (15-22 Mayo)",4641,null,null,"Conversión diferida 5-7 días"],[],["5. ADQUISICIÓN Y BASE DE USUARIOS"],["Métrica","Valor","Detalle","Estado"],["Ventas históricas totales",827,"+167 desde inicio PG","Activo"],["Ventas pre-PG (hasta 14 May)",660,"Baseline","—"],["Nuevas descargas app (Meta)",4641,"CPI $0.04","Activo"],["CAC blended","$4.13","$326 gasto / 79 compradores","53% bajo límite $8.80"],["Ventas completadas",605,"73.2% del total","—"],["Ventas en proceso",222,"26.8% del total","—"],["Órdenes por comprar",115,"$4,870","—"],["Tipo cuotas","93.5%","773 ventas","—"],["Tipo contado","6.5%","54 ventas","—"],["Devoluciones Mayo","$112.08","11 casos — <0.5%","OK"],[],["6. CATEGORÍAS DE PRODUCTO"],["Categoría","Artículos vendidos","% ventas","% carritos","Brecha carrito→venta"],["Accesorio",677,"28.5%","21.8%","Convierte bien"],["Ropa",528,"22.2%","27.6%","Mayor abandono ⚠"],["Hogar / Cocina",276,"11.6%","10.0%","Equilibrado"],["Belleza / Cuidado",219,"9.2%","12.6%","Abandono medio"],["Juguetes",150,"6.3%","7.6%","Oportunidad Día del Niño"],["Otros",527,"22.2%",null,"Mix de categorías menores"],[],["7. FINANCIERO — Mayo 2026"],["Indicador","Mayo 2026","Abril 2026","Variación","Notas"],["Revenue total","$25,622.41","$22,236.62","+15%","Mejor mes histórico"],["GMV Mayo","$21,167","$18,873","+12%","Pago inicial + cuotas cobradas"],["Cuotas por cobrar","$7,139.72",null,null,"454 cuotas · 200 usuarios"],["Revenue acumulado hist.","$50,527.80",null,null,"605 ventas completadas"],["Costo artículos Mayo","$15,084.25","$12,751.41","+18%",null],["Tax Mayo","$1,055.89",null,null,null],["Descuentos Mayo","$1,816.12",null,null,null],["Margen bruto estimado","~$5,637",null,"~22%",null],["Devoluciones Mayo","$112.08",null,"<0.5%","11 casos"],["Costo promedio por venta","$47.43",null,null,null],["Ventas en proceso (valor)","$16,402.25",null,null,"222 ventas activas"],[],["8. GMV HISTÓRICO MENSUAL"],["Mes","Pago inicial ($)","Cuotas cobradas ($)","GMV total ($)","Revenue ($)"],["Ene 2026",886.55,388.74,1275.29,1920.59],["Feb 2026",2557.03,2274.49,4831.52,6084.72],["Mar 2026",4352.26,4927.11,9279.37,11310.96],["Abr 2026",7803.5,11069.84,18873.34,22236.62],["May 2026",10828.45,10338.19,21166.64,25622.41],[],["9. CALENDARIO DE COBRO DE CUOTAS"],["Período","Monto ($)","Cuotas","Estado"],["Vencidas","$121.83",8,"Gestionar urgente"],["May 26-31 (esta sem.)","$1,759.30",106,"Esta semana"],["Jun 1-7","$2,795.22",176,"Próxima semana"],["Jun 8-14","$2,159.72",139,"2 semanas"],["Jun 15-21","$303.65",25,"3 semanas"],["TOTAL POR COBRAR","$7,139.72",454,"200 usuarios activos"],[],["10. CAMPAÑAS META ADS — 15–22 Mayo 2026"],["KPI","Valor","Referencia / límite","Estado","Notas"],["CPP (costo por compra)","$3.47","Límite $8.80","✅ OK","60% bajo límite — 37 compras / $128"],["CPI (costo por install)","$0.04","Benchmark ~$2","✅ OK","98% bajo benchmark — 4,641 installs / $198"],["Presupuesto actual/día","$82","$45 compras + $37 installs","Activo","Desde 22 Mayo"],["ROAS total período","27.5x","—","✅ Excelente","$8,968 rev / $326 gasto (15-22 May)"],["Gasto total período","$326.57",null,"—","15-22 Mayo"],["Compras atribuidas",37,null,"—","Campaña conversión"],["App installs",4641,null,"—","Campaña app install"],["CAC blended","$4.13","Límite $8.80","✅ OK","53% bajo límite — 79 nuevos compradores"],[],["11. RENDIMIENTO POR CREATIVO"],["Creativo","Campaña","Gasto ($)","CTR","Compras / CPI"],["[PG]_HOMBRE-PLAZA_v1","Conversión","$122.90","3.30%","37 compras · CPP $3.32"],["Anuncio 2A-v1","App Install","$177.05","2.65%","CPI $0.043 · 4,641 installs"],["[PG]_SHANTAL-PLAZA_v1","Conversión","$4.82","2.87%","0 compras — revisar"],["TOTAL","—","$304.77","—","37 compras + 4,641 installs"],[],["12. CPP POR SEGMENTO DE EDAD"],["Segmento","Compras","CPP ($)","Evaluación","Acción"],["18-24",3,"$2.22","Bajo volumen","Mantener"],["25-34",7,"$9.32","Sobre límite","Optimizar"],["35-44",19,"$4.94","✅ Mejor seg.","Escalar"],["45-54",4,"$24.53","❌ Muy alto","Excluir"],["55-64",4,"$12.26","❌ Alto","Excluir"],[],["13. DETALLE DIARIO — 22-26 Mayo con PG $82/día"],["Fecha","Ventas Mayo PG","Ventas Abril equiv.","Delta","Revenue Mayo"],["22 Mayo — Lun",10,14,"-4","$762"],["23 Mayo — Mar",17,9,"+8","$1,702"],["24 Mayo — Mié ★ récord",19,9,"+10","$2,120"],["25 Mayo — Jue",22,11,"+11","$1,423"],["26 Mayo — Vie (parcial)",9,8,"+1","$465"],["Total 5 días",77,51,"+51%","$6,473"],[],["14. PRÓXIMOS PASOS Y DECISIONES (Junio 2026)"],["Acción","Detalle","Prioridad","Fecha"],["Excluir segmentos 45-54 y 65+","CPP $24.53 — redirigir budget a 35-44","Alta","Inmediato"],["Escalar [PG]_HOMBRE-PLAZA_v1","Único creativo que convierte — CPP $3.32","Alta","Inmediato"],["Producir creativo femenino","Target core es mujer — pendiente de Junio","Alta","Jun 2026"],["Google Ads — lanzamiento","UAC $40/día + Search $20/día desde 1 Jun","Media","1 Jun 2026"],["Pasar Meta a lifetime budget","Desde el 1 Jun junto con Google","Media","1 Jun 2026"],["Revisar [PG]_SHANTAL-PLAZA_v1","$4.82 gasto y 0 compras — verificar si activo","Media","Inmediato"],["Gestionar cuotas vencidas","$121.83 · 8 cuotas — contactar usuarios","Alta","Inmediato"],["Cobrar cuotas 26-31 Mayo","$1,759.30 · 106 cuotas","Alta","May 26-31"],[],["── EMAIL MARKETING ─────────────────────────────────────────────────────────────────────"],[],["15. EMAIL — CAMPAÑA PG DÍA DEL PADRE VZLA 2026 · Métricas de entrega"],["Métrica","Valor","% sobre Entregados","Notas"],["Entregados",41293,"—","Base total de la campaña"],["Abiertos",2227,"=B164/B163","Personas que abrieron el correo"],["Hecho clic (únicos)",74,"=B165/B163","Personas que hicieron al menos 1 clic"],["Total de clics",134,"=B166/B163","Suma de todos los eventos de clic"],["Rebote duro",723,"=B167/B163","Correos inválidos o inexistentes"],["Rebote suave",0,"=B168/B163","Problemas temporales de entrega"],["Suscripción cancelada",24,"=B169/B163","Contactos que se dieron de baja"],["Correo no deseado",0,"=B170/B163","Marcados como spam"],["Omitidos",1921,"=B171/B163","1,911 del envío 1 por límite mal configurado"],[],["16. EMAIL — KPIs DE RENDIMIENTO"],["KPI","Valor (%)","Fórmula","Interpretación"],["Tasa de apertura","=B164/B163","B164/B163  (Abiertos/Entregados)","5.4% — aceptable en email masivo"],["CTOR (clic por apertura)","=B165/B164","B165/B164  (Clics únicos/Abiertos)","3.3% — relevancia del contenido"],["Tasa de clic sobre entregados","=B165/B163","B165/B163  (Clics únicos/Entregados)","Engagement global de la campaña"],["Tasa de rebote duro","=B167/B163","B167/B163  (Rebote duro/Entregados)","1.75% — depurar antes del próximo envío"],["Tasa de baja","=B169/B163","B169/B163  (Unsubs/Entregados)","0.06% — muy bajo, por debajo del 0.5% de riesgo"],["Tasa de spam","=B170/B163","B170/B163  (No deseado/Entregados)","0% — excelente"],["Tasa de omitidos","=B171/B163","B171/B163  (Omitidos/Entregados)","Error puntual envío 1, corregido en envío 2"],[],["17. EMAIL — CONTACTOS DE ALTA INTENCIÓN"],["Métrica","Valor","% sobre Abiertos","Notas"],["Contactos etiquetados (click_papa_2026)",74,"=B185/B164","Tag asignado al hacer clic — priorizar seguimiento WhatsApp"],[],["18. EMAIL — RENDIMIENTO DE CLICS POR ENLACE"],["URL Destino","Total Clics","% del Total Clics","Fuente","Notas"],["https://www.mamasan.app/ (imagen principal)",126,"=B189/SUM($B$189:$B$192)","Imagen","94% del tráfico — CTA principal"],["https://wa.me/584241889219 (WhatsApp)",3,"=B190/SUM($B$189:$B$192)","Imagen","Botón de WhatsApp"],["https://www.mamasan.app/ (texto CTA)",5,"=B191/SUM($B$189:$B$192)","Texto","Enlace de texto"],["Otros 13 enlaces",0,"=B192/SUM($B$189:$B$192)","Imagen","Sin actividad registrada"],["TOTAL","=SUM(B189:B192)","=SUM(C189:C192)","—","134 clics totales · 74 únicos"]];
-let DATA, charts={};
-function go(id,btn){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.getElementById('s-'+id).classList.add('on');btn.classList.add('on')}
-function cell(v){return v===undefined||v===null?'':v}
-function clean(v){return String(cell(v)).trim()}
-function num(v){if(typeof v==='number')return v;if(v===null||v===undefined)return 0;let s=String(v).replace(/[^0-9.\-]/g,'');return s?Number(s):0}
-function money(v){let n=num(v);return n?('$'+n.toLocaleString('en-US',{maximumFractionDigits:n%1?2:0})):clean(v)}
-function pct(n){return isFinite(n)?(n*100).toFixed(n*100<10?1:0)+'%':'—'}
-function firstNum(s){let m=String(s||'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0}
-function findRow(rows,term,start=0){term=term.toLowerCase();return rows.findIndex((r,i)=>i>=start&&clean(r[0]).toLowerCase().includes(term))}
-function findRowAny(rows,terms,start=0){for(const t of terms){let i=findRow(rows,t,start);if(i>=0)return i}return -1}
-function section(rows,title){let s=findRow(rows,title); if(s<0)return {header:[],rows:[]}; let h=s+1; while(h<rows.length && !rows[h]?.some(x=>clean(x)))h++; let e=h+1; while(e<rows.length){let v=clean(rows[e]?.[0]); if(/^\d+\.\s/.test(v)||v.startsWith('──'))break; e++} return {title:rows[s][0],header:rows[h]||[],rows:rows.slice(h+1,e).filter(r=>r.some(x=>clean(x)))} }
-function rowMap(sec){let o={};sec.rows.forEach(r=>{o[clean(r[0])]=r});return o}
-function tableHTML(rows,header){if(!rows?.length)return '<p class="note">Sin datos en esta sección.</p>';let h=header?.length?header:rows[0].map((_,i)=>'Col '+(i+1));return `<table class="t"><thead><tr>${h.map(x=>`<th>${cell(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${h.map((_,i)=>`<td>${cell(r[i])}</td>`).join('')}</tr>`).join('')}</tbody></table>`}
-function kpi(label,value,delta,sub,color='var(--pg)'){return `<div class="kc"><div class="kb" style="background:${color}"></div><div class="kl">${label}</div><div class="kv" style="color:${color}">${cell(value)}</div><div class="kd">${cell(delta)}</div><div class="ks">${cell(sub)}</div></div>`}
-function row(label,value,tag){return `<div class="mr"><span style="color:var(--mut)">${label}</span><span class="mono" style="font-weight:700">${value}${tag?` <span class="bp">${tag}</span>`:''}</span></div>`}
-function badgeForText(s){s=String(s||'').toLowerCase(); if(s.includes('excelente')||s.includes('ok')||s.includes('scale')||s.includes('mantener')||s.includes('escalar'))return 'bg'; if(s.includes('alto')||s.includes('excluir')||s.includes('urgente')||s.includes('vencid')||s.includes('revisar'))return 'br'; if(s.includes('media')||s.includes('optimizar')||s.includes('semana')||s.includes('mejorar'))return 'ba'; return 'bp'}
-function parseWorkbookRows(rows){let title=clean(rows[0]?.[0])||'Dashboard semanal';let subtitle=clean(rows[1]?.[0])||'';let client=(title.split('·')[0]||'Dashboard').trim();let currentMonth=(title.match(/Reporte de Ventas ·\s*([^·]+)/i)||[])[1]?.trim()||'';let updated=(subtitle.match(/Actualizado:\s*(.+)$/i)||[])[1]?.trim()||'';let ventas=section(rows,'VENTAS GENERALES'), period=section(rows,'COMPARATIVA POR PERÍODO'), daily=section(rows,'VENTAS DIARIAS'), pg=section(rows,'IMPACTO PREDICTIVE GROWTH'), adq=section(rows,'ADQUISICIÓN'), cats=section(rows,'CATEGORÍAS'), fin=section(rows,'FINANCIERO'), gmv=section(rows,'GMV HISTÓRICO'), cuotas=section(rows,'CALENDARIO DE COBRO'), meta=section(rows,'CAMPAÑAS META'), creative=section(rows,'RENDIMIENTO POR CREATIVO'), edad=section(rows,'CPP POR SEGMENTO'), detail=section(rows,'DETALLE DIARIO'), actions=section(rows,'PRÓXIMOS PASOS'), email=section(rows,'EMAIL — CAMPAÑA'), emailK=section(rows,'EMAIL — KPIs'), intent=section(rows,'EMAIL — CONTACTOS'), links=section(rows,'EMAIL — RENDIMIENTO');
-let ventasM=rowMap(ventas), pgM=rowMap(pg), finM=rowMap(fin), metaM=rowMap(meta), adqM=rowMap(adq), emailM=rowMap(email);
-return {title,subtitle,client,currentMonth,updated,sections:{ventas,period,daily,pg,adq,cats,fin,gmv,cuotas,meta,creative,edad,detail,actions,email,emailK,intent,links},maps:{ventasM,pgM,finM,metaM,adqM,emailM}}}
-function destroyCharts(){Object.values(charts).forEach(c=>c&&c.destroy());charts={}}
-function setText(id,t){document.getElementById(id).textContent=t}
-function render(rows,filename='reporte base de ejemplo'){DATA=parseWorkbookRows(rows);destroyCharts();let d=DATA,s=d.sections,m=d.maps;setText('dashTitle',`${d.client} · Dashboard semanal`);setText('dashSub',d.subtitle||'Reporte cargado');setText('updatedAt',d.updated?`Actualizado ${d.updated}`:'Actualizado desde archivo');setText('periodLabel',d.currentMonth||'Reporte semanal');setText('logo',d.client.slice(0,2).toLowerCase());setText('activeFile',filename);document.getElementById('loadChip').textContent='✓ Cargado';document.getElementById('loadChip').className='chip';setText('loadStatus','El dashboard se actualizó con los datos del archivo cargado.');
-let vt=m.ventasM['Ventas totales']||[], vdia=m.ventasM['Ventas / día promedio']||[], rec=m.ventasM['Récord histórico diario']||[], metaRow=Object.entries(m.ventasM).find(([k])=>k.toLowerCase().includes('meta'))?.[1]||[], proyG=m.ventasM['Proyección cierre (ritmo gral)']||[], proyPG=m.ventasM['Proyección cierre (ritmo PG)']||[];
-setText('ventasH',`Ventas — ${d.currentMonth||'período actual'}`);setText('ventasP',clean(vt[4])||'Comparativa vs período anterior');document.getElementById('ventasKpis').innerHTML=kpi('Ventas actuales',vt[1],`${vt[3]||''} vs ref.`,`${vt[2]?'Referencia: '+vt[2]:''}`,'var(--gr)')+kpi('Ventas / día promedio',vdia[1],`${vdia[3]||''} vs ref.`,clean(vdia[4]),'var(--pg)')+kpi('Récord histórico diario',rec[1],clean(rec[4]),`${rec[2]?'Anterior: '+rec[2]:''}`,'var(--rd)')+kpi('Meta del período',metaRow[1]||'—',clean(metaRow[4]),`${proyPG[1]?'Proy. PG: '+proyPG[1]:''}`,'var(--am)');
-document.getElementById('periodTable').innerHTML=tableHTML(s.period.rows,s.period.header);document.getElementById('projectionNote').textContent=clean(metaRow[4])||'Sube un reporte con meta para calcular la brecha.';
-let daily=s.daily.rows.map(r=>({day:firstNum(r[0]),cur:num(r[1]),base:num(r[2]),stage:clean(r[4])})).filter(x=>x.day);setText('dailyTitle',s.daily.title||'Ventas diarias');charts.ventas=new Chart(document.getElementById('cVentas'),{type:'bar',data:{labels:daily.map(x=>String(x.day)),datasets:[{label:s.daily.header[2]||'Referencia',data:daily.map(x=>x.base),backgroundColor:'rgba(211,209,199,.75)',borderRadius:3},{label:s.daily.header[1]||'Actual',data:daily.map(x=>x.cur),backgroundColor:daily.map(x=>x.stage.toLowerCase().includes('pg')?'#be3a2c':'#3A4C67'),borderRadius:3}]},options:chartOpts()});charts.proy=new Chart(document.getElementById('cProy'),{type:'bar',data:{labels:['Actual','Proy. gral','Proy. PG','Meta'],datasets:[{data:[num(vt[1]),num(proyG[1]),num(proyPG[1]),num(metaRow[1])],backgroundColor:['#1565C0','#85B7EB','#3A4C67','#1B5E20'],borderRadius:6}]},options:chartOpts(false)});
-let actual=num(vt[1]), metaN=num(metaRow[1]);document.getElementById('ventasAlerts').innerHTML=`<div class="cl ${actual>=metaN&&metaN?'cg':'ca'}"><strong>${actual>=metaN&&metaN?'Meta alcanzada':'Estado vs meta'}:</strong> ${metaN?`${actual} ventas actuales frente a meta de ${metaN}. Brecha: ${Math.max(metaN-actual,0)} ventas.`:'No se encontró meta numérica en el reporte.'}</div>`;
-let pgRows=s.pg.rows;document.getElementById('pgKpis').innerHTML=pgRows.slice(0,4).map((r,i)=>kpi(r[0],r[1],`${r[3]||''} ${r[2]?'vs '+r[2]:''}`,r[4],i<2?'var(--gr)':i==2?'var(--pg)':'var(--am)')).join('');setText('pgP',s.pg.title||'Impacto PG');let pgDaily=daily.filter(x=>x.stage.toLowerCase().includes('pg'));charts.pg=new Chart(document.getElementById('cPG'),{type:'bar',data:{labels:pgDaily.map(x=>'D'+x.day),datasets:[{label:'Referencia',data:pgDaily.map(x=>x.base),backgroundColor:'rgba(211,209,199,.8)',borderRadius:3},{label:'Actual PG',data:pgDaily.map(x=>x.cur),backgroundColor:'#3A4C67',borderRadius:3}]},options:chartOpts(true)});document.getElementById('dailyDetailTable').innerHTML=tableHTML(s.detail.rows,s.detail.header);document.getElementById('pgInsights').innerHTML=pgRows.slice(0,5).map(r=>`<div class="cl cb"><strong>${r[0]}:</strong> ${r[1]} ${r[3]?`(${r[3]})`:''}. ${r[4]||''}</div>`).join('');
-let adqRows=s.adq.rows;document.getElementById('adqKpis').innerHTML=adqRows.slice(0,4).map((r,i)=>kpi(r[0],r[1],r[2],r[3],i==0?'var(--gr)':i==1?'var(--bl)':i==2?'var(--gr)':'var(--pg)')).join('');document.getElementById('adqRows').innerHTML=adqRows.map(r=>row(r[0],cell(r[1]),cell(r[3]))).join('');document.getElementById('catTable').innerHTML=tableHTML(s.cats.rows,s.cats.header);let catRows=s.cats.rows.filter(r=>num(r[1])>0);charts.cats=new Chart(document.getElementById('cCats'),{type:'doughnut',data:{labels:catRows.map(r=>r[0]),datasets:[{data:catRows.map(r=>num(r[2])||num(r[1])),backgroundColor:['#3A4C67','#1565C0','#1B5E20','#BA7517','#534AB7','#D3D1C7','#9A6B7E'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:10,padding:7}}}}});
-let finRows=s.fin.rows;document.getElementById('finKpis').innerHTML=finRows.slice(0,4).map((r,i)=>kpi(r[0],r[1],r[3]||'',r[4]||'',i==0?'var(--gr)':i==1?'var(--pg)':i==2?'var(--am)':'var(--bl)')).join('');document.getElementById('finRows').innerHTML=finRows.map(r=>row(r[0],cell(r[1]),cell(r[3]))).join('');document.getElementById('cuotasTable').innerHTML=tableHTML(s.cuotas.rows,s.cuotas.header);let g=s.gmv.rows;charts.gmv=new Chart(document.getElementById('cGMV'),{type:'bar',data:{labels:g.map(r=>r[0]),datasets:[{label:s.gmv.header[1]||'Pago inicial',data:g.map(r=>num(r[1])),backgroundColor:'#3A4C67',borderRadius:4},{label:s.gmv.header[2]||'Cuotas cobradas',data:g.map(r=>num(r[2])),backgroundColor:'#378ADD',borderRadius:4}]},options:stackedOpts()});charts.revcost=new Chart(document.getElementById('cRevCost'),{type:'line',data:{labels:g.map(r=>r[0]),datasets:[{label:'Revenue',data:g.map(r=>num(r[4])),borderColor:'#1B5E20',backgroundColor:'rgba(27,94,32,.08)',fill:true,tension:.3,borderWidth:2,pointRadius:4},{label:'GMV',data:g.map(r=>num(r[3])),borderColor:'#3A4C67',tension:.3,borderWidth:2,borderDash:[4,4],pointRadius:4}]},options:chartOpts(true,true)});
-let metaRows=s.meta.rows;document.getElementById('metaKpis').innerHTML=metaRows.slice(0,4).map((r,i)=>kpi(r[0],r[1],r[3],`${r[2]||''} ${r[4]||''}`,i<2?'var(--gr)':i==2?'var(--pg)':'var(--gr)')).join('');setText('metaP',s.meta.title||'Rendimiento pagado');document.getElementById('creativeTable').innerHTML=tableHTML(s.creative.rows,s.creative.header);document.getElementById('metaInsights').innerHTML=s.edad.rows.map(r=>`<div class="cl ${badgeForText(r[4])}"><strong>${r[0]}:</strong> ${r[1]} compras · CPP ${r[2]} · ${r[3]} · Acción: ${r[4]}</div>`).join('');let age=s.edad.rows;charts.edad=new Chart(document.getElementById('cEdad'),{data:{labels:age.map(r=>r[0]),datasets:[{type:'bar',label:'Compras',data:age.map(r=>num(r[1])),backgroundColor:age.map(r=>String(r[4]).toLowerCase().includes('excluir')?'#be3a2c':'#1B5E20'),borderRadius:4,yAxisID:'y'},{type:'line',label:'CPP ($)',data:age.map(r=>num(r[2])),borderColor:'#3A4C67',pointRadius:5,pointBackgroundColor:'#3A4C67',borderWidth:2,yAxisID:'y2'}]},options:dualOpts()});
-let e=m.emailM, delivered=num(e['Entregados']?.[1]), opened=num(e['Abiertos']?.[1]), clicks=num(e['Hecho clic (únicos)']?.[1]), totalClicks=num(e['Total de clics']?.[1]), hard=num(e['Rebote duro']?.[1]), unsub=num(e['Suscripción cancelada']?.[1]), spam=num(e['Correo no deseado']?.[1]), omitted=num(e['Omitidos']?.[1]);setText('emailP',s.email.title||'Campaña de email');document.getElementById('emailKpis').innerHTML=[['Entregados',delivered,'var(--pg)',''],['Abiertos',opened,'var(--bl)',pct(opened/delivered)+' apertura'],['Clics únicos',clicks,'var(--gr)',pct(clicks/delivered)+' CTR'],['Rebote duro',hard,'var(--rd)',pct(hard/delivered)+' bounce'],['Cancelaciones',unsub,'var(--am)',pct(unsub/delivered)+' unsub']].map(x=>`<div class="emc"><div class="eml">${x[0]}</div><div class="emv" style="color:${x[2]}">${Number(x[1]).toLocaleString('en-US')}</div><div class="note">${x[3]}</div></div>`).join('');let emailKRows=s.emailK.rows.map(r=>[r[0],calcEmailKPI(r[0],{delivered,opened,clicks,totalClicks,hard,unsub,spam,omitted}),r[2],r[3]]);document.getElementById('emailKpiTable').innerHTML=tableHTML(emailKRows,s.emailK.header);document.getElementById('linkTable').innerHTML=tableHTML(s.links.rows,s.links.header);document.getElementById('emailInsights').innerHTML=emailInsights({delivered,opened,clicks,hard,unsub,omitted});charts.email=new Chart(document.getElementById('cEmailFunnel'),{type:'bar',data:{labels:['Entregados','Abiertos','Clics únicos','Rebote duro'],datasets:[{data:[delivered,opened,clicks,hard],backgroundColor:['#3A4C67','#1565C0','#1B5E20','#be3a2c'],borderRadius:6}]},options:chartOpts(false)});
-let high=s.actions.rows.filter(r=>String(r[2]).toLowerCase().includes('alta'));let other=s.actions.rows.filter(r=>!String(r[2]).toLowerCase().includes('alta'));document.getElementById('actionsHigh').innerHTML=actionCards(high);document.getElementById('actionsOther').innerHTML=actionCards(other);renderAI();}
-function calcEmailKPI(name,x){name=String(name).toLowerCase();if(name.includes('apertura'))return pct(x.opened/x.delivered);if(name.includes('ctor'))return pct(x.clicks/x.opened);if(name.includes('clic'))return pct(x.clicks/x.delivered);if(name.includes('rebote'))return pct(x.hard/x.delivered);if(name.includes('baja'))return pct(x.unsub/x.delivered);if(name.includes('spam'))return pct(x.spam/x.delivered);if(name.includes('omit'))return pct(x.omitted/x.delivered);return '—'}
-function emailInsights(x){let out=[];if(x.opened/x.delivered<.10)out.push(['cr','Apertura baja',`La tasa de apertura es ${pct(x.opened/x.delivered)}. Conviene probar asuntos A/B y segmentación.`]);if(x.clicks/x.delivered<.01)out.push(['ca','CTR bajo',`El CTR sobre entregados es ${pct(x.clicks/x.delivered)}. Revisa CTA, oferta y landing.`]);if(x.hard/x.delivered>.015)out.push(['ca','Lista a depurar',`Rebote duro ${pct(x.hard/x.delivered)}. Limpia la base antes del siguiente envío.`]);if(x.unsub/x.delivered<.005)out.push(['cg','Bajas controladas',`Tasa de baja ${pct(x.unsub/x.delivered)}. No hay rechazo fuerte de audiencia.`]);return out.map(a=>`<div class="cl ${a[0]}"><strong>${a[1]}:</strong> ${a[2]}</div>`).join('')||'<p class="note">No hay alertas relevantes en email.</p>'}
-function actionCards(rows){return rows.map(r=>`<div class="cl ${String(r[2]).toLowerCase().includes('alta')?'cr':'ca'}"><strong>${r[0]}</strong><br>${r[1]}<br><span class="note">Prioridad: ${r[2]||'—'} · Fecha: ${r[3]||'—'}</span></div>`).join('')||'<p class="note">Sin acciones en esta prioridad.</p>'}
-function chartOpts(legend=false,moneyAxis=false){return {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:legend,position:'bottom',labels:{font:{size:11},boxWidth:10}},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:10},callback:v=>moneyAxis?'$'+Number(v).toLocaleString('en-US'):v}}}}}
-function stackedOpts(){let o=chartOpts(true,true);o.scales.x.stacked=true;o.scales.y.stacked=true;return o}
-function dualOpts(){return {responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:10}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{font:{size:10}}},y2:{position:'right',grid:{drawOnChartArea:false},ticks:{font:{size:10},callback:v=>'$'+v}}}}}
-function renderAI(){if(!DATA)return;let m=DATA.maps, vt=m.ventasM['Ventas totales']||[], vdia=m.ventasM['Ventas / día promedio']||[], metaRow=Object.entries(m.ventasM).find(([k])=>k.toLowerCase().includes('meta'))?.[1]||[], pgVentas=m.pgM['Ventas período (15-26)']||Object.values(m.pgM)[0]||[], revenue=m.finM['Revenue total']||[], cuotas=m.finM['Cuotas por cobrar']||[], cpp=m.metaM['CPP (costo por compra)']||[], cpi=m.metaM['CPI (costo por install)']||[], e=DATA.maps.emailM;let delivered=num(e['Entregados']?.[1]), opened=num(e['Abiertos']?.[1]), clicks=num(e['Hecho clic (únicos)']?.[1]);document.getElementById('aiBody').innerHTML=`<strong>Resumen ejecutivo:</strong><br>• ${DATA.client} registra <strong>${vt[1]||'—'} ventas</strong> en el período, con promedio de <strong>${vdia[1]||'—'} ventas/día</strong>. Meta reportada: <strong>${metaRow[1]||'—'}</strong>.<br>• El bloque PG muestra <strong>${pgVentas[1]||'—'} ventas</strong> y variación <strong>${pgVentas[3]||'—'}</strong> vs referencia, por lo que debe seguir siendo el foco de optimización.<br>• Revenue actual: <strong>${revenue[1]||'—'}</strong>. Cuotas por cobrar: <strong>${cuotas[1]||'—'}</strong>; revisar vencidas y próximas 2 semanas.<br>• Meta Ads: CPP <strong>${cpp[1]||'—'}</strong> y CPI <strong>${cpi[1]||'—'}</strong>. Escalar segmentos/creativos con menor costo y excluir los señalados como caros.<br>• Email: apertura <strong>${pct(opened/delivered)}</strong> y CTR <strong>${pct(clicks/delivered)}</strong>. La prioridad es mejorar asunto, segmentación y CTA, además de depurar rebotes.`}
-function answerQuick(type){renderAI();let box=document.getElementById('aiBody');let html=box.innerHTML;if(type==='meta'){let vt=DATA.maps.ventasM['Ventas totales']||[], meta=Object.entries(DATA.maps.ventasM).find(([k])=>k.toLowerCase().includes('meta'))?.[1]||[];html=`Meta: ${vt[1]||'—'} ventas actuales vs ${meta[1]||'—'} de objetivo. ${num(meta[1])?`Brecha pendiente: ${Math.max(num(meta[1])-num(vt[1]),0)} ventas.`:'No se encontró meta numérica.'}<br><br>`+html}if(type==='pg'){let r=DATA.maps.pgM['Ventas período (15-26)']||Object.values(DATA.maps.pgM)[0]||[];html=`PG: ${r[1]||'—'} vs ${r[2]||'—'}, variación ${r[3]||'—'}. ${r[4]||''}<br><br>`+html}if(type==='email'){let e=DATA.maps.emailM, delivered=num(e['Entregados']?.[1]), opened=num(e['Abiertos']?.[1]), clicks=num(e['Hecho clic (únicos)']?.[1]);html=`Email: ${delivered.toLocaleString('en-US')} entregados, apertura ${pct(opened/delivered)} y CTR ${pct(clicks/delivered)}. Prioridad: mejorar asunto, segmentación, CTA y depurar rebotes.<br><br>`+html}if(type==='fin'){let r=DATA.maps.finM['Revenue total']||[], c=DATA.maps.finM['Cuotas por cobrar']||[];html=`Financiero: revenue ${r[1]||'—'} (${r[3]||'sin variación reportada'}). Cuotas por cobrar ${c[1]||'—'}: esto debe revisarse por flujo de caja y morosidad.<br><br>`+html}box.innerHTML=html;document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.getElementById('s-ia').classList.add('on');document.querySelectorAll('.tab')[7].classList.add('on')}
+/* ═══════ DATA ═══════════════════════════════════════════════════════ */
+const FLOWS = [
+  {id:"WF-02",emoji:"🛒",priority:1,name:"Carrito Abandonado",story:"La Recuperación",
+   color:"var(--purple)",colorVal:"#7c3aed",colorLight:"var(--purple-light)",
+   channels:["email","whatsapp"],
+   tag1:{text:"PRIORIDAD #1",color:"var(--purple)",bg:"var(--purple-light)"},
+   trigger:"estado_venta = 'Carrito'",
+   desc:"Cuando un usuario agrega un producto al carrito y no compra, el sistema reacciona en menos de una hora. Con la imagen real del producto, el precio exacto y las cuotas calculadas. No es un recordatorio genérico — es el producto que eligió, esperándolo.",
+   sequence:[
+    {day:"Hora +1",type:"email",dot:"#7c3aed",
+     subject:"Tu [producto_carrito] sigue esperándote — [$X] en 4 cuotas",
+     note:"Renderizar carrito_html: imagen real de Amazon/Shein, precio exacto, cuotas en bolívares.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"No compra en 4h → WA: '¿Llegaste al checkout? Te ayudo ahora mismo.' · Si compra: EXIT → WF-04"},
+      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"WA 6h: 'Tu carrito sigue guardado. ¿Tuviste alguna duda con el pago o el envío?'"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA 3h: 'Oye [nombre], dejaste algo aquí — te lo guardo 24h más'"},
+      {icon:"💬",cond:"Respondió",condColor:"#7c3aed",act:"Handoff humano < 2h — Vanessa / equipo atención"}
+     ]},
+    {day:"Día 2",type:"email",dot:"#7c3aed",
+     subject:"¿Tuviste alguna duda con el pago o el envío?",
+     note:"Resolver objeciones reales: seguridad del Pago Móvil, tiempo de envío, cómo funciona el crédito.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA apoyo: '¿Puedo ayudarte a completarlo ahora?'"},
+      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 3 en 48h — urgencia real de precio"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA con subject diferente + resend en horario pico (sáb 10am–2pm)"}
+     ]},
+    {day:"Día 4",type:"email",dot:"#7c3aed",
+     subject:"⚠️ Los precios en Amazon cambian todos los días",
+     note:"Urgencia real: los precios en Amazon fluctúan. No es presión inventada — es un dato verdadero.",
+     branches:[
+      {icon:"🔥",cond:"Clickeó",condColor:"#059669",act:"No compró → WA urgencia: '24h para asegurar este precio'"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA urgencia final + Email 4 D+7"}
+     ]},
+    {day:"Día 7",type:"whatsapp",dot:"#128C7E",
+     subject:"Último mensaje — cerramos tu carrito mañana",
+     note:"Tono honesto, sin presión. 'Si no es el momento, está bien. Aquí seguimos cuando quieras.'",
+     branches:[
+      {icon:"✅",cond:"Compra en cualquier punto",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
+      {icon:"🚪",cond:"7 días sin conversión",condColor:"#6b7280",act:"Limpiar campo carrito → Evergreen (frecuencia según engagement tier)"}
+     ]}
+   ],
+   notes:["Email 1 en < 1h del abandono — nunca de madrugada (posponer a 8am)","Fines de semana = máxima actividad en app. Priorizar sábados 10am–2pm","carrito_html trae imagen real, precio y cuotas ya calculadas — usarla siempre en Email 1"]},
 
-// ── XLSX READER WITH LOCAL FALLBACK ──
-function normalizeRows(rows){
-  rows=(rows||[]).map(r=>Array.isArray(r)?r.slice():[]);
-  // Some formatted Excel files export the whole report starting in column B. Shift left to the first useful column.
-  let candidates=rows.slice(0,8).map(r=>r.findIndex(v=>clean(v))).filter(i=>i>=0);
-  let offset=candidates.length?Math.min(...candidates):0;
-  if(offset>0) rows=rows.map(r=>r.slice(offset));
-  // Trim trailing empty cells but keep internal columns.
-  rows=rows.map(r=>{let last=r.length-1;while(last>=0&&!clean(r[last]))last--;return r.slice(0,last+1)});
-  return rows.filter((r,i)=>i<3||r.some(v=>clean(v))||rows[i+1]?.some(v=>clean(v)));
-}
-async function readExcelFile(file){
-  let ab=await file.arrayBuffer();
-  if(window.XLSX){
-    let wb=XLSX.read(ab,{type:'array'});
-    let ws=wb.Sheets[wb.SheetNames[0]];
-    return normalizeRows(XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:false}));
-  }
-  return normalizeRows(await readXlsxWithoutLibrary(ab));
-}
-function u16(d,o){return d.getUint16(o,true)}
-function u32(d,o){return d.getUint32(o,true)}
-async function inflateRaw(bytes){
-  if(!('DecompressionStream' in window)) throw new Error('Tu navegador no permite descomprimir XLSX sin la librería externa. Conecta internet o usa Chrome/Edge actualizado.');
-  let ds=new DecompressionStream('deflate-raw');
-  let stream=new Blob([bytes]).stream().pipeThrough(ds);
-  return new Uint8Array(await new Response(stream).arrayBuffer());
-}
-async function unzipEntries(ab){
-  let d=new DataView(ab), bytes=new Uint8Array(ab), eocd=-1;
-  for(let i=bytes.length-22;i>=Math.max(0,bytes.length-70000);i--){if(u32(d,i)===0x06054b50){eocd=i;break}}
-  if(eocd<0) throw new Error('No pude abrir el XLSX: estructura ZIP inválida.');
-  let total=u16(d,eocd+10), cdOffset=u32(d,eocd+16), entries={}, dec=new TextDecoder();
-  let ptr=cdOffset;
-  for(let i=0;i<total;i++){
-    if(u32(d,ptr)!==0x02014b50) break;
-    let method=u16(d,ptr+10), csize=u32(d,ptr+20), nlen=u16(d,ptr+28), xlen=u16(d,ptr+30), clen=u16(d,ptr+32), loff=u32(d,ptr+42);
-    let name=dec.decode(bytes.slice(ptr+46,ptr+46+nlen));
-    let lfNameLen=u16(d,loff+26), lfExtraLen=u16(d,loff+28), start=loff+30+lfNameLen+lfExtraLen;
-    let raw=bytes.slice(start,start+csize), data;
-    if(method===0) data=raw; else if(method===8) data=await inflateRaw(raw); else throw new Error('Compresión XLSX no soportada: '+method);
-    entries[name]=dec.decode(data);
-    ptr += 46+nlen+xlen+clen;
-  }
-  return entries;
-}
-async function readXlsxWithoutLibrary(ab){
-  let files=await unzipEntries(ab);
-  let shared=[];
-  if(files['xl/sharedStrings.xml']){
-    let doc=new DOMParser().parseFromString(files['xl/sharedStrings.xml'],'application/xml');
-    shared=[...doc.getElementsByTagName('si')].map(si=>[...si.getElementsByTagName('t')].map(t=>t.textContent||'').join(''));
-  }
-  let sheetName=Object.keys(files).find(k=>/^xl\/worksheets\/sheet\d+\.xml$/.test(k)) || 'xl/worksheets/sheet1.xml';
-  if(!files[sheetName]) throw new Error('No encontré la primera hoja del Excel.');
-  let doc=new DOMParser().parseFromString(files[sheetName],'application/xml');
-  let out=[];
-  function colIndex(ref){let m=String(ref||'A').match(/[A-Z]+/i), s=(m?m[0]:'A').toUpperCase(), n=0;for(let ch of s)n=n*26+ch.charCodeAt(0)-64;return n-1}
-  for(let rowEl of [...doc.getElementsByTagName('row')]){
-    let row=[];
-    for(let c of [...rowEl.getElementsByTagName('c')]){
-      let idx=colIndex(c.getAttribute('r')), t=c.getAttribute('t'), val='';
-      while(row.length<=idx) row.push(null);
-      if(t==='inlineStr') val=c.getElementsByTagName('t')[0]?.textContent || '';
-      else { let v=c.getElementsByTagName('v')[0]?.textContent; val=(v==null?'':(t==='s'?shared[Number(v)]||'':v)); }
-      row[idx]=val;
-    }
-    out.push(row);
-  }
-  return out;
+  {id:"Evergreen",emoji:"♾️",priority:2,name:"El Loop Hogar",story:"El Fondo Siempre Activo",
+   color:"var(--purple)",colorVal:"#7c3aed",colorLight:"var(--purple-light)",
+   channels:["email"],
+   tag1:{text:"BASE DE TODOS",color:"var(--purple)",bg:"var(--purple-light)"},
+   trigger:"Sale de cualquier flujo sin convertir  ·  OR  ·  7+ días sin flujo activo",
+   desc:"El Evergreen es el sistema nervioso de la base. Todo contacto que no está en un flujo específico vive aquí. Rota contenido cada 60–90 días. Y detecta señales en tiempo real para despachar al flujo correcto en el momento correcto.",
+   sequence:[
+    {day:"Email 1 → D+5",type:"email",dot:"#7c3aed",
+     subject:"Esto está trending esta semana en Amazon para Venezuela",
+     note:"Producto real en el rango de credito_disponible. Frecuencia adaptativa: caliente=5d · tibio=7d · frío=12–15d.",
+     branches:[
+      {icon:"🛒",cond:"carrito_abandonado = yes",condColor:"#d97706",act:"EXIT INMEDIATO → WF-02 (interrumpe todo, máxima prioridad)"},
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"Tag 'caliente' → si hay campaña activa, EXIT → flujo post-click"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"Próximo email en 7–15 días — reducir frecuencia un nivel"}
+     ]},
+    {day:"Emails 2–6",type:"email",dot:"#7c3aed",
+     subject:"Bloques A y B rotativos — crédito · niveles · social proof · fechas",
+     note:"Agregar 2–3 emails nuevos por mes. Nunca repetir el mismo ciclo en menos de 60–90 días.",
+     branches:[
+      {icon:"💳",cond:"pagos_iniciales_validados sube",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
+      {icon:"😴",cond:"Sin apertura 45 días",condColor:"#dc2626",act:"EXIT → WF-06 Reactivación (flujo futuro)"},
+      {icon:"🏷️",cond:"Click en campaña masiva",condColor:"#7c3aed",act:"EXIT → WF post-click de campaña"}
+     ]}
+   ],
+   notes:["Contenido Bloque A: trending, crédito disponible, niveles, novedades app","Contenido Bloque B: categorías de producto, social proof, comparación, invitación a referir","El Evergreen no compite con los flujos — los alimenta con señales"]},
+
+  {id:"WF-01A",emoji:"🔓",priority:3,name:"Bienvenida — Registro Incompleto",story:"El Desbloqueo",
+   color:"var(--red)",colorVal:"#dc2626",colorLight:"var(--red-light)",
+   channels:["email","whatsapp"],
+   tag1:{text:"ESTA SEMANA",color:"var(--green)",bg:"var(--green-light)"},
+   trigger:"fecha_registro = hoy  AND  (cedula vacía  OR  telefono vacío  OR  terminos = false)",
+   desc:"45,415 personas tienen credencial de $100 lista y no lo saben porque nunca terminaron de registrarse. Al crear una cuenta solo se pide nombre y correo — la mayoría ni sabe qué campo falta. Este flujo lo resuelve, paso por paso, canal por canal.",
+   sequence:[
+    {day:"Inmediato D0",type:"email",dot:"#dc2626",
+     subject:"[Nombre], tienes $100 listos — solo falta un paso",
+     note:"CTA al paso ESPECÍFICO pendiente (cédula / teléfono / términos) — nunca al login genérico.",
+     branches:[
+      {icon:"✅",cond:"Completó perfil",condColor:"#059669",act:"EXIT → WF-01B Primer Viaje automáticamente"},
+      {icon:"🔥",cond:"Abrió + Clickeó, no completó en 24h",condColor:"#d97706",act:"Email 2: '¿Qué puedes comprar con $100?'"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA D+2: '¿Tuviste algún problema con el registro? Te ayudo en 2 minutos.'"}
+     ]},
+    {day:"Día 2",type:"email",dot:"#dc2626",
+     subject:"¿Qué puedes traer con $100 desde Venezuela? (te sorprende)",
+     note:"3–4 productos reales de Amazon/Shein/Temu. Audífonos $45, ropa Shein $30, artículos de hogar.",
+     branches:[
+      {icon:"✅",cond:"Completó perfil",condColor:"#059669",act:"EXIT → WF-01B"},
+      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"WA D+6: toque humano de Vanessa — '¿Algo no funcionó?'"}
+     ]},
+    {day:"Día 6",type:"whatsapp",dot:"#128C7E",
+     subject:"Hola [nombre], ¿llegaste a completar tu registro? 😊",
+     note:"Mensaje corto, personal, de Vanessa. No automatizado en el tono — tiene que sentirse humano.",
+     branches:[
+      {icon:"✅",cond:"Completa perfil",condColor:"#059669",act:"EXIT → WF-01B Primer Viaje"},
+      {icon:"🚪",cond:"Sin respuesta",condColor:"#6b7280",act:"Evergreen — seguirá recibiendo contenido de valor"}
+     ]}
+   ],
+   notes:["CTA al paso exacto pendiente — no al login general","La app no verifica email al registrarse → limpiar correos inválidos antes del primer envío"]},
+
+  {id:"WF-01B",emoji:"🚀",priority:4,name:"Bienvenida — Sin Primera Compra",story:"El Primer Viaje",
+   color:"var(--yellow)",colorVal:"#d97706",colorLight:"var(--yellow-light)",
+   channels:["email","whatsapp"],
+   tag1:{text:"ESTA SEMANA",color:"var(--green)",bg:"var(--green-light)"},
+   trigger:"Perfil completo  AND  pagos_iniciales_validados = 0",
+   desc:"El usuario tiene todo listo para comprar y no lo ha hecho. Este flujo le muestra qué puede traer, cómo funciona en 3 pasos simples — y al cuarto email revela el sistema de niveles que la mayoría desconoce.",
+   sequence:[
+    {day:"Inmediato D0",type:"email",dot:"#d97706",
+     subject:"Esto es lo que puedes traer con tus $[credito_disponible] 🌎",
+     note:"3 pasos: elegir → pagar en bolívares con Pago Móvil → recibir en casa. Sin tarjeta internacional.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA 24h: '¿Te ayudo a encontrar lo que buscas?'"},
+      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 2 D+2: productos concretos en su rango de crédito"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"Email 2 D+2 con nuevo subject — mismo contenido"}
+     ]},
+    {day:"Día 2",type:"email",dot:"#d97706",
+     subject:"Audífonos $45. Ropa Shein $30. Todo desde Venezuela.",
+     note:"Productos reales en el rango de credito_disponible. Cuotas en bolívares al cambio del día.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA D+3: apoyo para cerrar primera compra"},
+      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email 3 D+5: el sistema de niveles como incentivo"}
+     ]},
+    {day:"Día 5 — el gancho",type:"email",dot:"#d97706",
+     subject:"Algo que la mayoría no sabe de MamaSan — y que cambia todo 👀",
+     note:"Revelar el sistema de niveles por primera vez. Bronce $100 → Plata $300 → Oro $500 → Platino.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA D+6: '¿A qué nivel quieres llegar?'"},
+      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email 4 D+9: último push con 20% off primer envío"}
+     ]},
+    {day:"Día 9 — último push",type:"email",dot:"#d97706",
+     subject:"Tu crédito de $[credito_disponible] sigue activo. 20% off en tu primer envío.",
+     note:"Si aplica el descuento en primer envío. CTA único: ir al carrito.",
+     branches:[
+      {icon:"💳",cond:"pagos_iniciales_validados aumenta",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
+      {icon:"🚪",cond:"Sin compra en 12 días",condColor:"#6b7280",act:"Evergreen — nutrición de largo plazo"}
+     ]}
+   ],
+   notes:["Activado automáticamente cuando WF-01A termina con éxito","El Email 3 (sistema de niveles) es el gancho más poderoso — usarlo bien", "Personalizar Email 2 con productos reales según el credito_disponible del usuario"]},
+
+  {id:"WF-04",emoji:"📈",priority:5,name:"Upsell por Niveles",story:"La Subida",
+   color:"var(--mag)",colorVal:"#9d174d",colorLight:"var(--mag-light)",
+   channels:["email","whatsapp"],
+   tag1:{text:"MES 1",color:"var(--mag)",bg:"var(--mag-light)"},
+   trigger:"pagos_iniciales_validados aumenta (campo nuevo · cualquier compra confirmada)",
+   desc:"Cada compra es el momento de mayor receptividad del usuario. Este flujo lo aprovecha: celebra la compra, muestra en tiempo real cuánto le falta para el siguiente nivel y hace visible el moat del negocio que hoy el 99.9% desconoce.",
+   sequence:[
+    {day:"D+3 post-compra",type:"email",dot:"#9d174d",
+     subject:"🎉 Hiciste tu [N]ª compra. Estás a [X] de [siguiente nivel]",
+     note:"Usar campo calculado 'compras_para_subir_nivel'. Barra de progreso visual. Tono celebratorio.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA 24h: '¿Ya viste cuánto crédito desbloqueas en Plata?'"},
+      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 2 D+10: aspiracional — qué puedes comprar con el siguiente nivel"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"Email 2 D+7 con subject diferente"}
+     ]},
+    {day:"Día +10",type:"email",dot:"#9d174d",
+     subject:"Con $300 en MamaSan, ¿qué traerías? (esto es tuyo si subes a Plata)",
+     note:"Aspiracional concreto: productos reales en el rango del siguiente nivel.",
+     branches:[
+      {icon:"💳",cond:"pagos_iniciales_validados sube de nuevo",condColor:"#059669",act:"REINICIA WF-04 — nueva compra, nuevo ciclo"},
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#d97706",act:"Email 3 D+17: recordatorio de crédito disponible actual"}
+     ]},
+    {day:"Día +17",type:"email",dot:"#9d174d",
+     subject:"Tienes $[credito_disponible] listos ahora mismo 💳",
+     note:"Recordatorio práctico. Enlace directo al catálogo. Un solo CTA.",
+     branches:[
+      {icon:"🔥",cond:"Clickeó",condColor:"#059669",act:"WA apoyo: '¿Qué estás buscando? Te ayudo a encontrarlo.'"},
+      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email D+24: comparación visual de beneficios por nivel (solo si le falta 1 compra para subir)"}
+     ]},
+    {day:"D+24 (solo si falta 1 compra)",type:"whatsapp",dot:"#128C7E",
+     subject:"Una compra más y subes de nivel 🏅",
+     note:"SOLO enviar si campo 'compras_para_subir_nivel' = 1. Si no aplica: skip a Evergreen.",
+     branches:[
+      {icon:"💳",cond:"pagos_iniciales_validados sube",condColor:"#059669",act:"EXIT → WF-04 reinicia con nuevo ciclo"},
+      {icon:"🚪",cond:"Completó secuencia",condColor:"#6b7280",act:"Evergreen. Si pagos >= 2: evaluar WF-03 o WF Referidos"}
+     ]}
+   ],
+   notes:["Trigger: pagos_iniciales_validados — campo nuevo (Alberto lo genera en Supabase)","Si el usuario compra DURANTE el flujo → REINICIA WF-04","Contado no cuenta para subir de nivel — solo compras a crédito con última cuota pagada"]},
+
+  {id:"WF-03",emoji:"🤝",priority:6,name:"Segunda Compra",story:"Bienvenido al Club",
+   color:"var(--wa)",colorVal:"#128C7E",colorLight:"var(--wa-light)",
+   channels:["whatsapp","email"],
+   tag1:{text:"MES 1-2",color:"var(--wa)",bg:"var(--wa-light)"},
+   trigger:"Entrega confirmada de la primera compra (estado_venta → entregado)",
+   desc:"El momento de mayor disposición del cliente es justo después de recibir su primer pedido. La ventana de hábito está abierta y se cierra a los 60 días. WhatsApp lidera este flujo — el canal más directo en Venezuela.",
+   sequence:[
+    {day:"D+1 post entrega",type:"whatsapp",dot:"#128C7E",
+     subject:"¡Llegó tu pedido! ¿Todo bien? 📦",
+     note:"Celebración genuina. Preguntar por la experiencia. Plantar la semilla del siguiente nivel.",
+     branches:[
+      {icon:"💬",cond:"Respondió positivo",condColor:"#059669",act:"'¿Sabías que con [X] compras más llegas a Plata ($300)?' + link a app"},
+      {icon:"😴",cond:"No respondió",condColor:"#d97706",act:"Email D+3: '¿Cómo estuvo tu experiencia?' + CTA segunda compra"}
+     ]},
+    {day:"Día +3",type:"email",dot:"#128C7E",
+     subject:"Ya sabes cómo funciona. ¿Cuál es tu próxima compra?",
+     note:"Fricción reducida: ya conoces el proceso, ya saben dónde vives, ya confías en nosotros.",
+     branches:[
+      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA D+5: apoyo para cerrar segunda compra"},
+      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 2 D+14: incentivo de nivel + progreso"},
+      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA D+7 + Email D+14"}
+     ]},
+    {day:"Día +14",type:"email",dot:"#128C7E",
+     subject:"Te faltan [X] compras para Plata — y $300 disponibles 📊",
+     note:"Barra de progreso. Urgencia real: la ventana de hábito se cierra a los 60 días.",
+     branches:[
+      {icon:"💳",cond:"pagos_iniciales_validados >= 2",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
+      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email 3 D+45: reenganche honesto"}
+     ]},
+    {day:"Día +45",type:"email",dot:"#128C7E",
+     subject:"¿Qué cambió desde tu primera compra? Queremos saber.",
+     note:"Tono honesto, sin presión. Crédito disponible como recordatorio suave.",
+     branches:[
+      {icon:"💬",cond:"Respondió",condColor:"#7c3aed",act:"Handoff humano → entender fricción → mejorar el sistema"},
+      {icon:"🚪",cond:"Sin conversión 60d",condColor:"#6b7280",act:"Evergreen — nutrición de largo plazo"}
+     ]}
+   ],
+   notes:["WhatsApp lidera este flujo — Venezuela usa WA más que email para temas personales","La ventana de hábito se cierra a los 60 días — actuar rápido o perder al cliente"]}
+];
+
+const MATRIX_ROWS = [
+  {action:"Agrega producto al carrito",icon:"🛒",response:"Email con imagen real del producto en < 1h",next:"Si no compra en 24h → WA de apoyo"},
+  {action:"Abre el email pero no hace clic",icon:"👁️",response:"WA de seguimiento 6h después",next:"Email 2 en 24h con ángulo diferente"},
+  {action:"No abre ningún email",icon:"😴",response:"WA rescue en 3h",next:"Email 2 con nuevo subject en día pico"},
+  {action:"Hace clic sin comprar",icon:"🔥",response:"Handoff humano en < 24h",next:"'¿Llegaste al checkout? Te ayudo ahora.'"},
+  {action:"Responde directamente al email",icon:"💬",response:"Handoff humano < 2h siempre",next:"Vanessa / equipo atención al cliente"},
+  {action:"Completa una compra",icon:"✅",response:"Sale del flujo actual inmediatamente",next:"WF-04 Upsell por Niveles se activa"},
+  {action:"45 días sin abrir ningún email",icon:"💤",response:"WF-06 Reactivación se activa",next:"Si no reabre: frecuencia mínima 1/20 días"},
+];
+
+const ROADMAP_PHASES = [
+  {icon:"🔴",phase:"Ahora · Esta semana",color:"#dc2626",
+   items:["WF-01A: 45,415 usuarios con registro incompleto — data lista para enviar","Evergreen activo: hogar para toda la base — soluciona la fuga de 31,384 sin destino","Scorear engagement: 27,656 sin score → dejar de enviar a dormidos hoy","Campaña Día del Padre: urgente — 15 junio en Venezuela","Sunset de flujos legacy (creados con ChatGPT) — Alberto: 'vuélense esa vaina'"]},
+  {icon:"🟡",phase:"Semanas 1–2 · Implementación",color:"#d97706",
+   items:["WF-01B: registrados sin primera compra","WF-04 Upsell con campo pagos_iniciales_validados (Alberto lo genera en Supabase)","AppLevel WA integrado con GHL — ~$35–40/mes · 2–3 días de implementación · Moisés + Yessica","Reconectar Instagram + agregar TikTok a GHL","Mapear sesiones de Supabase para optimizar hora de envío (Moisés — query de actividad)"]},
+  {icon:"🟣",phase:"Mes 1–2 · Escalar",color:"#7c3aed",
+   items:["WF-02 Carrito Abandonado con carrito_html + AppLevel WA (el flujo de mayor ROI del sistema)","WF-03 Segunda Compra con WA como canal líder","WF post-click de campañas masivas (plantilla reutilizable por evento)","A/B testing sistemático de asuntos y CTAs","Bajada de conversaciones de clientes para insights de copy (Alberto — pendiente)"]},
+  {icon:"🟢",phase:"Meses 3–12 · Madurar",color:"#059669",
+   items:["WF-06 Reactivación de inactivos","WF-05 Cobranza con dignidad (cuando el volumen lo justifique)","WF Referidos — semilla en los 121 compradores recurrentes","Modelo RFM(P) en producción — segmentación dinámica por R, F, M y salud de pago","Instagram + TikTok totalmente integrados a GHL"]}
+];
+
+const DATOS = [
+  {n:"D1",label:"Perfil de los compradores recurrentes",color:"#7c3aed",
+   q:"¿Quién es el cliente ideal de MamaSan?",
+   impact:"Primer producto comprado, categoría, ciudad, tiempo entre compra 1 y 2. Semilla para lookalike en Meta/TikTok.",
+   owner:"Alberto — query en Supabase"},
+  {n:"D2",label:"Desglose del estado 'En Proceso'",color:"#d97706",
+   q:"¿Cuántos usuarios están en mora real hoy?",
+   impact:"35% de las ventas figura como 'en proceso'. Necesitamos saber cuánto es ciclo normal de envío vs mora real para configurar WF-05.",
+   owner:"Moisés — tabla pagos Supabase"},
+  {n:"D3",label:"Campo pagos_iniciales_validados",color:"#dc2626",
+   q:"¿Cuál es el trigger correcto para WF-04?",
+   impact:"Count de ventas con pago inicial validado por usuario. Es el criterio que usa el dashboard hoy — necesitamos el campo en GHL.",
+   owner:"Alberto — generar en Supabase · acordado en reunión"},
+  {n:"D4",label:"Estado AppLevel + Instagram/TikTok",color:"#059669",
+   q:"¿Qué canales están completamente activos esta semana?",
+   impact:"AppLevel WA: implementación 2–3 días. Instagram: revisar cuentas conectadas. TikTok: agregar integración.",
+   owner:"Moisés + Yessica — reunión viernes"},
+];
+
+/* ═══════ RENDER ═══════════════════════════════════════════════════════ */
+
+// Flows
+function renderFlows(){
+  const cont = document.getElementById('flows-container');
+  FLOWS.forEach(flow=>{
+    const card = document.createElement('div');
+    card.className='flow-card';
+    card.style.borderColor=`rgba(0,0,0,.1)`;
+
+    const isWA = ch => ch==='whatsapp';
+    const chTags = flow.channels.map(ch=>
+      `<span class="tag" style="background:${isWA(ch)?'#f0fdf4':'#f5f3ff'};color:${isWA(ch)?'#128C7E':'#7c3aed'};border-color:${isWA(ch)?'rgba(18,140,126,.3)':'rgba(124,58,237,.3)'}">
+        ${isWA(ch)?'📱 WhatsApp':'✉️ Email'}
+      </span>`
+    ).join('');
+
+    let seqHtml = '';
+    flow.sequence.forEach((step, si)=>{
+      const isWAStep = step.type==='whatsapp';
+      const chBg = isWAStep?'#f0fdf4':'#f5f3ff';
+      const chColor = isWAStep?'#128C7E':'#7c3aed';
+      const chLabel = isWAStep?'WhatsApp':'Email';
+      let branchesHtml = step.branches.map(b=>`
+        <div class="branch-row">
+          <span class="branch-icon">${b.icon}</span>
+          <div class="branch-right">
+            <div class="branch-cond" style="color:${b.condColor}">${b.cond}</div>
+            <div class="branch-act">${b.act}</div>
+          </div>
+        </div>`).join('');
+
+      seqHtml += `
+        <div class="touch-block">
+          <div class="touch-dot" style="border-color:${step.dot};background:${step.dot}22"></div>
+          <div class="touch-inner">
+            <div class="touch-header">
+              <span class="touch-channel-badge" style="background:${chBg};color:${chColor}">${chLabel}</span>
+              <span class="touch-day">${step.day}</span>
+            </div>
+            <div class="touch-subject">${step.subject}</div>
+            ${step.note?`<div class="touch-note">${step.note}</div>`:''}
+            <div class="branches">${branchesHtml}</div>
+          </div>
+        </div>`;
+    });
+
+    const notesHtml = flow.notes?`
+      <div class="flow-notes" style="border:1px solid var(--border)">
+        <div class="notes-title">Notas de implementación</div>
+        ${flow.notes.map(n=>`<div class="note-line">· ${n}</div>`).join('')}
+      </div>`:'';
+
+    card.innerHTML=`
+      <div class="flow-card-head">
+        <div class="flow-emoji" style="background:${flow.colorLight};border:1px solid ${flow.colorVal}22">${flow.emoji}</div>
+        <div class="flow-meta">
+          <div class="flow-tags">
+            <span class="tag" style="background:${flow.tag1.bg};color:${flow.tag1.color};border-color:${flow.tag1.color}55">${flow.tag1.text}</span>
+            <span class="tag" style="background:#f9fafb;color:var(--mid);border-color:var(--border);font-family:var(--ff-m)">P${flow.priority}</span>
+            ${chTags}
+          </div>
+          <div class="flow-name">${flow.name} <span class="flow-story">${flow.story}</span></div>
+          <div class="flow-desc">${flow.desc}</div>
+          <div class="flow-trigger-row">
+            <span style="font-size:10px;color:var(--mid);font-family:var(--ff-m);text-transform:uppercase;letter-spacing:.08em">Trigger</span>
+            <span class="trigger-pill" style="color:${flow.colorVal}">${flow.trigger}</span>
+          </div>
+        </div>
+        <div class="flow-toggle" id="toggle-${flow.id}">▾</div>
+      </div>
+      <div class="flow-body" id="body-${flow.id}">
+        <div class="sequence-label">Secuencia completa · email + whatsapp · respuesta por acción</div>
+        ${seqHtml}
+        ${notesHtml}
+      </div>`;
+
+    card.querySelector('.flow-card-head').addEventListener('click',()=>{
+      const body = card.querySelector(`#body-${flow.id}`);
+      const tog = card.querySelector(`#toggle-${flow.id}`);
+      const open = body.classList.toggle('open');
+      tog.style.transform = open?'rotate(180deg)':'rotate(0)';
+      card.style.boxShadow = open?'0 6px 28px rgba(0,0,0,.1)':'';
+      card.style.borderColor = open?`${flow.colorVal}40`:'rgba(0,0,0,.1)';
+    });
+
+    cont.appendChild(card);
+  });
 }
 
-document.getElementById('fi').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{document.getElementById('loadChip').textContent='Leyendo...';document.getElementById('loadChip').className='chip warn';let rows=await readExcelFile(f); if(!rows.length) throw new Error('El archivo no contiene filas legibles.'); render(rows,f.name);localStorage.setItem('weeklyDashboardRows',JSON.stringify(rows));localStorage.setItem('weeklyDashboardFile',f.name);document.getElementById('loadStatus').textContent='Actualizado correctamente con '+rows.length+' filas leídas desde '+f.name+'.'}catch(err){console.error(err);document.getElementById('loadChip').textContent='Error';document.getElementById('loadChip').className='chip warn';document.getElementById('loadStatus').textContent='No pude leer el Excel: '+(err.message||err)+'. Verifica que el archivo sea .xlsx y mantenga las secciones del reporte.'}});
-window.addEventListener('DOMContentLoaded',()=>{let saved=localStorage.getItem('weeklyDashboardRows');if(saved){try{render(normalizeRows(JSON.parse(saved)),localStorage.getItem('weeklyDashboardFile')||'reporte guardado')}catch(e){render(normalizeRows(SAMPLE_ROWS))}}else render(normalizeRows(SAMPLE_ROWS))});
+// Matrix
+function renderMatrix(){
+  const cont = document.getElementById('matrix-rows');
+  MATRIX_ROWS.forEach((row,i)=>{
+    const bg = i%2===0?'#fff':'#f9fafb';
+    cont.innerHTML+=`
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;background:${bg};border-top:1px solid var(--border)">
+        <div style="padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:7px">
+          <span style="font-size:16px">${row.icon}</span>
+          <span style="color:var(--dark)">${row.action}</span>
+        </div>
+        <div style="padding:10px 14px;font-size:12.5px;color:var(--dark-mid)">${row.response}</div>
+        <div style="padding:10px 14px;font-size:12.5px;color:var(--dark-mid)">${row.next}</div>
+      </div>`;
+  });
+}
+
+// Roadmap
+function renderRoadmap(){
+  const cont = document.getElementById('roadmap-container');
+  ROADMAP_PHASES.forEach(phase=>{
+    cont.innerHTML+=`
+      <div class="phase-row">
+        <div class="phase-dot" style="border-color:${phase.color};color:${phase.color}">${phase.icon}</div>
+        <div class="phase-body">
+          <div class="phase-header">
+            <span class="phase-title">${phase.phase}</span>
+          </div>
+          ${phase.items.map(it=>`<div class="phase-item">${it}</div>`).join('')}
+        </div>
+      </div>`;
+  });
+}
+
+// Datos
+function renderDatos(){
+  const cont = document.getElementById('datos-container');
+  DATOS.forEach(d=>{
+    cont.innerHTML+=`
+      <div style="padding:14px;border-radius:10px;background:var(--bg);border:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-family:var(--ff-m);font-size:10px;font-weight:700;color:${d.color};background:${d.color}15;padding:2px 7px;border-radius:10px">${d.n}</span>
+          <span style="font-size:12px;font-weight:600;color:var(--dark)">${d.label}</span>
+        </div>
+        <div style="font-size:11.5px;font-weight:600;color:var(--dark-mid);margin-bottom:4px;font-style:italic">${d.q}</div>
+        <div style="font-size:11.5px;color:var(--mid);line-height:1.6;margin-bottom:6px">${d.impact}</div>
+        <div style="font-size:10.5px;color:${d.color};font-family:var(--ff-m)">→ ${d.owner}</div>
+      </div>`;
+  });
+}
+
+renderFlows();
+renderMatrix();
+renderRoadmap();
+renderDatos();
 </script>
 </body>
 </html>
