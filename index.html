@@ -1,840 +1,1843 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MamaSan — Sistema de Email + WhatsApp · Predictive Growth</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAMASAN · Pilares de Contenido</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET + VARIABLES ─────────────────────────────────────────── */
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --purple:#7c3aed; --purple-mid:#ede9fe; --purple-light:#f5f3ff;
-  --mag:#9d174d; --mag-light:#fdf2f8;
-  --yellow:#d97706; --yellow-light:#fef9ec;
-  --green:#059669; --green-light:#ecfdf5;
-  --red:#dc2626; --red-light:#fef2f2;
-  --wa:#128C7E; --wa-light:#f0fdf4;
-  --dark:#111827; --dark-mid:#374151; --mid:#6b7280; --light-mid:#9ca3af;
-  --bg:#ffffff; --bg-alt:#f9fafb; --bg-accent:#f5f3ff;
-  --border:#e5e7eb; --border-dark:#d1d5db;
-  --ff-h:'Bricolage Grotesque',sans-serif;
-  --ff-b:'Plus Jakarta Sans',sans-serif;
-  --ff-m:'Space Mono',monospace;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--dark);font-family:var(--ff-b);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  :root {
+    --bg-cream: #F4EFE6;
+    --bg-cream-soft: #EBE4D4;
+    --bg-navy: #0E1B2C;
+    --bg-navy-soft: #16273F;
+    --text-navy: #0E1B2C;
+    --text-cream: #F4EFE6;
+    --text-gray: #7A6F62;
+    --text-gray-light: #B5AEA3;
+    --accent-orange: #E85A3D;
+    --accent-yellow: #F4B055;
+    --accent-teal: #2A8B85;
+    --line-cream: #E5DFD2;
+    --line-navy: #23344C;
+  }
 
-/* ─── STICKY HEADER ─────────────────────────────────────────────── */
-header{
-  position:sticky;top:0;z-index:100;
-  background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  padding:0 32px;height:56px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.header-brands{display:flex;align-items:center;gap:12px}
-.brand-ms{font-family:var(--ff-h);font-weight:800;font-size:15px;color:var(--purple);letter-spacing:-.01em}
-.brand-sep{width:1px;height:18px;background:var(--border-dark)}
-.brand-pg{font-family:var(--ff-h);font-weight:700;font-size:13px;color:var(--yellow)}
-.header-date{font-family:var(--ff-m);font-size:11px;color:var(--mid)}
-.header-nav{display:flex;gap:20px}
-.header-nav a{font-size:12px;color:var(--mid);text-decoration:none;font-weight:500;transition:color .2s}
-.header-nav a:hover{color:var(--purple)}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
-/* ─── LAYOUT HELPERS ─────────────────────────────────────────────── */
-.container{max-width:860px;margin:0 auto;padding:0 32px}
-.section{padding:72px 0;border-bottom:1px solid var(--border)}
-.section:last-child{border:none}
-.label{font-family:var(--ff-m);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
-.section-h{font-family:var(--ff-h);font-weight:800;font-size:32px;line-height:1.15;letter-spacing:-.02em;margin-bottom:12px}
-.section-sub{font-size:15px;color:var(--dark-mid);line-height:1.75;max-width:600px;margin-bottom:36px}
-.tag{display:inline-flex;align-items:center;gap:4px;font-family:var(--ff-m);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg-cream);
+    color: var(--text-navy);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
 
-/* ─── COVER ─────────────────────────────────────────────────────── */
-#cover{padding:80px 0 64px;background:var(--bg);border-bottom:1px solid var(--border)}
-.cover-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px}
-.cover-h1{font-family:var(--ff-h);font-weight:800;font-size:clamp(34px,5vw,54px);line-height:1.05;letter-spacing:-.03em;margin-bottom:20px}
-.cover-h1 em{font-style:normal;background:linear-gradient(135deg,var(--purple),var(--mag));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.cover-p{font-size:16px;color:var(--dark-mid);line-height:1.75;max-width:560px;margin-bottom:40px}
-.cover-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:640px}
-.pillar{padding:18px 20px;border-radius:12px;border:1px solid var(--border)}
-.pillar-n{font-family:var(--ff-h);font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
-.pillar-l{font-size:12px;color:var(--mid)}
-.pillar-s{font-size:11px;color:var(--mid);margin-top:2px;font-style:italic}
+  /* ============ BASE ============ */
+  .display {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+    font-weight: 400;
+  }
 
-/* ─── THE MAP ─────────────────────────────────────────────────────── */
-#mapa{background:var(--bg-alt)}
-.map-wrapper{overflow-x:auto;padding-bottom:12px}
-.map-track{display:flex;align-items:stretch;gap:0;min-width:700px;position:relative}
-.map-column{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
-.map-col-label{font-family:var(--ff-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--light-mid);text-align:center;margin-bottom:14px;height:24px;display:flex;align-items:center}
-.map-node{
-  width:100%;max-width:130px;padding:12px 14px;border-radius:12px;border:2px solid;
-  text-align:center;cursor:pointer;transition:all .25s;position:relative;
-  background:var(--bg);
-}
-.map-node:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-.map-node-icon{font-size:22px;display:block;margin-bottom:4px}
-.map-node-name{font-family:var(--ff-h);font-size:11px;font-weight:700;line-height:1.3}
-.map-node-count{font-family:var(--ff-m);font-size:10px;margin-top:3px}
-.map-node-flow{font-size:10px;margin-top:5px;padding:2px 7px;border-radius:10px;display:inline-block;font-weight:600}
-.map-connector{display:flex;align-items:center;justify-content:center;width:36px;flex-shrink:0;margin-top:48px}
-.map-arrow{color:var(--border-dark);font-size:18px}
-.map-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid)}
-.legend-dot{width:10px;height:10px;border-radius:50%}
+  section {
+    padding: 120px 80px;
+    position: relative;
+  }
 
-/* ─── FLOWS ─────────────────────────────────────────────────────── */
-.flow-card{border:1px solid var(--border);border-radius:16px;margin-bottom:12px;overflow:hidden;transition:box-shadow .25s}
-.flow-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
-.flow-card-head{padding:20px 24px;cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:16px}
-.flow-card-head:hover .flow-toggle{background:var(--purple-light)}
-.flow-emoji{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.flow-meta{flex:1}
-.flow-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.flow-name{font-family:var(--ff-h);font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
-.flow-story{font-size:13px;color:var(--mid);font-style:italic;margin-top:2px}
-.flow-desc{font-size:13px;color:var(--dark-mid);line-height:1.65;margin-top:8px}
-.flow-trigger-row{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.trigger-pill{padding:5px 12px;border-radius:8px;background:var(--bg-alt);border:1px solid var(--border);font-family:var(--ff-m);font-size:11px;color:var(--dark);font-weight:700}
-.flow-toggle{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:4px;transition:all .25s;color:var(--mid)}
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 80px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line-cream);
+  }
 
-/* Flow body */
-.flow-body{display:none;border-top:2px solid var(--border);padding:24px;background:var(--bg-alt)}
-.flow-body.open{display:block}
-.sequence-label{font-family:var(--ff-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:16px}
+  .section-header.dark {
+    border-bottom-color: var(--line-navy);
+  }
 
-/* Touch block */
-.touch-block{position:relative;margin-bottom:16px;padding-left:20px}
-.touch-block::before{content:'';position:absolute;left:7px;top:40px;bottom:-10px;width:1px;background:var(--border-dark)}
-.touch-block:last-child::before{display:none}
-.touch-dot{position:absolute;left:0;top:12px;width:14px;height:14px;border-radius:50%;border:2px solid;background:var(--bg)}
-.touch-inner{padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg)}
-.touch-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.touch-channel-badge{padding:2px 8px;border-radius:20px;font-family:var(--ff-m);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.touch-day{font-family:var(--ff-m);font-size:10px;color:var(--mid)}
-.touch-subject{font-family:var(--ff-h);font-size:14px;font-weight:700;color:var(--dark);margin-bottom:4px;line-height:1.3}
-.touch-note{font-size:11.5px;color:var(--mid);font-style:italic;margin-bottom:10px;line-height:1.5;padding:6px 10px;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--border-dark)}
+  .section-number {
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    color: var(--text-gray);
+  }
 
-/* Branches */
-.branches{display:flex;flex-direction:column;gap:0;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
-.branch-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--bg)}
-.branch-row:last-child{border:none}
-.branch-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-.branch-right{flex:1}
-.branch-cond{font-size:11px;font-weight:700;line-height:1.3}
-.branch-act{font-size:11.5px;color:var(--dark-mid);line-height:1.5;margin-top:2px}
+  .section-tag {
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-orange);
+  }
 
-/* Notes */
-.flow-notes{margin-top:14px;padding:14px 16px;border-radius:10px;background:var(--bg)}
-.notes-title{font-family:var(--ff-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
-.note-line{font-size:12px;color:var(--dark-mid);padding:2px 0;line-height:1.6}
+  .eyebrow {
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-orange);
+  }
 
-/* ─── ORQUESTACIÓN ─────────────────────────────────────────────── */
-.channel-card{padding:22px;border-radius:14px;border:1px solid var(--border)}
-.channel-title{font-family:var(--ff-h);font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.rule-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
-.rule-item:last-child{border:none}
-.rule-mark{flex-shrink:0;font-size:14px;margin-top:1px}
+  .big-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 7vw, 110px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
 
-/* ─── ROADMAP ─────────────────────────────────────────────────── */
-.phase-row{display:flex;gap:0;position:relative}
-.phase-row::before{content:'';position:absolute;left:19px;top:38px;bottom:0;width:2px;background:var(--border)}
-.phase-row:last-child::before{display:none}
-.phase-dot{width:38px;height:38px;border-radius:50%;border:2px solid;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;z-index:1;margin-top:4px}
-.phase-body{padding:4px 0 28px 20px;flex:1}
-.phase-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.phase-title{font-family:var(--ff-h);font-size:16px;font-weight:800}
-.phase-when{font-family:var(--ff-m);font-size:10px;color:var(--mid)}
-.phase-item{font-size:13px;color:var(--dark-mid);padding:3px 0;line-height:1.6}
-.phase-item::before{content:'·  '}
+  .deck-sub {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--text-gray);
+    max-width: 700px;
+    line-height: 1.4;
+  }
 
-/* ─── FOOTER ─────────────────────────────────────────────────── */
-footer{padding:40px 32px;background:var(--dark);color:#e5e7eb}
-.footer-inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.footer-brands{display:flex;align-items:center;gap:10px}
-.footer-ms{font-family:var(--ff-h);font-weight:800;color:#a78bfa;font-size:15px}
-.footer-pg{font-family:var(--ff-h);font-weight:700;color:#fbbf24;font-size:13px}
-.footer-right{font-size:12px;color:#6b7280;text-align:right}
+  /* ============ HERO / PORTADA ============ */
+  .hero {
+    background: var(--bg-navy);
+    color: var(--text-cream);
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 60px;
+  }
 
-/* ─── UTILS ─────────────────────────────────────────────────── */
-@media(max-width:640px){
-  .container{padding:0 20px}
-  .section{padding:52px 0}
-  .section-h{font-size:24px}
-  .grid-2,.grid-4,.cover-pillars{grid-template-columns:1fr}
-  .header-nav{display:none}
-}
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-gray-light);
+  }
+
+  .hero-title-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    border-bottom: 1px solid var(--line-navy);
+    padding-bottom: 60px;
+  }
+
+  .hero-eyebrow {
+    color: var(--accent-orange);
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .hero-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(72px, 8.5vw, 140px);
+    line-height: 0.88;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-title .italic {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--accent-yellow);
+    text-transform: none;
+    font-weight: 600;
+  }
+
+  .hero-intro {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.35;
+    color: var(--text-gray-light);
+    align-self: end;
+    padding-bottom: 16px;
+  }
+
+  .hero-intro strong {
+    color: var(--text-cream);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  /* Lista de secciones en hero */
+  .hero-sections {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--line-navy);
+    border: 1px solid var(--line-navy);
+  }
+
+  .hero-section-card {
+    background: var(--bg-navy);
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 220px;
+    transition: background 0.3s;
+  }
+
+  .hero-section-card:hover {
+    background: var(--bg-navy-soft);
+  }
+
+  .hsc-num {
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    color: var(--accent-yellow);
+    line-height: 1;
+  }
+
+  .hsc-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 17px;
+    text-transform: uppercase;
+    color: var(--text-cream);
+    line-height: 1.05;
+    margin-top: auto;
+  }
+
+  .hsc-desc {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-gray-light);
+    line-height: 1.4;
+  }
+
+  .hero-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: var(--text-gray-light);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-navy);
+  }
+
+  /* ============ CONTEXTO ============ */
+  .contexto { background: var(--bg-cream); }
+
+  .contexto-intro {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.2;
+    max-width: 900px;
+    margin-bottom: 100px;
+    color: var(--text-navy);
+  }
+
+  .contexto-intro strong {
+    color: var(--accent-orange);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .contexto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .contexto-card {
+    background: var(--bg-navy);
+    color: var(--text-cream);
+    padding: 48px 40px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contexto-card .label {
+    color: var(--accent-yellow);
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.25em;
+    margin-bottom: 32px;
+  }
+
+  .contexto-card h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .contexto-card p {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--text-gray-light);
+    margin-top: auto;
+  }
+
+  /* ============ INSIGHTS ============ */
+  .insights { background: var(--bg-cream); }
+
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--text-navy);
+    border-left: 1px solid var(--text-navy);
+  }
+
+  .insight {
+    border-right: 1px solid var(--text-navy);
+    border-bottom: 1px solid var(--text-navy);
+    padding: 60px 48px;
+    background: var(--bg-cream);
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s;
+  }
+
+  .insight:hover { background: var(--bg-cream-soft); }
+
+  .insight-num {
+    font-family: 'Anton', sans-serif;
+    font-size: 80px;
+    color: var(--accent-orange);
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+
+  .insight h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .insight p {
+    font-family: 'Newsreader', serif;
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--text-gray);
+    margin-bottom: 24px;
+  }
+
+  .insight .application {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line-cream);
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-navy);
+    line-height: 1.5;
+  }
+
+  .insight .application strong {
+    color: var(--accent-teal);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 11px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* ============ MARCAS ============ */
+  .marcas {
+    background: var(--bg-navy);
+    color: var(--text-cream);
+  }
+
+  .marcas-intro {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--text-gray-light);
+    max-width: 760px;
+    margin-bottom: 80px;
+  }
+
+  .marcas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .marca-card {
+    background: var(--bg-navy-soft);
+    display: grid;
+    grid-template-rows: 240px auto;
+    overflow: hidden;
+  }
+
+  .marca-image {
+    background: linear-gradient(135deg, #1d3050 0%, #16273f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 4px solid var(--accent-yellow);
+  }
+
+  .marca-image .placeholder {
+    text-align: center;
+    color: var(--text-gray-light);
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .marca-image .placeholder strong {
+    display: block;
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.05em;
+    color: var(--accent-yellow);
+    margin-bottom: 8px;
+  }
+
+  .marca-content { padding: 32px 40px 40px; }
+
+  .marca-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--text-cream);
+  }
+
+  .marca-camp {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--accent-yellow);
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .marca-why {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-gray-light);
+    margin-bottom: 16px;
+  }
+
+  .marca-takeaway {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-navy);
+  }
+
+  /* ============ PLATAFORMAS ============ */
+  .plataformas { background: var(--bg-cream); }
+
+  .plat-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    margin-bottom: 100px;
+  }
+
+  .plat-stat {
+    border-top: 4px solid var(--text-navy);
+    padding-top: 24px;
+  }
+
+  .plat-stat.primary { border-top-color: var(--accent-orange); }
+  .plat-stat.secondary { border-top-color: var(--accent-teal); }
+
+  .plat-stat .name {
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .plat-stat .pct {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 5vw, 72px);
+    line-height: 1;
+    color: var(--text-navy);
+    margin-bottom: 12px;
+  }
+
+  .plat-stat.primary .pct { color: var(--accent-orange); }
+  .plat-stat.secondary .pct { color: var(--accent-teal); }
+
+  .plat-stat .desc {
+    font-family: 'Newsreader', serif;
+    font-size: 14px;
+    color: var(--text-gray);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .plat-rec {
+    background: var(--text-navy);
+    color: var(--text-cream);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .plat-rec-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.25em;
+    color: var(--accent-yellow);
+    margin-bottom: 16px;
+  }
+
+  .plat-rec h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .plat-rec-body {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-gray-light);
+  }
+
+  .plat-rec-body strong {
+    color: var(--text-cream);
+    font-weight: 600;
+  }
+
+  /* ============ AMBITION ============ */
+  .ambition {
+    background: var(--bg-navy);
+    color: var(--text-cream);
+    padding: 160px 80px;
+  }
+
+  .ambition-statement {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(72px, 10vw, 180px);
+    line-height: 0.88;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 60px 0 100px;
+  }
+
+  .ambition-statement .italic {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    text-transform: none;
+    color: var(--accent-yellow);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .ambition-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-navy);
+  }
+
+  .ambition-word {
+    padding: 48px 32px 0 0;
+    border-right: 1px solid var(--line-navy);
+  }
+
+  .ambition-word:last-child {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .ambition-word .word {
+    font-family: 'Anton', sans-serif;
+    font-size: 80px;
+    color: var(--accent-yellow);
+    line-height: 1;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .ambition-word p {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text-gray-light);
+  }
+
+  .ambition-word p strong {
+    color: var(--text-cream);
+    font-weight: 600;
+  }
+
+  /* ============ PILARES TABLE ============ */
+  .pilares {
+    background: var(--bg-cream);
+    padding: 120px 60px;
+  }
+
+  .pilares-intro {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--text-gray);
+    max-width: 800px;
+    margin-bottom: 80px;
+  }
+
+  .pilares-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 8px 8px;
+  }
+
+  .pilares-table th,
+  .pilares-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 18px 20px;
+    background: var(--bg-cream);
+  }
+
+  .row-label {
+    background: var(--accent-yellow) !important;
+    font-family: 'Anton', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    width: 130px;
+    color: var(--text-navy);
+    border-radius: 4px;
+    text-align: center;
+    vertical-align: middle !important;
+  }
+
+  .pilar-header {
+    background: var(--bg-navy) !important;
+    color: var(--text-cream);
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-align: center !important;
+    border-radius: 4px;
+    padding: 28px 16px !important;
+  }
+
+  .pilar-header .num {
+    display: block;
+    font-size: 14px;
+    color: var(--accent-yellow);
+    letter-spacing: 0.3em;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+
+  .pilar-ambition {
+    background: var(--text-navy) !important;
+    color: var(--text-cream);
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    text-align: center !important;
+    text-transform: uppercase;
+    padding: 24px !important;
+    letter-spacing: 0.02em;
+    border-radius: 4px;
+  }
+
+  .cell {
+    background: white !important;
+    border-radius: 4px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--text-navy);
+  }
+
+  .cell.quote {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--text-gray);
+  }
+
+  .cell.pillar-phrase {
+    background: var(--accent-yellow) !important;
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 18px;
+    text-align: center;
+    color: var(--text-navy);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    vertical-align: middle !important;
+    padding: 24px 12px !important;
+  }
+
+  .cell strong {
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  .channels-row .cell {
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .control-bar {
+    background: linear-gradient(90deg, var(--accent-teal) 0%, var(--accent-teal) 25%, var(--accent-yellow) 50%, var(--accent-orange) 75%, var(--accent-orange) 100%);
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    color: var(--text-navy);
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+  }
+
+  /* ============ DEEP DIVES (4 pilares) ============ */
+  .dd {
+    padding: 120px 80px;
+  }
+
+  .dd.light { background: var(--bg-cream); color: var(--text-navy); }
+  .dd.dark { background: var(--bg-navy); color: var(--text-cream); }
+
+  .dd-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 60px;
+    align-items: baseline;
+    margin-bottom: 24px;
+  }
+
+  .dd-pilar-num {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(80px, 10vw, 160px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+  }
+
+  .dd.light .dd-pilar-num.orange { color: var(--accent-orange); }
+  .dd.light .dd-pilar-num.yellow { color: var(--accent-yellow); }
+  .dd.dark .dd-pilar-num.teal { color: var(--accent-teal); }
+  .dd.dark .dd-pilar-num.cream { color: var(--accent-orange); }
+
+  .dd-pilar-meta {
+    padding-top: 30px;
+  }
+
+  .dd-pilar-eyebrow {
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .dd.light .dd-pilar-eyebrow { color: var(--text-gray); }
+  .dd.dark .dd-pilar-eyebrow { color: var(--text-gray-light); }
+
+  .dd-pilar-fase {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(32px, 4vw, 56px);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .dd-pilar-phrase {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 7vw, 110px);
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin: 32px 0 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .dd.light .dd-pilar-phrase .accent { color: var(--accent-orange); }
+  .dd.dark .dd-pilar-phrase .accent { color: var(--accent-yellow); }
+
+  .dd-pilar-phrase .italic {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: none;
+  }
+
+  .dd-obj {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.35;
+    max-width: 800px;
+    margin-bottom: 80px;
+  }
+
+  .dd.light .dd-obj { color: var(--text-gray); }
+  .dd.dark .dd-obj { color: var(--text-gray-light); }
+
+  .dd-meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 60px;
+    padding: 32px 0;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+  }
+
+  .dd.light .dd-meta-row { border-color: var(--line-cream); }
+  .dd.dark .dd-meta-row { border-color: var(--line-navy); }
+
+  .dd-meta-item .label {
+    font-family: 'Anton', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .dd.light .dd-meta-item .label { color: var(--accent-orange); }
+  .dd.dark .dd-meta-item .label { color: var(--accent-yellow); }
+
+  .dd-meta-item .text {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .dd-formats-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .dd.light .dd-formats-label { color: var(--accent-orange); }
+  .dd.dark .dd-formats-label { color: var(--accent-yellow); }
+
+  .dd-formats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .dd-format {
+    padding: 32px 24px;
+    border-top: 3px solid;
+    transition: transform 0.3s;
+  }
+
+  .dd.light .dd-format {
+    background: white;
+    border-top-color: var(--accent-orange);
+  }
+
+  .dd.dark .dd-format {
+    background: var(--bg-navy-soft);
+    border-top-color: var(--accent-yellow);
+  }
+
+  .dd-format:hover { transform: translateY(-4px); }
+
+  .dd-format .fnum {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+
+  .dd.light .dd-format .fnum { color: var(--accent-orange); }
+  .dd.dark .dd-format .fnum { color: var(--accent-yellow); }
+
+  .dd-format h5 {
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .dd-format .hook {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+
+  .dd.light .dd-format .hook { color: var(--text-gray); }
+  .dd.dark .dd-format .hook { color: var(--text-gray-light); }
+
+  .dd-format .desc {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .dd.light .dd-format .desc { color: var(--text-navy); }
+  .dd.dark .dd-format .desc { color: var(--text-gray-light); }
+
+  .dd-format .hook-label {
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .dd.light .dd-format .hook-label { color: var(--accent-orange); }
+  .dd.dark .dd-format .hook-label { color: var(--accent-yellow); }
+
+  /* ============ 10 MANDAMIENTOS ============ */
+  .mandamientos {
+    background: var(--bg-navy);
+    color: var(--text-cream);
+    padding: 120px 80px;
+  }
+
+  .mandamientos .section-header { border-bottom-color: var(--line-navy); }
+
+  .mand-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(72px, 9vw, 140px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .mand-title .italic {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--accent-yellow);
+    text-transform: none;
+    font-weight: 600;
+  }
+
+  .mand-sub {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--text-gray-light);
+    max-width: 760px;
+    margin-bottom: 80px;
+  }
+
+  .mand-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line-navy);
+    border-left: 1px solid var(--line-navy);
+  }
+
+  .mand-item {
+    padding: 40px 36px;
+    border-right: 1px solid var(--line-navy);
+    border-bottom: 1px solid var(--line-navy);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 20px;
+    align-items: start;
+    transition: background 0.3s;
+  }
+
+  .mand-item:hover { background: var(--bg-navy-soft); }
+
+  .mand-num {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    line-height: 0.9;
+    color: var(--accent-yellow);
+  }
+
+  .mand-text h4 {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    line-height: 1.05;
+    color: var(--text-cream);
+  }
+
+  .mand-text p {
+    font-family: 'Newsreader', serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text-gray-light);
+  }
+
+  /* ============ CLOSING ============ */
+  .closing {
+    background: var(--bg-cream);
+    padding: 160px 80px;
+    text-align: center;
+  }
+
+  .closing h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 7vw, 120px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .closing h2 .italic {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--accent-orange);
+    text-transform: none;
+    font-weight: 600;
+  }
+
+  .closing p {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--text-gray);
+    max-width: 700px;
+    margin: 0 auto 60px;
+    line-height: 1.4;
+  }
+
+  .closing-footer {
+    border-top: 1px solid var(--line-cream);
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-gray);
+    font-family: 'Manrope', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1100px) {
+    .hero-sections { grid-template-columns: repeat(4, 1fr); }
+    .dd-formats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 900px) {
+    section, .dd, .mandamientos { padding: 80px 32px; }
+    .hero { padding: 40px 32px; }
+    .hero-title-row { grid-template-columns: 1fr; gap: 32px; }
+    .hero-sections { grid-template-columns: repeat(2, 1fr); }
+    .contexto-grid, .insights-grid, .marcas-grid { grid-template-columns: 1fr; }
+    .plat-stats { grid-template-columns: repeat(2, 1fr); }
+    .plat-rec { grid-template-columns: 1fr; }
+    .ambition-breakdown { grid-template-columns: 1fr; }
+    .ambition-word { border-right: none; border-bottom: 1px solid var(--line-navy); padding: 32px 0; }
+    .dd-header { grid-template-columns: 1fr; gap: 24px; }
+    .dd-meta-row { grid-template-columns: 1fr; }
+    .dd-formats { grid-template-columns: 1fr; }
+    .mand-grid { grid-template-columns: 1fr; }
+    .pilares-table { font-size: 11px; }
+    .pilares-table th, .pilares-table td { padding: 10px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ══════ HEADER ══════ -->
-<header>
-  <div class="header-brands">
-    <span class="brand-ms">MamaSan</span>
-    <div class="brand-sep"></div>
-    <span class="brand-pg">Predictive Growth</span>
+<!-- ============ HERO / PORTADA ============ -->
+<section class="hero">
+  <div class="hero-meta">
+    <span>MAMASAN × PG</span>
+    <span>Pilares de Contenido · Documento de Trabajo</span>
+    <span>Junio 2026</span>
   </div>
-  <nav class="header-nav">
-    <a href="#mapa">El Mapa</a>
-    <a href="#flujos">Los Flujos</a>
-    <a href="#orquestacion">Orquestación</a>
-    <a href="#norte">El Norte</a>
-  </nav>
-  <span class="header-date">Mayo 2026</span>
-</header>
 
-<!-- ══════ COVER ══════ -->
-<section id="cover">
-  <div class="container">
-    <div class="cover-eyebrow">
-      <span class="tag" style="color:var(--purple);border-color:rgba(124,58,237,.3);background:var(--purple-light)">Sistema de CRM Lifecycle</span>
-      <span class="tag" style="color:var(--yellow);border-color:rgba(217,119,6,.25);background:var(--yellow-light)">Email + WhatsApp</span>
+  <div class="hero-title-row">
+    <div>
+      <div class="hero-eyebrow">Agenda de Hoy</div>
+      <h1 class="hero-title">LO QUE<br>VEREMOS<br><span class="italic">hoy.</span></h1>
     </div>
-    <h1 class="cover-h1">Cada usuario está en<br>un estado exacto.<br><em>El sistema responde.</em></h1>
-    <p class="cover-p">MamaSan tiene 47,878 contactos y datos en tiempo real. Este documento convierte esa infraestructura en un sistema vivo: un mecanismo que detecta dónde está cada usuario, qué acaba de pasar, y ejecuta la comunicación correcta — sin intervención manual.</p>
-
-    <div class="cover-pillars">
-      <div class="pillar" style="border-color:rgba(124,58,237,.25);background:var(--purple-light)">
-        <div class="pillar-n" style="color:var(--purple)">6</div>
-        <div class="pillar-l" style="color:var(--purple)">Flujos activos</div>
-        <div class="pillar-s">cada uno con su trabajo único</div>
-      </div>
-      <div class="pillar" style="border-color:rgba(18,140,126,.25);background:var(--wa-light)">
-        <div class="pillar-n" style="color:var(--wa)">2</div>
-        <div class="pillar-l" style="color:var(--wa)">Canales orquestados</div>
-        <div class="pillar-s">email + WhatsApp como uno solo</div>
-      </div>
-      <div class="pillar" style="border-color:rgba(217,119,6,.25);background:var(--yellow-light)">
-        <div class="pillar-n" style="color:var(--yellow)">0</div>
-        <div class="pillar-l" style="color:var(--yellow)">Mensajes genéricos</div>
-        <div class="pillar-s">todo activado por datos reales</div>
-      </div>
-    </div>
-
-        <p style="margin-top:16px;font-size:13px;color:var(--dark);line-height:1.7;max-width:560px;padding:14px 18px;border-radius:10px;background:#fef9ec;border-left:3px solid var(--yellow)">
-      <strong style="color:var(--yellow)">📈 El negocio está creciendo rápido.</strong> Solo en mayo 2026 se registraron <strong>15,266 nuevos usuarios</strong>. Casi todos entran al estado "bloqueado". Cada semana que WF-01A no está activo, ese número crece.
-    </p>
-    <p style="margin-top:16px;font-size:13px;color:var(--mid);line-height:1.7;max-width:520px;padding:14px 18px;border-radius:10px;background:var(--bg-alt);border-left:3px solid var(--purple)">
-      <strong style="color:var(--dark)">La infraestructura ya está activa.</strong> Supabase es la fuente de verdad. n8n sincroniza en tiempo real. GHL ejecuta los flujos. AppLevel orquesta WhatsApp. El trabajo ahora es encender la inteligencia encima de todo esto.
+    <p class="hero-intro">
+      Siete estaciones para construir la voz orgánica de Mamasan. <strong>Del venezolano al algoritmo.</strong> Del contexto a los pilares ejecutables.
     </p>
   </div>
+
+  <div class="hero-sections">
+    <div class="hero-section-card">
+      <div class="hsc-num">01</div>
+      <div class="hsc-desc">Contexto venezolano. Quién es, cómo piensa.</div>
+      <div class="hsc-title">El venezolano hoy</div>
+    </div>
+    <div class="hero-section-card">
+      <div class="hsc-num">02</div>
+      <div class="hsc-desc">Cuatro insights culturales para abrir conversación.</div>
+      <div class="hsc-title">Formas de conectar</div>
+    </div>
+    <div class="hero-section-card">
+      <div class="hsc-num">03</div>
+      <div class="hsc-desc">Polar, Santa Teresa, Digitel, Pepsi. Cómo lo hacen.</div>
+      <div class="hsc-title">Marcas referencia</div>
+    </div>
+    <div class="hero-section-card">
+      <div class="hsc-num">04</div>
+      <div class="hsc-desc">Dónde vive la conversación venezolana en 2026.</div>
+      <div class="hsc-title">Plataformas + cultura</div>
+    </div>
+    <div class="hero-section-card">
+      <div class="hsc-num">05</div>
+      <div class="hsc-desc">La frase que ordena todo. Y su desglose.</div>
+      <div class="hsc-title">Social Ambition</div>
+    </div>
+    <div class="hero-section-card">
+      <div class="hsc-num">06</div>
+      <div class="hsc-desc">Los 4 pilares: Conocer, Confiar, Aprender, Crecer.</div>
+      <div class="hsc-title">Pilares + deep dives</div>
+    </div>
+    <div class="hero-section-card">
+      <div class="hsc-num">07</div>
+      <div class="hsc-desc">10 mandamientos para ganar el algoritmo.</div>
+      <div class="hsc-title">Social First Rules</div>
+    </div>
+  </div>
+
+  <div class="hero-footer">
+    <span>Predictive Growth · Strategy & Content</span>
+    <span>Versión 2.0</span>
+    <span>↓ Empezamos</span>
+  </div>
 </section>
 
-<!-- ══════ EL MAPA ══════ -->
-<section id="mapa" class="section">
-  <div class="container">
-    <div class="label" style="color:var(--purple)">El mapa del sistema</div>
-    <h2 class="section-h">Ningún usuario sin respuesta.</h2>
-    <p class="section-sub">Este es el mapa completo del ciclo de vida de un usuario en MamaSan. Cada nodo es un estado. Cada flecha es un evento que dispara una acción. El sistema cubre cada transición.</p>
+<!-- ============ CONTEXTO ============ -->
+<section class="contexto">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <span class="section-tag">El venezolano hoy</span>
+  </div>
 
-    <div class="map-wrapper">
-      <div style="display:flex;gap:0;align-items:flex-start;min-width:780px">
+  <p class="contexto-intro">
+    El venezolano no necesita motivación. <strong>Ya se levanta resolviendo.</strong> Lo que necesita es alguien que no le complique más la vida.
+  </p>
 
-        <!-- COL 1: Registro -->
-        <div class="map-column" style="flex:.9">
-          <div class="map-col-label">01 · Registro</div>
-          <div class="map-node" style="border-color:rgba(124,58,237,.4);background:var(--purple-light);max-width:120px" title="Usuario recién registrado">
-            <span class="map-node-icon">👤</span>
-            <div class="map-node-name" style="color:var(--purple)">Usuario nuevo</div>
-            <div class="map-node-count" style="color:var(--purple)">47,878</div>
-          </div>
-        </div>
-
-        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
-
-        <!-- COL 2: Activación -->
-        <div class="map-column" style="flex:1.1;gap:8px">
-          <div class="map-col-label" style="text-align:center">02 · Activación</div>
-          <div class="map-node" style="border-color:rgba(220,38,38,.35);background:var(--red-light);margin-bottom:8px" title="No completó cédula/teléfono/términos">
-            <span class="map-node-icon">🔒</span>
-            <div class="map-node-name" style="color:var(--red)">Bloqueado</div>
-            <div class="map-node-count" style="color:var(--red)">45,415 · 94.9%</div>
-            <span class="map-node-flow" style="background:rgba(220,38,38,.1);color:var(--red)">WF-01A</span>
-          </div>
-          <div class="map-node" style="border-color:rgba(217,119,6,.35);background:var(--yellow-light)">
-            <span class="map-node-icon">🔓</span>
-            <div class="map-node-name" style="color:var(--yellow)">Listo · F0</div>
-            <div class="map-node-count" style="color:var(--yellow)">~1,993</div>
-            <span class="map-node-flow" style="background:rgba(217,119,6,.1);color:var(--yellow)">WF-01B</span>
-          </div>
-        </div>
-
-        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
-
-        <!-- COL 3: Intención -->
-        <div class="map-column" style="flex:1;gap:8px">
-          <div class="map-col-label">03 · Intención</div>
-          <div class="map-node" style="border-color:rgba(124,58,237,.4);background:var(--purple-light)" title="Agregó producto al carrito, no completó la compra">
-            <span class="map-node-icon">🛒</span>
-            <div class="map-node-name" style="color:var(--purple)">Carrito activo</div>
-            <div class="map-node-count" style="color:var(--purple)">94.9% bloqueados</div>
-            <span class="map-node-flow" style="background:rgba(124,58,237,.1);color:var(--purple)">WF-02</span>
-          </div>
-        </div>
-
-        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
-
-        <!-- COL 4: Primera compra -->
-        <div class="map-column" style="flex:1">
-          <div class="map-col-label">04 · 1ª Compra</div>
-          <div class="map-node" style="border-color:rgba(157,23,77,.35);background:var(--mag-light)" title="Pago inicial validado · primera compra realizada">
-            <span class="map-node-icon">✅</span>
-            <div class="map-node-name" style="color:var(--mag)">F1 · Cliente</div>
-            <div class="map-node-count" style="color:var(--mag)">470 compradores</div>
-            <span class="map-node-flow" style="background:rgba(157,23,77,.1);color:var(--mag)">WF-03 + WF-04</span>
-          </div>
-        </div>
-
-        <div class="map-connector"><div class="map-arrow" style="color:var(--border-dark)">→</div></div>
-
-        <!-- COL 5: Recurrencia -->
-        <div class="map-column" style="flex:1.1;gap:8px">
-          <div class="map-col-label">05 · Recurrencia</div>
-          <div class="map-node" style="border-color:rgba(5,150,105,.4);background:var(--green-light)">
-            <span class="map-node-icon">🏆</span>
-            <div class="map-node-name" style="color:var(--green)">F2+ · Recurrente</div>
-            <div class="map-node-count" style="color:var(--green)">~178 · dashboard</div>
-            <span class="map-node-flow" style="background:rgba(5,150,105,.1);color:var(--green)">WF-04 + Ref.</span>
-          </div>
-          <div class="map-node" style="border-color:rgba(124,58,237,.35);background:var(--purple-light);margin-top:8px">
-            <span class="map-node-icon">📈</span>
-            <div class="map-node-name" style="color:var(--purple)">Nivel ↑</div>
-            <div class="map-node-count" style="color:var(--purple)">Plata 22 · Oro 5</div>
-            <span class="map-node-flow" style="background:rgba(124,58,237,.1);color:var(--purple)">WF-04</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Evergreen bar -->
-      <div style="margin-top:20px;padding:12px 16px;border-radius:10px;background:var(--bg-alt);border:1px dashed var(--border-dark);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <span style="font-size:20px">♾️</span>
-        <div style="flex:1">
-          <div style="font-family:var(--ff-h);font-size:13px;font-weight:700;color:var(--dark)">Evergreen — el hogar de toda la base</div>
-          <div style="font-size:12px;color:var(--mid)">Todo contacto que sale de un flujo sin convertir vive aquí. Loop rotativo. Detecta señales en tiempo real y despacha al flujo correcto.</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <span class="tag" style="color:var(--purple);border-color:rgba(124,58,237,.3);background:var(--purple-light);font-size:9px">carrito → WF-02</span>
-          <span class="tag" style="color:var(--yellow);border-color:rgba(217,119,6,.3);background:var(--yellow-light);font-size:9px">compra → WF-04</span>
-          <span class="tag" style="color:var(--red);border-color:rgba(220,38,38,.3);background:var(--red-light);font-size:9px">45d sin abrir → WF-06</span>
-        </div>
-      </div>
+  <div class="contexto-grid">
+    <div class="contexto-card">
+      <span class="label">QUIÉN ES</span>
+      <h3>Navegador de caos</h3>
+      <p>Vive en un país donde cada gestión, comprar, pagar, recibir, está bloqueada por algo. No se rinde, se reinventa. Busca soluciones prácticas, no sermones.</p>
     </div>
-
-    <div class="map-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Sin poder comprar</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>En activación</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Con intención activa</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--mag)"></div>Primera compra</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Recurrente</div>
+    <div class="contexto-card">
+      <span class="label">CÓMO PIENSA</span>
+      <h3>Resuelvan, no prediquen</h3>
+      <p>Valora tres cosas en una marca: que resuelva de verdad, que lo trate con dignidad, que lo deje seguir viviendo normal. Detecta de inmediato cualquier promesa hueca.</p>
+    </div>
+    <div class="contexto-card">
+      <span class="label">QUÉ LE DUELE</span>
+      <h3>Vivir bloqueado</h3>
+      <p>No poder comprar lo que quiere. Sin tarjeta internacional. Sin acceso a logística. Sin certezas sobre si lo que pidió va a llegar. La sensación de que el sistema lo abandonó.</p>
     </div>
   </div>
 </section>
 
-<!-- ══════ LOS FLUJOS ══════ -->
-<section id="flujos" class="section">
-  <div class="container">
-    <div class="label" style="color:var(--purple)">Los 6 flujos</div>
-    <h2 class="section-h">Una historia para cada momento.</h2>
-    <p class="section-sub">Cada flujo tiene un protagonista, un momento de activación y una transformación concreta. No son campañas — son respuestas diseñadas para el estado exacto del usuario.</p>
-    <div id="flows-container"></div>
+<!-- ============ INSIGHTS ============ -->
+<section class="insights">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <span class="section-tag">Cómo conectar</span>
   </div>
-</section>
 
-<!-- ══════ ORQUESTACIÓN ══════ -->
-<section id="orquestacion" class="section" style="background:var(--bg-alt)">
-  <div class="container">
-    <div class="label" style="color:var(--wa)">Orquestación de canales</div>
-    <h2 class="section-h">Email y WhatsApp como<br>un solo sistema.</h2>
-    <p class="section-sub">No son dos canales paralelos. Son dos voces del mismo sistema. El email hace el volumen y la narración. WhatsApp hace el toque humano en el momento preciso.</p>
+  <h2 class="big-title" style="margin-bottom: 24px;">Cuatro puertas culturales</h2>
+  <p class="deck-sub" style="margin-bottom: 60px;">Por aquí entra una marca venezolana. Por aquí entra Mamasan.</p>
 
-    <div class="grid-2" style="margin-bottom:20px">
-      <div class="channel-card">
-        <div class="channel-title" style="color:var(--purple)">
-          <span style="font-size:22px">✉️</span> Email — La narrativa
-        </div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Sequencias largas (onboarding, upsell, reactivación)</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Contenido educativo (el sistema de niveles, cómo funciona)</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Campañas masivas estacionales (Día del Padre, Prime Day)</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>HTML con carrito_html real: imagen, precio, cuotas</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>A/B testing sistemático de asuntos y CTAs</span></div>
-      </div>
-      <div class="channel-card" style="border-color:rgba(18,140,126,.25)">
-        <div class="channel-title" style="color:var(--wa)">
-          <span style="font-size:22px">📱</span> WhatsApp — El toque humano
-        </div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Rescate cuando el email no fue abierto</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Seguimiento de clics de alta intención (&lt;4h)</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Confirmación de entrega + celebración de nivel</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--green)">✓</span><span>Toque de Vanessa en registro incompleto (D+6)</span></div>
-        <div class="rule-item"><span class="rule-mark" style="color:var(--red)">✗</span><span>Newsletters masivas — eso es territorio del email</span></div>
+  <div class="insights-grid">
+    <div class="insight">
+      <span class="insight-num">01</span>
+      <h3>Humor como resistencia</h3>
+      <p>El venezolano no se ríe de sus problemas. Se ríe con ellos. Transforma la adversidad en ligereza. Es su forma de no quebrarse.</p>
+      <div class="application">
+        <strong>Mamasan lo activa así</strong>
+        Humor que normaliza, no que burla. "Pagaste con Pago Móvil? Dale, yo me encargo del resto."
       </div>
     </div>
 
-    <div style="padding:16px 20px;border-radius:12px;background:rgba(18,140,126,.06);border:1px solid rgba(18,140,126,.2)">
-      <strong style="font-size:13px;color:var(--wa)">⚠️ Regla AppLevel — goteo obligatorio:</strong>
-      <span style="font-size:13px;color:var(--dark-mid)"> Máximo 10 mensajes por hora. Si Meta detecta envíos masivos simultáneos puede bloquear la cuenta. AppLevel gestiona el drip automáticamente — solo hay que configurarlo correctamente.</span>
+    <div class="insight">
+      <span class="insight-num">02</span>
+      <h3>Nostalgia y orgullo local</h3>
+      <p>Añora poder vivir normal pero está orgulloso de lo venezolano. Las marcas que activan ese orgullo, como Pepsi reviviendo su bola, generan conexión instantánea.</p>
+      <div class="application">
+        <strong>Mamasan lo activa así</strong>
+        Acceso global con orgullo local. "Esto solo lo entendemos los venezolanos."
+      </div>
     </div>
 
-    <!-- Behavior matrix -->
-    <div style="margin-top:28px">
-      <div class="label" style="color:var(--dark-mid);margin-bottom:16px">Matriz de respuesta por acción del usuario</div>
-      <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;background:var(--dark)">
-          <div style="padding:10px 14px;font-size:11px;font-family:var(--ff-m);color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Acción del usuario</div>
-          <div style="padding:10px 14px;font-size:11px;font-family:var(--ff-m);color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Respuesta inmediata</div>
-          <div style="padding:10px 14px;font-size:11px;font-family:var(--ff-m);color:#9ca3af;letter-spacing:.06em;text-transform:uppercase">Siguiente paso</div>
-        </div>
-        <div id="matrix-rows"></div>
+    <div class="insight">
+      <span class="insight-num">03</span>
+      <h3>Gente real, no modelos</h3>
+      <p>El venezolano confía en caras, nombres, ciudades. No en aspiracional pulido. La prueba humana es la prueba más valiosa.</p>
+      <div class="application">
+        <strong>Mamasan lo activa así</strong>
+        UGC con identidad: "Soy Carla de Barquisimeto, esto me llegó la semana pasada."
+      </div>
+    </div>
+
+    <div class="insight">
+      <span class="insight-num">04</span>
+      <h3>Aspiración sin drama</h3>
+      <p>Quiere mejorar, pero rechaza la urgencia falsa y la presión financiera. Prefiere certeza tranquila a alarma manufacturada. "Tu siguiente paso" sobre "úsalo ya o pierdes".</p>
+      <div class="application">
+        <strong>Mamasan lo activa así</strong>
+        Cero urgencia falsa. "Vive primero, compra después, paga a tu ritmo."
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════ EL NORTE ══════ -->
-<section id="norte" class="section">
-  <div class="container">
-    <div class="label" style="color:var(--yellow)">El norte · Roadmap</div>
-    <h2 class="section-h">El camino, en orden<br>de impacto.</h2>
-    <p class="section-sub">El orden no es arbitrario. Se activa primero lo que libera el mayor valor con el menor esfuerzo adicional — sobre una infraestructura que ya corre.</p>
+<!-- ============ MARCAS ============ -->
+<section class="marcas">
+  <div class="section-header dark">
+    <span class="section-number" style="color: var(--text-gray-light);">03</span>
+    <span class="section-tag">Marcas que conectan</span>
+  </div>
 
-    <div id="roadmap-container"></div>
+  <p class="marcas-intro">
+    No son competencia de Mamasan. Son referencia de tono. Cuatro marcas que ganaron porque entendieron al venezolano antes de venderle algo.
+  </p>
 
-    <!-- Pending data -->
-    <div style="margin-top:40px;padding:22px;border-radius:14px;border:1px solid var(--border);background:var(--bg-alt)">
-      <div class="label" style="color:var(--yellow);margin-bottom:14px">4 datos que cierran el modelo</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="datos-container"></div>
+  <div class="marcas-grid">
+
+    <div class="marca-card">
+      <div class="marca-image">
+        <div class="placeholder">
+          <strong>POLAR</strong>
+          Chica Polar Anaís Duarte<br>
+          Te siento Venezuela, porque sí
+        </div>
+      </div>
+      <div class="marca-content">
+        <h3 class="marca-name">Cerveza Polar</h3>
+        <p class="marca-camp">"Te siento Venezuela, porque sí" + "Chica Polar"</p>
+        <p class="marca-why">Cuando una joven de talla grande postuló como broma para ser Chica Polar, la marca la convirtió en su imagen real. Dejó de ser publicidad y se convirtió en identidad nacional.</p>
+        <p class="marca-takeaway">→ Identidad = inclusión. Dignifica, no excluye.</p>
+      </div>
+    </div>
+
+    <div class="marca-card">
+      <div class="marca-image">
+        <div class="placeholder">
+          <strong>SANTA TERESA</strong>
+          Proyecto Alcatraz<br>
+          Sorprende tú a la vida
+        </div>
+      </div>
+      <div class="marca-content">
+        <h3 class="marca-name">Ron Santa Teresa 1796</h3>
+        <p class="marca-camp">Proyecto Alcatraz (rugby y rehabilitación social)</p>
+        <p class="marca-why">Convirtió rehabilitación social en rugby competitivo en Aragua. 13 años de propósito documentado. No es campaña, es prueba de que Venezuela transforma.</p>
+        <p class="marca-takeaway">→ Esfuerzo real, no claim. Tradición que cambia vidas.</p>
+      </div>
+    </div>
+
+    <div class="marca-card">
+      <div class="marca-image">
+        <div class="placeholder">
+          <strong>DIGITEL</strong>
+          Cobertura nacional<br>
+          Conectados sin límites
+        </div>
+      </div>
+      <div class="marca-content">
+        <h3 class="marca-name">Digitel</h3>
+        <p class="marca-camp">Conectividad donde otros no llegan</p>
+        <p class="marca-why">Posicionamiento de "yo te resuelvo el acceso". En un mercado fragmentado, su narrativa siempre fue la del que extiende lo posible, no la del que vende minutos.</p>
+        <p class="marca-takeaway">→ Tu problema es mi problema. Yo lo resuelvo.</p>
+      </div>
+    </div>
+
+    <div class="marca-card">
+      <div class="marca-image">
+        <div class="placeholder">
+          <strong>PEPSI VZLA</strong>
+          Bola Pepsi<br>
+          Torre Polar Plaza Venezuela
+        </div>
+      </div>
+      <div class="marca-content">
+        <h3 class="marca-name">Pepsi Venezuela</h3>
+        <p class="marca-camp">Revival "Bola Pepsi" Plaza Venezuela</p>
+        <p class="marca-why">Revivió en redes la icónica bola Pepsi sobre la Torre Polar. Un símbolo de pertenencia. Nostalgia activada como identidad, no como decoración.</p>
+        <p class="marca-takeaway">→ La nostalgia bien usada activa pertenencia.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PLATAFORMAS ============ -->
+<section class="plataformas">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <span class="section-tag">Plataformas y cultura</span>
+  </div>
+
+  <h2 class="big-title" style="margin-bottom: 24px;">Dónde vive la conversación</h2>
+  <p class="deck-sub" style="margin-bottom: 60px;">El venezolano consume entretenimiento digital antes que tradicional. Y compra donde scrollea.</p>
+
+  <div class="plat-stats">
+    <div class="plat-stat primary">
+      <div class="name">TIKTOK</div>
+      <div class="pct">52.4%</div>
+      <div class="desc">Uso diario. Plataforma madre. Algoritmo premia autenticidad cruda y audios trending.</div>
+    </div>
+    <div class="plat-stat secondary">
+      <div class="name">FACEBOOK</div>
+      <div class="pct">44.4%</div>
+      <div class="desc">Fuerte en diáspora y audiencia 35+. Útil para comunidad y referidos.</div>
+    </div>
+    <div class="plat-stat secondary">
+      <div class="name">YOUTUBE</div>
+      <div class="pct">43.0%</div>
+      <div class="desc">Tutoriales largos y testimoniales profundos. Búsqueda activa.</div>
+    </div>
+    <div class="plat-stat primary">
+      <div class="name">INSTAGRAM</div>
+      <div class="pct">36.3%</div>
+      <div class="desc">Donde vive la aspiración y la prueba visual. Reels y Stories.</div>
+    </div>
+    <div class="plat-stat">
+      <div class="name">X (Twitter)</div>
+      <div class="pct">4.8%</div>
+      <div class="desc">Marginal para Mamasan. No es donde scrollea el comprador.</div>
+    </div>
+  </div>
+
+  <div class="plat-rec">
+    <div>
+      <div class="plat-rec-label">RECOMENDACIÓN</div>
+      <h3>TikTok primero,<br>Instagram refuerza</h3>
+    </div>
+    <div class="plat-rec-body">
+      <strong>TikTok es la plataforma madre de Mamasan.</strong> Ahí ya gana, ahí vive el venezolano, ahí el formato vertical de testimonio y tutorial sin filtro convierte. Instagram aporta el peso aspiracional y la comunidad de progresión. WhatsApp cierra el ciclo de lifecycle. Facebook se activa selectivamente para diáspora.
     </div>
   </div>
 </section>
 
-<!-- ══════ FOOTER ══════ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brands">
-      <span class="footer-ms">MamaSan</span>
-      <span style="color:#4b5563;margin:0 8px">×</span>
-      <span class="footer-pg">Predictive Growth</span>
+<!-- ============ SOCIAL AMBITION ============ -->
+<section class="ambition">
+  <div class="eyebrow" style="color: var(--accent-orange);">05 · Social Ambition</div>
+
+  <h2 class="ambition-statement">
+    SIGUE TU<br>
+    <span class="italic">ritmo.</span><br>
+    YO ME ENCARGO<br>
+    DEL RESTO.
+  </h2>
+
+  <div class="ambition-breakdown">
+    <div class="ambition-word">
+      <div class="word">Sigue</div>
+      <p>Porque <strong>creemos en el avance de cada venezolano.</strong> Tu crecimiento no se pausa. Tu casa se sigue armando. Tu hijo sigue creciendo. Tu deseo sigue valiendo. No te detengas porque el sistema no te facilita.</p>
     </div>
-    <div class="footer-right">
-      <div>predictivegrowth.io</div>
-      <div>Sistema de Email + WhatsApp · Mayo 2026</div>
+    <div class="ambition-word">
+      <div class="word">Ritmo</div>
+      <p><strong>Tu velocidad, no la nuestra.</strong> Algunos compran una vez al mes, otros cada tres. El ritmo venezolano es impredecible, las quincenas no funcionan, los bolívares cambian. Mamasan se adapta a cómo vives, no al revés.</p>
+    </div>
+    <div class="ambition-word">
+      <div class="word">Me encargo</div>
+      <p><strong>Mamasan hace todo por ti.</strong> Logística internacional. Crédito. Tarjeta. Entrega. Tú eliges el producto en Amazon o Shein y pagas en bolívares. El resto, lo resolvemos nosotros. Solo compra.</p>
     </div>
   </div>
-</footer>
+</section>
 
-<script>
-/* ═══════ DATA ═══════════════════════════════════════════════════════ */
-const FLOWS = [
-  {id:"WF-02",emoji:"🛒",priority:1,name:"Carrito Abandonado",story:"La Recuperación",
-   color:"var(--purple)",colorVal:"#7c3aed",colorLight:"var(--purple-light)",
-   channels:["email","whatsapp"],
-   tag1:{text:"PRIORIDAD #1",color:"var(--purple)",bg:"var(--purple-light)"},
-   trigger:"estado_venta = 'Carrito'",
-   desc:"Cuando un usuario agrega un producto al carrito y no compra, el sistema reacciona en menos de una hora. Con la imagen real del producto, el precio exacto y las cuotas calculadas. No es un recordatorio genérico — es el producto que eligió, esperándolo.",
-   sequence:[
-    {day:"Hora +1",type:"email",dot:"#7c3aed",
-     subject:"Tu [producto_carrito] sigue esperándote — [$X] en 4 cuotas",
-     note:"Renderizar carrito_html: imagen real de Amazon/Shein, precio exacto, cuotas en bolívares.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"No compra en 4h → WA: '¿Llegaste al checkout? Te ayudo ahora mismo.' · Si compra: EXIT → WF-04"},
-      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"WA 6h: 'Tu carrito sigue guardado. ¿Tuviste alguna duda con el pago o el envío?'"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA 3h: 'Oye [nombre], dejaste algo aquí — te lo guardo 24h más'"},
-      {icon:"💬",cond:"Respondió",condColor:"#7c3aed",act:"Handoff humano < 2h — Vanessa / equipo atención"}
-     ]},
-    {day:"Día 2",type:"email",dot:"#7c3aed",
-     subject:"¿Tuviste alguna duda con el pago o el envío?",
-     note:"Resolver objeciones reales: seguridad del Pago Móvil, tiempo de envío, cómo funciona el crédito.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA apoyo: '¿Puedo ayudarte a completarlo ahora?'"},
-      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 3 en 48h — urgencia real de precio"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA con subject diferente + resend en horario pico (sáb 10am–2pm)"}
-     ]},
-    {day:"Día 4",type:"email",dot:"#7c3aed",
-     subject:"⚠️ Los precios en Amazon cambian todos los días",
-     note:"Urgencia real: los precios en Amazon fluctúan. No es presión inventada — es un dato verdadero.",
-     branches:[
-      {icon:"🔥",cond:"Clickeó",condColor:"#059669",act:"No compró → WA urgencia: '24h para asegurar este precio'"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA urgencia final + Email 4 D+7"}
-     ]},
-    {day:"Día 7",type:"whatsapp",dot:"#128C7E",
-     subject:"Último mensaje — cerramos tu carrito mañana",
-     note:"Tono honesto, sin presión. 'Si no es el momento, está bien. Aquí seguimos cuando quieras.'",
-     branches:[
-      {icon:"✅",cond:"Compra en cualquier punto",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
-      {icon:"🚪",cond:"7 días sin conversión",condColor:"#6b7280",act:"Limpiar campo carrito → Evergreen (frecuencia según engagement tier)"}
-     ]}
-   ],
-   notes:["Email 1 en < 1h del abandono — nunca de madrugada (posponer a 8am)","Fines de semana = máxima actividad en app. Priorizar sábados 10am–2pm","carrito_html trae imagen real, precio y cuotas ya calculadas — usarla siempre en Email 1"]},
+<!-- ============ PILARES TABLE ============ -->
+<section class="pilares">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <span class="section-tag">Los cuatro pilares</span>
+  </div>
 
-  {id:"Evergreen",emoji:"♾️",priority:2,name:"El Loop Hogar",story:"El Fondo Siempre Activo",
-   color:"var(--purple)",colorVal:"#7c3aed",colorLight:"var(--purple-light)",
-   channels:["email"],
-   tag1:{text:"BASE DE TODOS",color:"var(--purple)",bg:"var(--purple-light)"},
-   trigger:"Sale de cualquier flujo sin convertir  ·  OR  ·  7+ días sin flujo activo",
-   desc:"El Evergreen es el sistema nervioso de la base. Todo contacto que no está en un flujo específico vive aquí. Rota contenido cada 60–90 días. Y detecta señales en tiempo real para despachar al flujo correcto en el momento correcto.",
-   sequence:[
-    {day:"Email 1 → D+5",type:"email",dot:"#7c3aed",
-     subject:"Esto está trending esta semana en Amazon para Venezuela",
-     note:"Producto real en el rango de credito_disponible. Frecuencia adaptativa: caliente=5d · tibio=7d · frío=12–15d.",
-     branches:[
-      {icon:"🛒",cond:"carrito_abandonado = yes",condColor:"#d97706",act:"EXIT INMEDIATO → WF-02 (interrumpe todo, máxima prioridad)"},
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"Tag 'caliente' → si hay campaña activa, EXIT → flujo post-click"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"Próximo email en 7–15 días — reducir frecuencia un nivel"}
-     ]},
-    {day:"Emails 2–6",type:"email",dot:"#7c3aed",
-     subject:"Bloques A y B rotativos — crédito · niveles · social proof · fechas",
-     note:"Agregar 2–3 emails nuevos por mes. Nunca repetir el mismo ciclo en menos de 60–90 días.",
-     branches:[
-      {icon:"💳",cond:"pagos_iniciales_validados sube",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
-      {icon:"😴",cond:"Sin apertura 45 días",condColor:"#dc2626",act:"EXIT → WF-06 Reactivación (flujo futuro)"},
-      {icon:"🏷️",cond:"Click en campaña masiva",condColor:"#7c3aed",act:"EXIT → WF post-click de campaña"}
-     ]}
-   ],
-   notes:["Contenido Bloque A: trending, crédito disponible, niveles, novedades app","Contenido Bloque B: categorías de producto, social proof, comparación, invitación a referir","El Evergreen no compite con los flujos — los alimenta con señales"]},
+  <h2 class="big-title" style="margin-bottom: 24px;">Conocer · Confiar · Aprender · Crecer</h2>
+  <p class="pilares-intro">
+    Cuatro pilares orgánicos correlacionados a las cuatro fases que vive el venezolano con Mamasan. Desde que no sabe que existimos hasta que su segunda compra ya está en camino.
+  </p>
 
-  {id:"WF-01A",emoji:"🔓",priority:3,name:"Bienvenida — Registro Incompleto",story:"El Desbloqueo",
-   color:"var(--red)",colorVal:"#dc2626",colorLight:"var(--red-light)",
-   channels:["email","whatsapp"],
-   tag1:{text:"ESTA SEMANA",color:"var(--green)",bg:"var(--green-light)"},
-   trigger:"fecha_registro = hoy  AND  (cedula vacía  OR  telefono vacío  OR  terminos = false)",
-   desc:"45,415 personas tienen credencial de $100 lista y no lo saben porque nunca terminaron de registrarse. Al crear una cuenta solo se pide nombre y correo — la mayoría ni sabe qué campo falta. Este flujo lo resuelve, paso por paso, canal por canal.",
-   sequence:[
-    {day:"Inmediato D0",type:"email",dot:"#dc2626",
-     subject:"[Nombre], tienes $100 listos — solo falta un paso",
-     note:"CTA al paso ESPECÍFICO pendiente (cédula / teléfono / términos) — nunca al login genérico.",
-     branches:[
-      {icon:"✅",cond:"Completó perfil",condColor:"#059669",act:"EXIT → WF-01B Primer Viaje automáticamente"},
-      {icon:"🔥",cond:"Abrió + Clickeó, no completó en 24h",condColor:"#d97706",act:"Email 2: '¿Qué puedes comprar con $100?'"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA D+2: '¿Tuviste algún problema con el registro? Te ayudo en 2 minutos.'"}
-     ]},
-    {day:"Día 2",type:"email",dot:"#dc2626",
-     subject:"¿Qué puedes traer con $100 desde Venezuela? (te sorprende)",
-     note:"3–4 productos reales de Amazon/Shein/Temu. Audífonos $45, ropa Shein $30, artículos de hogar.",
-     branches:[
-      {icon:"✅",cond:"Completó perfil",condColor:"#059669",act:"EXIT → WF-01B"},
-      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"WA D+6: toque humano de Vanessa — '¿Algo no funcionó?'"}
-     ]},
-    {day:"Día 6",type:"whatsapp",dot:"#128C7E",
-     subject:"Hola [nombre], ¿llegaste a completar tu registro? 😊",
-     note:"Mensaje corto, personal, de Vanessa. No automatizado en el tono — tiene que sentirse humano.",
-     branches:[
-      {icon:"✅",cond:"Completa perfil",condColor:"#059669",act:"EXIT → WF-01B Primer Viaje"},
-      {icon:"🚪",cond:"Sin respuesta",condColor:"#6b7280",act:"Evergreen — seguirá recibiendo contenido de valor"}
-     ]}
-   ],
-   notes:["CTA al paso exacto pendiente — no al login general","La app no verifica email al registrarse → limpiar correos inválidos antes del primer envío"]},
-
-  {id:"WF-01B",emoji:"🚀",priority:4,name:"Bienvenida — Sin Primera Compra",story:"El Primer Viaje",
-   color:"var(--yellow)",colorVal:"#d97706",colorLight:"var(--yellow-light)",
-   channels:["email","whatsapp"],
-   tag1:{text:"ESTA SEMANA",color:"var(--green)",bg:"var(--green-light)"},
-   trigger:"Perfil completo  AND  pagos_iniciales_validados = 0",
-   desc:"El usuario tiene todo listo para comprar y no lo ha hecho. Este flujo le muestra qué puede traer, cómo funciona en 3 pasos simples — y al cuarto email revela el sistema de niveles que la mayoría desconoce.",
-   sequence:[
-    {day:"Inmediato D0",type:"email",dot:"#d97706",
-     subject:"Esto es lo que puedes traer con tus $[credito_disponible] 🌎",
-     note:"3 pasos: elegir → pagar en bolívares con Pago Móvil → recibir en casa. Sin tarjeta internacional.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA 24h: '¿Te ayudo a encontrar lo que buscas?'"},
-      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 2 D+2: productos concretos en su rango de crédito"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"Email 2 D+2 con nuevo subject — mismo contenido"}
-     ]},
-    {day:"Día 2",type:"email",dot:"#d97706",
-     subject:"Audífonos $45. Ropa Shein $30. Todo desde Venezuela.",
-     note:"Productos reales en el rango de credito_disponible. Cuotas en bolívares al cambio del día.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA D+3: apoyo para cerrar primera compra"},
-      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email 3 D+5: el sistema de niveles como incentivo"}
-     ]},
-    {day:"Día 5 — el gancho",type:"email",dot:"#d97706",
-     subject:"Algo que la mayoría no sabe de MamaSan — y que cambia todo 👀",
-     note:"Revelar el sistema de niveles por primera vez. Bronce $100 → Plata $300 → Oro $500 → Platino.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA D+6: '¿A qué nivel quieres llegar?'"},
-      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email 4 D+9: último push con 20% off primer envío"}
-     ]},
-    {day:"Día 9 — último push",type:"email",dot:"#d97706",
-     subject:"Tu crédito de $[credito_disponible] sigue activo. 20% off en tu primer envío.",
-     note:"Si aplica el descuento en primer envío. CTA único: ir al carrito.",
-     branches:[
-      {icon:"💳",cond:"pagos_iniciales_validados aumenta",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
-      {icon:"🚪",cond:"Sin compra en 12 días",condColor:"#6b7280",act:"Evergreen — nutrición de largo plazo"}
-     ]}
-   ],
-   notes:["Activado automáticamente cuando WF-01A termina con éxito","El Email 3 (sistema de niveles) es el gancho más poderoso — usarlo bien", "Personalizar Email 2 con productos reales según el credito_disponible del usuario"]},
-
-  {id:"WF-04",emoji:"📈",priority:5,name:"Upsell por Niveles",story:"La Subida",
-   color:"var(--mag)",colorVal:"#9d174d",colorLight:"var(--mag-light)",
-   channels:["email","whatsapp"],
-   tag1:{text:"MES 1",color:"var(--mag)",bg:"var(--mag-light)"},
-   trigger:"pagos_iniciales_validados aumenta (campo nuevo · cualquier compra confirmada)",
-   desc:"Cada compra es el momento de mayor receptividad del usuario. Este flujo lo aprovecha: celebra la compra, muestra en tiempo real cuánto le falta para el siguiente nivel y hace visible el moat del negocio que hoy el 99.9% desconoce.",
-   sequence:[
-    {day:"D+3 post-compra",type:"email",dot:"#9d174d",
-     subject:"🎉 Hiciste tu [N]ª compra. Estás a [X] de [siguiente nivel]",
-     note:"Usar campo calculado 'compras_para_subir_nivel'. Barra de progreso visual. Tono celebratorio.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA 24h: '¿Ya viste cuánto crédito desbloqueas en Plata?'"},
-      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 2 D+10: aspiracional — qué puedes comprar con el siguiente nivel"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"Email 2 D+7 con subject diferente"}
-     ]},
-    {day:"Día +10",type:"email",dot:"#9d174d",
-     subject:"Con $300 en MamaSan, ¿qué traerías? (esto es tuyo si subes a Plata)",
-     note:"Aspiracional concreto: productos reales en el rango del siguiente nivel.",
-     branches:[
-      {icon:"💳",cond:"pagos_iniciales_validados sube de nuevo",condColor:"#059669",act:"REINICIA WF-04 — nueva compra, nuevo ciclo"},
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#d97706",act:"Email 3 D+17: recordatorio de crédito disponible actual"}
-     ]},
-    {day:"Día +17",type:"email",dot:"#9d174d",
-     subject:"Tienes $[credito_disponible] listos ahora mismo 💳",
-     note:"Recordatorio práctico. Enlace directo al catálogo. Un solo CTA.",
-     branches:[
-      {icon:"🔥",cond:"Clickeó",condColor:"#059669",act:"WA apoyo: '¿Qué estás buscando? Te ayudo a encontrarlo.'"},
-      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email D+24: comparación visual de beneficios por nivel (solo si le falta 1 compra para subir)"}
-     ]},
-    {day:"D+24 (solo si falta 1 compra)",type:"whatsapp",dot:"#128C7E",
-     subject:"Una compra más y subes de nivel 🏅",
-     note:"SOLO enviar si campo 'compras_para_subir_nivel' = 1. Si no aplica: skip a Evergreen.",
-     branches:[
-      {icon:"💳",cond:"pagos_iniciales_validados sube",condColor:"#059669",act:"EXIT → WF-04 reinicia con nuevo ciclo"},
-      {icon:"🚪",cond:"Completó secuencia",condColor:"#6b7280",act:"Evergreen. Si pagos >= 2: evaluar WF-03 o WF Referidos"}
-     ]}
-   ],
-   notes:["Trigger: pagos_iniciales_validados — campo nuevo (Alberto lo genera en Supabase)","Si el usuario compra DURANTE el flujo → REINICIA WF-04","Contado no cuenta para subir de nivel — solo compras a crédito con última cuota pagada"]},
-
-  {id:"WF-03",emoji:"🤝",priority:6,name:"Segunda Compra",story:"Bienvenido al Club",
-   color:"var(--wa)",colorVal:"#128C7E",colorLight:"var(--wa-light)",
-   channels:["whatsapp","email"],
-   tag1:{text:"MES 1-2",color:"var(--wa)",bg:"var(--wa-light)"},
-   trigger:"Entrega confirmada de la primera compra (estado_venta → entregado)",
-   desc:"El momento de mayor disposición del cliente es justo después de recibir su primer pedido. La ventana de hábito está abierta y se cierra a los 60 días. WhatsApp lidera este flujo — el canal más directo en Venezuela.",
-   sequence:[
-    {day:"D+1 post entrega",type:"whatsapp",dot:"#128C7E",
-     subject:"¡Llegó tu pedido! ¿Todo bien? 📦",
-     note:"Celebración genuina. Preguntar por la experiencia. Plantar la semilla del siguiente nivel.",
-     branches:[
-      {icon:"💬",cond:"Respondió positivo",condColor:"#059669",act:"'¿Sabías que con [X] compras más llegas a Plata ($300)?' + link a app"},
-      {icon:"😴",cond:"No respondió",condColor:"#d97706",act:"Email D+3: '¿Cómo estuvo tu experiencia?' + CTA segunda compra"}
-     ]},
-    {day:"Día +3",type:"email",dot:"#128C7E",
-     subject:"Ya sabes cómo funciona. ¿Cuál es tu próxima compra?",
-     note:"Fricción reducida: ya conoces el proceso, ya saben dónde vives, ya confías en nosotros.",
-     branches:[
-      {icon:"🔥",cond:"Abrió + Clickeó",condColor:"#059669",act:"WA D+5: apoyo para cerrar segunda compra"},
-      {icon:"👁️",cond:"Abrió, no clickeó",condColor:"#d97706",act:"Email 2 D+14: incentivo de nivel + progreso"},
-      {icon:"😴",cond:"No abrió",condColor:"#dc2626",act:"WA D+7 + Email D+14"}
-     ]},
-    {day:"Día +14",type:"email",dot:"#128C7E",
-     subject:"Te faltan [X] compras para Plata — y $300 disponibles 📊",
-     note:"Barra de progreso. Urgencia real: la ventana de hábito se cierra a los 60 días.",
-     branches:[
-      {icon:"💳",cond:"pagos_iniciales_validados >= 2",condColor:"#059669",act:"EXIT → WF-04 Upsell por Niveles"},
-      {icon:"😴",cond:"Sin acción",condColor:"#dc2626",act:"Email 3 D+45: reenganche honesto"}
-     ]},
-    {day:"Día +45",type:"email",dot:"#128C7E",
-     subject:"¿Qué cambió desde tu primera compra? Queremos saber.",
-     note:"Tono honesto, sin presión. Crédito disponible como recordatorio suave.",
-     branches:[
-      {icon:"💬",cond:"Respondió",condColor:"#7c3aed",act:"Handoff humano → entender fricción → mejorar el sistema"},
-      {icon:"🚪",cond:"Sin conversión 60d",condColor:"#6b7280",act:"Evergreen — nutrición de largo plazo"}
-     ]}
-   ],
-   notes:["WhatsApp lidera este flujo — Venezuela usa WA más que email para temas personales","La ventana de hábito se cierra a los 60 días — actuar rápido o perder al cliente"]}
-];
-
-const MATRIX_ROWS = [
-  {action:"Agrega producto al carrito",icon:"🛒",response:"Email con imagen real del producto en < 1h",next:"Si no compra en 24h → WA de apoyo"},
-  {action:"Abre el email pero no hace clic",icon:"👁️",response:"WA de seguimiento 6h después",next:"Email 2 en 24h con ángulo diferente"},
-  {action:"No abre ningún email",icon:"😴",response:"WA rescue en 3h",next:"Email 2 con nuevo subject en día pico"},
-  {action:"Hace clic sin comprar",icon:"🔥",response:"Handoff humano en < 24h",next:"'¿Llegaste al checkout? Te ayudo ahora.'"},
-  {action:"Responde directamente al email",icon:"💬",response:"Handoff humano < 2h siempre",next:"Vanessa / equipo atención al cliente"},
-  {action:"Completa una compra",icon:"✅",response:"Sale del flujo actual inmediatamente",next:"WF-04 Upsell por Niveles se activa"},
-  {action:"45 días sin abrir ningún email",icon:"💤",response:"WF-06 Reactivación se activa",next:"Si no reabre: frecuencia mínima 1/20 días"},
-];
-
-const ROADMAP_PHASES = [
-  {icon:"🔴",phase:"Ahora · Esta semana",color:"#dc2626",
-   items:["WF-01A: 45,415 usuarios con registro incompleto — data lista para enviar","Evergreen activo: hogar para toda la base — soluciona la fuga de 31,384 sin destino","Scorear engagement: 27,656 sin score → dejar de enviar a dormidos hoy","Campaña Día del Padre: urgente — 15 junio en Venezuela","Sunset de flujos legacy (creados con ChatGPT) — Alberto: 'vuélense esa vaina'"]},
-  {icon:"🟡",phase:"Semanas 1–2 · Implementación",color:"#d97706",
-   items:["WF-01B: registrados sin primera compra","WF-04 Upsell con campo pagos_iniciales_validados (Alberto lo genera en Supabase)","AppLevel WA integrado con GHL — ~$35–40/mes · 2–3 días de implementación · Moisés + Yessica","Reconectar Instagram + agregar TikTok a GHL","Mapear sesiones de Supabase para optimizar hora de envío (Moisés — query de actividad)"]},
-  {icon:"🟣",phase:"Mes 1–2 · Escalar",color:"#7c3aed",
-   items:["WF-02 Carrito Abandonado con carrito_html + AppLevel WA (el flujo de mayor ROI del sistema)","WF-03 Segunda Compra con WA como canal líder","WF post-click de campañas masivas (plantilla reutilizable por evento)","A/B testing sistemático de asuntos y CTAs","Bajada de conversaciones de clientes para insights de copy (Alberto — pendiente)"]},
-  {icon:"🟢",phase:"Meses 3–12 · Madurar",color:"#059669",
-   items:["WF-06 Reactivación de inactivos","WF-05 Cobranza con dignidad (cuando el volumen lo justifique)","WF Referidos — semilla en los 121 compradores recurrentes","Modelo RFM(P) en producción — segmentación dinámica por R, F, M y salud de pago","Instagram + TikTok totalmente integrados a GHL"]}
-];
-
-const DATOS = [
-  {n:"D1",label:"Perfil de los compradores recurrentes",color:"#7c3aed",
-   q:"¿Quién es el cliente ideal de MamaSan?",
-   impact:"Primer producto comprado, categoría, ciudad, tiempo entre compra 1 y 2. Semilla para lookalike en Meta/TikTok.",
-   owner:"Alberto — query en Supabase"},
-  {n:"D2",label:"Desglose del estado 'En Proceso'",color:"#d97706",
-   q:"¿Cuántos usuarios están en mora real hoy?",
-   impact:"35% de las ventas figura como 'en proceso'. Necesitamos saber cuánto es ciclo normal de envío vs mora real para configurar WF-05.",
-   owner:"Moisés — tabla pagos Supabase"},
-  {n:"D3",label:"Campo pagos_iniciales_validados",color:"#dc2626",
-   q:"¿Cuál es el trigger correcto para WF-04?",
-   impact:"Count de ventas con pago inicial validado por usuario. Es el criterio que usa el dashboard hoy — necesitamos el campo en GHL.",
-   owner:"Alberto — generar en Supabase · acordado en reunión"},
-  {n:"D4",label:"Estado AppLevel + Instagram/TikTok",color:"#059669",
-   q:"¿Qué canales están completamente activos esta semana?",
-   impact:"AppLevel WA: implementación 2–3 días. Instagram: revisar cuentas conectadas. TikTok: agregar integración.",
-   owner:"Moisés + Yessica — reunión viernes"},
-];
-
-/* ═══════ RENDER ═══════════════════════════════════════════════════════ */
-
-// Flows
-function renderFlows(){
-  const cont = document.getElementById('flows-container');
-  FLOWS.forEach(flow=>{
-    const card = document.createElement('div');
-    card.className='flow-card';
-    card.style.borderColor=`rgba(0,0,0,.1)`;
-
-    const isWA = ch => ch==='whatsapp';
-    const chTags = flow.channels.map(ch=>
-      `<span class="tag" style="background:${isWA(ch)?'#f0fdf4':'#f5f3ff'};color:${isWA(ch)?'#128C7E':'#7c3aed'};border-color:${isWA(ch)?'rgba(18,140,126,.3)':'rgba(124,58,237,.3)'}">
-        ${isWA(ch)?'📱 WhatsApp':'✉️ Email'}
-      </span>`
-    ).join('');
-
-    let seqHtml = '';
-    flow.sequence.forEach((step, si)=>{
-      const isWAStep = step.type==='whatsapp';
-      const chBg = isWAStep?'#f0fdf4':'#f5f3ff';
-      const chColor = isWAStep?'#128C7E':'#7c3aed';
-      const chLabel = isWAStep?'WhatsApp':'Email';
-      let branchesHtml = step.branches.map(b=>`
-        <div class="branch-row">
-          <span class="branch-icon">${b.icon}</span>
-          <div class="branch-right">
-            <div class="branch-cond" style="color:${b.condColor}">${b.cond}</div>
-            <div class="branch-act">${b.act}</div>
+  <table class="pilares-table">
+    <thead>
+      <tr>
+        <td class="row-label">SOCIAL<br>AMBITION</td>
+        <td class="pilar-ambition" colspan="4">Sigue tu ritmo. Yo me encargo del resto.</td>
+      </tr>
+      <tr>
+        <td class="row-label">FASE</td>
+        <td class="pilar-header"><span class="num">01</span>CONOCER</td>
+        <td class="pilar-header"><span class="num">02</span>CONFIAR</td>
+        <td class="pilar-header"><span class="num">03</span>APRENDER</td>
+        <td class="pilar-header"><span class="num">04</span>CRECER</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="row-label">NEED</td>
+        <td class="cell">Despertar la categoría. Que el venezolano sepa que existe forma de comprar afuera sin tarjeta internacional y sin embolarse.</td>
+        <td class="cell">Matar la objeción 1: "¿me va a llegar?". Construir prueba social masiva de entrega real.</td>
+        <td class="cell">Eliminar fricción técnica y emocional. Demostrar que el proceso es simple, honesto, sin trampa.</td>
+        <td class="cell">Activar la segunda compra y celebrar la progresión de nivel. Convertir comprador único en hábito.</td>
+      </tr>
+      <tr>
+        <td class="row-label">TRIGGER</td>
+        <td class="cell quote">"Yo quería ese producto en Amazon, pero no podía comprarlo desde aquí."</td>
+        <td class="cell quote">"¿Y si pago y nunca llega? ¿Quién me responde?"</td>
+        <td class="cell quote">"No entiendo bien cómo es esto del crédito, ¿qué pasa si me atraso?"</td>
+        <td class="cell quote">"Ya compré una vez y funcionó. ¿Qué más puedo hacer ahora?"</td>
+      </tr>
+      <tr>
+        <td class="row-label">CONTENT<br>ROLE</td>
+        <td class="cell">Construir <strong>CATEGORÍA</strong>. Hacer evidente que Mamasan resuelve un problema que ya existe.</td>
+        <td class="cell">Generar <strong>PRUEBA</strong>. Mostrar lo que el sistema no muestra: entrega real con cara y ciudad.</td>
+        <td class="cell">Educar con <strong>CLARIDAD</strong>. Voz venezolana, cero alarma, honestidad sobre términos.</td>
+        <td class="cell">Celebrar e <strong>INSPIRAR</strong>. Comunidad de progresión, no comunicación transaccional.</td>
+      </tr>
+      <tr>
+        <td class="row-label">PILAR</td>
+        <td class="cell pillar-phrase">El que resuelve lo imposible</td>
+        <td class="cell pillar-phrase">Aquí sí llega</td>
+        <td class="cell pillar-phrase">Tan fácil que sorprende</td>
+        <td class="cell pillar-phrase">Tu ritmo continúa</td>
+      </tr>
+      <tr>
+        <td class="row-label">AUDIENCIA</td>
+        <td class="cell" colspan="4" style="text-align: center; font-weight: 600; background: var(--bg-cream-soft) !important;">Venezolanos · Centennials + Millennials urbanos · Con una pequeña parte de diáspora que compra para los suyos</td>
+      </tr>
+      <tr>
+        <td class="row-label">ACCIÓN<br>EN EL FUNNEL</td>
+        <td class="cell"><strong>Descubre</strong>Sigue la cuenta · Visita el perfil · Comparte con un pana</td>
+        <td class="cell"><strong>Considera</strong>Guarda el video · Comenta una duda · Toca el link en bio</td>
+        <td class="cell"><strong>Activa</strong>Abre la app · Completa el registro · Verifica datos</td>
+        <td class="cell"><strong>Repite</strong>Compra otra vez · Sube de nivel · Recomienda</td>
+      </tr>
+      <tr class="channels-row">
+        <td class="row-label">CANALES</td>
+        <td class="cell">TikTok · Instagram Reels · YouTube Shorts</td>
+        <td class="cell">TikTok · Instagram Stories y Reels · WhatsApp</td>
+        <td class="cell">TikTok · Instagram Reels · FAQ in-app</td>
+        <td class="cell">Instagram · TikTok · WhatsApp · Email</td>
+      </tr>
+      <tr>
+        <td class="row-label">CONTROL<br>CREATIVO</td>
+        <td colspan="4" style="background: var(--bg-cream) !important; padding: 4px !important;">
+          <div class="control-bar">
+            <span>← AUTENTICIDAD MÁXIMA (UGC puro)</span>
+            <span>CONTROL CREATIVO MAYOR (marca cuenta) →</span>
           </div>
-        </div>`).join('');
+        </td>
+      </tr>
+      <tr>
+        <td class="row-label">FUENTES</td>
+        <td class="cell">UGC + micro-influencers venezolanos genuinos</td>
+        <td class="cell">UGC clientes reales + post-entrega documentada</td>
+        <td class="cell">In-house Mamasan + creators venezolanos confiables</td>
+        <td class="cell">Mamasan brand storytelling + UGC graduación de nivel</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
-      seqHtml += `
-        <div class="touch-block">
-          <div class="touch-dot" style="border-color:${step.dot};background:${step.dot}22"></div>
-          <div class="touch-inner">
-            <div class="touch-header">
-              <span class="touch-channel-badge" style="background:${chBg};color:${chColor}">${chLabel}</span>
-              <span class="touch-day">${step.day}</span>
-            </div>
-            <div class="touch-subject">${step.subject}</div>
-            ${step.note?`<div class="touch-note">${step.note}</div>`:''}
-            <div class="branches">${branchesHtml}</div>
-          </div>
-        </div>`;
-    });
+<!-- ============ DEEP DIVE PILAR 01 — CONOCER (light, orange) ============ -->
+<section class="dd light">
+  <div class="section-header">
+    <span class="section-number">07.1</span>
+    <span class="section-tag">Deep dive · Pilar 01</span>
+  </div>
 
-    const notesHtml = flow.notes?`
-      <div class="flow-notes" style="border:1px solid var(--border)">
-        <div class="notes-title">Notas de implementación</div>
-        ${flow.notes.map(n=>`<div class="note-line">· ${n}</div>`).join('')}
-      </div>`:'';
+  <div class="dd-header">
+    <div class="dd-pilar-num orange">01</div>
+    <div class="dd-pilar-meta">
+      <div class="dd-pilar-eyebrow">Fase Conocer</div>
+      <div class="dd-pilar-fase">El que<br>resuelve lo<br><span style="color: var(--accent-orange);">imposible</span></div>
+    </div>
+  </div>
 
-    card.innerHTML=`
-      <div class="flow-card-head">
-        <div class="flow-emoji" style="background:${flow.colorLight};border:1px solid ${flow.colorVal}22">${flow.emoji}</div>
-        <div class="flow-meta">
-          <div class="flow-tags">
-            <span class="tag" style="background:${flow.tag1.bg};color:${flow.tag1.color};border-color:${flow.tag1.color}55">${flow.tag1.text}</span>
-            <span class="tag" style="background:#f9fafb;color:var(--mid);border-color:var(--border);font-family:var(--ff-m)">P${flow.priority}</span>
-            ${chTags}
-          </div>
-          <div class="flow-name">${flow.name} <span class="flow-story">${flow.story}</span></div>
-          <div class="flow-desc">${flow.desc}</div>
-          <div class="flow-trigger-row">
-            <span style="font-size:10px;color:var(--mid);font-family:var(--ff-m);text-transform:uppercase;letter-spacing:.08em">Trigger</span>
-            <span class="trigger-pill" style="color:${flow.colorVal}">${flow.trigger}</span>
-          </div>
-        </div>
-        <div class="flow-toggle" id="toggle-${flow.id}">▾</div>
+  <p class="dd-obj">Despertar la categoría. Hacer visible una solución que el venezolano todavía no sabe que existe. El hook tiene que romper el "esto no es para mí".</p>
+
+  <div class="dd-meta-row">
+    <div class="dd-meta-item">
+      <div class="label">VOZ DEL PILAR</div>
+      <div class="text">Humor cómplice, "te tengo el secreto". Tono venezolano cercano, sin pretensión. Cero corporativo.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label">FUENTES</div>
+      <div class="text">UGC creators venezolanos micro (5k–100k) + remezclas culturales. Cero modelos.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label">KPIs</div>
+      <div class="text">Reach, views, profile visits, búsquedas de marca "Mamasan", saves.</div>
+    </div>
+  </div>
+
+  <div class="dd-formats-label">→ FORMATOS PARA BAJAR EL PILAR</div>
+  <div class="dd-formats">
+    <div class="dd-format">
+      <div class="fnum">01</div>
+      <h5>"Lo que creías imposible"</h5>
+      <div class="hook-label">HOOK</div>
+      <p class="hook">"5 cosas que creías que no podías comprar desde Venezuela..."</p>
+      <p class="desc">Montage rápido de productos icónicos (iPhone, Stanley, Air Force). Corte seco: "...hasta ahora".</p>
+    </div>
+    <div class="dd-format">
+      <div class="fnum">02</div>
+      <h5>"El truco que nadie cuenta"</h5>
+      <div class="hook-label">HOOK</div>
+      <p class="hook">"Nadie te lo dice, pero esto cambió cómo compro online."</p>
+      <p class="desc">Creator local revela en tono confidencial cómo comprar afuera sin tarjeta. UGC puro, una toma.</p>
+    </div>
+    <div class="dd-format">
+      <div class="fnum">03</div>
+      <h5>"Caracas, recibe"</h5>
+      <div class="hook-label">HOOK</div>
+      <p class="hook">"POV: pediste algo en Amazon y llegó a tu casa en Caracas."</p>
+      <p class="desc">Producto físico viaja en pantalla desde la app hasta el domicilio. Visual contundente.</p>
+    </div>
+    <div class="dd-format">
+      <div class="fnum">04</div>
+      <h5>"Lo que dejaste de buscar"</h5>
+      <div class="hook-label">HOOK</div>
+      <p class="hook">"Lo que ya no buscas en Google porque pensabas que no podías."</p>
+      <p class="desc">Lista visual de marcas/productos inalcanzables vueltas alcanzables. Activa el deseo dormido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEEP DIVE PILAR 02 — CONFIAR (dark, teal) ============ -->
+<section class="dd dark">
+  <div class="section-header dark">
+    <span class="section-number" style="color: var(--text-gray-light);">07.2</span>
+    <span class="section-tag" style="color: var(--accent-teal);">Deep dive · Pilar 02</span>
+  </div>
+
+  <div class="dd-header">
+    <div class="dd-pilar-num teal">02</div>
+    <div class="dd-pilar-meta">
+      <div class="dd-pilar-eyebrow">Fase Confiar</div>
+      <div class="dd-pilar-fase">Aquí<br><span style="color: var(--accent-teal);">sí</span><br>llega</div>
+    </div>
+  </div>
+
+  <p class="dd-obj">El pilar de mayor apalancamiento. Mata la objeción 1 con prueba social masiva. Sin este pilar, los otros tres empujan contra un muro de desconfianza.</p>
+
+  <div class="dd-meta-row">
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-teal);">VOZ DEL PILAR</div>
+      <div class="text">Celebratoria sin drama. "Llegó como te dije". Cliente como héroe, marca solo facilita.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-teal);">FUENTES</div>
+      <div class="text">UGC 100%. Clientes reales post-entrega. Incentivo: 5 USD crédito por unboxing publicado.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-teal);">KPIs</div>
+      <div class="text">Saves, shares, comments con preguntas reales, click-through a app, reducción de abandono.</div>
+    </div>
+  </div>
+
+  <div class="dd-formats-label" style="color: var(--accent-teal);">→ FORMATOS PARA BAJAR EL PILAR</div>
+  <div class="dd-formats">
+    <div class="dd-format" style="border-top-color: var(--accent-teal);">
+      <div class="fnum" style="color: var(--accent-teal);">01</div>
+      <h5>"¿Le llegó?"</h5>
+      <div class="hook-label" style="color: var(--accent-teal);">HOOK</div>
+      <p class="hook">"Soy Jenny de Maracaibo, esto me llegó completito."</p>
+      <p class="desc">Serie always-on. UGC vertical con cara, nombre y ciudad. Convierte el formato en sello de marca.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-teal);">
+      <div class="fnum" style="color: var(--accent-teal);">02</div>
+      <h5>"De [país] a [ciudad]"</h5>
+      <div class="hook-label" style="color: var(--accent-teal);">HOOK</div>
+      <p class="hook">"Mi mamá no sabía que se lo mandé desde Madrid."</p>
+      <p class="desc">Doble cámara. Diáspora envía desde el exterior, familia recibe en Venezuela. Emoción real.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-teal);">
+      <div class="fnum" style="color: var(--accent-teal);">03</div>
+      <h5>"Mi primer pedido"</h5>
+      <div class="hook-label" style="color: var(--accent-teal);">HOOK</div>
+      <p class="hook">"Te cuento qué pedí, cuánto pagué, y cómo me llegó."</p>
+      <p class="desc">Cliente nuevo narra paso a paso sin guión. Honestidad total. Cero pulido, cero filtro.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-teal);">
+      <div class="fnum" style="color: var(--accent-teal);">04</div>
+      <h5>"Antes y después"</h5>
+      <div class="hook-label" style="color: var(--accent-teal);">HOOK</div>
+      <p class="hook">"Esto era una foto en mi celular. Ahora está en mi cocina."</p>
+      <p class="desc">Carrusel Instagram: producto pedido vs producto en uso real en la casa del cliente.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEEP DIVE PILAR 03 — APRENDER (light, yellow) ============ -->
+<section class="dd light">
+  <div class="section-header">
+    <span class="section-number">07.3</span>
+    <span class="section-tag" style="color: var(--accent-yellow); background: var(--text-navy); padding: 6px 12px; border-radius: 3px;">Deep dive · Pilar 03</span>
+  </div>
+
+  <div class="dd-header">
+    <div class="dd-pilar-num yellow">03</div>
+    <div class="dd-pilar-meta">
+      <div class="dd-pilar-eyebrow">Fase Aprender</div>
+      <div class="dd-pilar-fase">Tan fácil<br>que <span style="color: var(--accent-yellow);">sorprende</span></div>
+    </div>
+  </div>
+
+  <p class="dd-obj">Eliminar la fricción técnica y emocional. Educar sin alarmar. La transparencia sobre crédito, atrasos y términos no es debilidad, es ventaja competitiva en una categoría con fama de costos ocultos.</p>
+
+  <div class="dd-meta-row">
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-yellow); background: var(--text-navy); padding: 4px 8px; display: inline-block;">VOZ DEL PILAR</div>
+      <div class="text" style="margin-top: 12px;">Claridad sin alarma. Pana que te explica sin enredo. Cero "compra ya". Honestidad transparente.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-yellow); background: var(--text-navy); padding: 4px 8px; display: inline-block;">FUENTES</div>
+      <div class="text" style="margin-top: 12px;">In-house Mamasan + creators venezolanos confiables. Voz consistente con marca, pero cara humana.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-yellow); background: var(--text-navy); padding: 4px 8px; display: inline-block;">KPIs</div>
+      <div class="text" style="margin-top: 12px;">Onboarding completion (hoy 21.6%), perfil completo, primera compra, reducción de abandono de carrito.</div>
+    </div>
+  </div>
+
+  <div class="dd-formats-label" style="color: var(--text-navy); background: var(--accent-yellow); padding: 6px 12px; display: inline-block; margin-bottom: 24px;">→ FORMATOS PARA BAJAR EL PILAR</div>
+  <div class="dd-formats">
+    <div class="dd-format" style="border-top-color: var(--accent-yellow);">
+      <div class="fnum" style="color: var(--accent-yellow);">01</div>
+      <h5>"5 minutos, paso a paso"</h5>
+      <div class="hook-label" style="color: var(--accent-yellow);">HOOK</div>
+      <p class="hook">"Tu primera compra en Mamasan, sin enredos."</p>
+      <p class="desc">Tutorial visual con humor. Pantalla del teléfono + voz natural venezolana. Cero jerga técnica.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-yellow);">
+      <div class="fnum" style="color: var(--accent-yellow);">02</div>
+      <h5>"Las 3 cosas que necesitas"</h5>
+      <div class="hook-label" style="color: var(--accent-yellow);">HOOK</div>
+      <p class="hook">"Cédula, teléfono, ganas. Eso es todo."</p>
+      <p class="desc">Stories carrusel con checklist visual. Desmonta la idea de que el proceso es complicado.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-yellow);">
+      <div class="fnum" style="color: var(--accent-yellow);">03</div>
+      <h5>"Lo que todos preguntan"</h5>
+      <div class="hook-label" style="color: var(--accent-yellow);">HOOK</div>
+      <p class="hook">"¿Y si me atraso? Te explico sin drama."</p>
+      <p class="desc">FAQ en formato conversación. Las dudas reales que tiene el venezolano, respondidas con honestidad.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-yellow);">
+      <div class="fnum" style="color: var(--accent-yellow);">04</div>
+      <h5>"Si pasa esto..."</h5>
+      <div class="hook-label" style="color: var(--accent-yellow);">HOOK</div>
+      <p class="hook">"Te cuento qué pasa si no pagas a tiempo. Sin asustarte."</p>
+      <p class="desc">Transparencia total sobre términos. La honestidad es la ventaja en una categoría con fama de letra chica.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEEP DIVE PILAR 04 — CRECER (dark, cream/orange) ============ -->
+<section class="dd dark">
+  <div class="section-header dark">
+    <span class="section-number" style="color: var(--text-gray-light);">07.4</span>
+    <span class="section-tag">Deep dive · Pilar 04</span>
+  </div>
+
+  <div class="dd-header">
+    <div class="dd-pilar-num cream">04</div>
+    <div class="dd-pilar-meta">
+      <div class="dd-pilar-eyebrow">Fase Crecer</div>
+      <div class="dd-pilar-fase">Tu ritmo<br><span style="color: var(--accent-orange);">continúa</span></div>
+    </div>
+  </div>
+
+  <p class="dd-obj">Activar la segunda compra y celebrar la progresión de nivel. Convertir comprador único en hábito. Hoy solo 13.6% recompra, ese número tiene que duplicarse.</p>
+
+  <div class="dd-meta-row">
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-orange);">VOZ DEL PILAR</div>
+      <div class="text">Celebratoria, comunidad, cero presión de venta. Cliente cuenta su historia, marca solo amplifica.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-orange);">FUENTES</div>
+      <div class="text">Mamasan brand storytelling + UGC de graduación de nivel + referidos orgánicos documentados.</div>
+    </div>
+    <div class="dd-meta-item">
+      <div class="label" style="color: var(--accent-orange);">KPIs</div>
+      <div class="text">Repeat purchase rate (hoy 13.6%), LTV, graduación de nivel (hoy 7 de 27.9K), NPS.</div>
+    </div>
+  </div>
+
+  <div class="dd-formats-label">→ FORMATOS PARA BAJAR EL PILAR</div>
+  <div class="dd-formats">
+    <div class="dd-format" style="border-top-color: var(--accent-orange);">
+      <div class="fnum" style="color: var(--accent-orange);">01</div>
+      <h5>"Subí a Plata"</h5>
+      <div class="hook-label" style="color: var(--accent-orange);">HOOK</div>
+      <p class="hook">"Compré tres veces, llegué a Plata, y esto desbloqueé."</p>
+      <p class="desc">Testimonial corto. Cliente celebra graduación de nivel. La progresión como narrativa de orgullo.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-orange);">
+      <div class="fnum" style="color: var(--accent-orange);">02</div>
+      <h5>"Mi segundo viaje"</h5>
+      <div class="hook-label" style="color: var(--accent-orange);">HOOK</div>
+      <p class="hook">"Primero el Stanley, ahora el aire. Esto es lo que pedí."</p>
+      <p class="desc">Cliente cuenta qué pidió la segunda vez. Continuidad de uso. Activa el "yo también puedo seguir".</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-orange);">
+      <div class="fnum" style="color: var(--accent-orange);">03</div>
+      <h5>"Top de la semana"</h5>
+      <div class="hook-label" style="color: var(--accent-orange);">HOOK</div>
+      <p class="hook">"Esto es lo más comprado por venezolanos esta semana."</p>
+      <p class="desc">Tendencias de comunidad. Social proof masivo. Activa FOMO sin presión individual.</p>
+    </div>
+    <div class="dd-format" style="border-top-color: var(--accent-orange);">
+      <div class="fnum" style="color: var(--accent-orange);">04</div>
+      <h5>"Te recomiendo"</h5>
+      <div class="hook-label" style="color: var(--accent-orange);">HOOK</div>
+      <p class="hook">"Mi prima me dijo que comprara aquí. Te cuento por qué."</p>
+      <p class="desc">Referido orgánico documentado. La recomendación de boca a boca, capturada en video.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 MANDAMIENTOS ============ -->
+<section class="mandamientos">
+  <div class="section-header dark">
+    <span class="section-number" style="color: var(--text-gray-light);">08</span>
+    <span class="section-tag">Social First Rules</span>
+  </div>
+
+  <h2 class="mand-title">Los 10<br>mandamientos<br><span class="italic">Social First.</span></h2>
+  <p class="mand-sub">
+    Para que el algoritmo de TikTok e Instagram premie a Mamasan en Venezuela 2026. Reglas innegociables. La diferencia entre contenido que escala y contenido que se queda en 200 views.
+  </p>
+
+  <div class="mand-grid">
+    <div class="mand-item">
+      <div class="mand-num">01</div>
+      <div class="mand-text">
+        <h4>Engancha en 3 segundos</h4>
+        <p>Si no detiene el scroll en los primeros tres segundos, no hay segundo intento. El hook decide más que la producción.</p>
       </div>
-      <div class="flow-body" id="body-${flow.id}">
-        <div class="sequence-label">Secuencia completa · email + whatsapp · respuesta por acción</div>
-        ${seqHtml}
-        ${notesHtml}
-      </div>`;
+    </div>
 
-    card.querySelector('.flow-card-head').addEventListener('click',()=>{
-      const body = card.querySelector(`#body-${flow.id}`);
-      const tog = card.querySelector(`#toggle-${flow.id}`);
-      const open = body.classList.toggle('open');
-      tog.style.transform = open?'rotate(180deg)':'rotate(0)';
-      card.style.boxShadow = open?'0 6px 28px rgba(0,0,0,.1)':'';
-      card.style.borderColor = open?`${flow.colorVal}40`:'rgba(0,0,0,.1)';
-    });
+    <div class="mand-item">
+      <div class="mand-num">02</div>
+      <div class="mand-text">
+        <h4>Vertical o nada</h4>
+        <p>Formato 9:16 siempre. El cuadrado es del 2018. El horizontal mata el alcance en feeds móviles.</p>
+      </div>
+    </div>
 
-    cont.appendChild(card);
-  });
-}
+    <div class="mand-item">
+      <div class="mand-num">03</div>
+      <div class="mand-text">
+        <h4>Texto en pantalla siempre</h4>
+        <p>El 80% scrollea sin sonido. Si la pieza no se entiende muteada, no funciona. Punto.</p>
+      </div>
+    </div>
 
-// Matrix
-function renderMatrix(){
-  const cont = document.getElementById('matrix-rows');
-  MATRIX_ROWS.forEach((row,i)=>{
-    const bg = i%2===0?'#fff':'#f9fafb';
-    cont.innerHTML+=`
-      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;background:${bg};border-top:1px solid var(--border)">
-        <div style="padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:7px">
-          <span style="font-size:16px">${row.icon}</span>
-          <span style="color:var(--dark)">${row.action}</span>
-        </div>
-        <div style="padding:10px 14px;font-size:12.5px;color:var(--dark-mid)">${row.response}</div>
-        <div style="padding:10px 14px;font-size:12.5px;color:var(--dark-mid)">${row.next}</div>
-      </div>`;
-  });
-}
+    <div class="mand-item">
+      <div class="mand-num">04</div>
+      <div class="mand-text">
+        <h4>Habla natural, no leído</h4>
+        <p>Si suena a guión corporativo, el venezolano lo huele de inmediato y se va. Improvisado, no scripteado.</p>
+      </div>
+    </div>
 
-// Roadmap
-function renderRoadmap(){
-  const cont = document.getElementById('roadmap-container');
-  ROADMAP_PHASES.forEach(phase=>{
-    cont.innerHTML+=`
-      <div class="phase-row">
-        <div class="phase-dot" style="border-color:${phase.color};color:${phase.color}">${phase.icon}</div>
-        <div class="phase-body">
-          <div class="phase-header">
-            <span class="phase-title">${phase.phase}</span>
-          </div>
-          ${phase.items.map(it=>`<div class="phase-item">${it}</div>`).join('')}
-        </div>
-      </div>`;
-  });
-}
+    <div class="mand-item">
+      <div class="mand-num">05</div>
+      <div class="mand-text">
+        <h4>Audios trending, antes de la saturación</h4>
+        <p>El algoritmo premia el audio del momento, no al que llegó tarde. Velocidad de detección es ventaja real.</p>
+      </div>
+    </div>
 
-// Datos
-function renderDatos(){
-  const cont = document.getElementById('datos-container');
-  DATOS.forEach(d=>{
-    cont.innerHTML+=`
-      <div style="padding:14px;border-radius:10px;background:var(--bg);border:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span style="font-family:var(--ff-m);font-size:10px;font-weight:700;color:${d.color};background:${d.color}15;padding:2px 7px;border-radius:10px">${d.n}</span>
-          <span style="font-size:12px;font-weight:600;color:var(--dark)">${d.label}</span>
-        </div>
-        <div style="font-size:11.5px;font-weight:600;color:var(--dark-mid);margin-bottom:4px;font-style:italic">${d.q}</div>
-        <div style="font-size:11.5px;color:var(--mid);line-height:1.6;margin-bottom:6px">${d.impact}</div>
-        <div style="font-size:10.5px;color:${d.color};font-family:var(--ff-m)">→ ${d.owner}</div>
-      </div>`;
-  });
-}
+    <div class="mand-item">
+      <div class="mand-num">06</div>
+      <div class="mand-text">
+        <h4>UGC le gana a producción</h4>
+        <p>Cara real, voz real, casa real. La perfección no convierte en Venezuela. La cámara temblando convierte más.</p>
+      </div>
+    </div>
 
-renderFlows();
-renderMatrix();
-renderRoadmap();
-renderDatos();
-</script>
+    <div class="mand-item">
+      <div class="mand-num">07</div>
+      <div class="mand-text">
+        <h4>Un mensaje por pieza, no tres</h4>
+        <p>Si la pieza dice dos cosas, no dice ninguna. Cada video tiene un solo trabajo de conversión.</p>
+      </div>
+    </div>
+
+    <div class="mand-item">
+      <div class="mand-num">08</div>
+      <div class="mand-text">
+        <h4>El comentario es contenido</h4>
+        <p>Responde, replica, repregunta. El algoritmo lee el engagement, no los likes. La conversación amplifica.</p>
+      </div>
+    </div>
+
+    <div class="mand-item">
+      <div class="mand-num">09</div>
+      <div class="mand-text">
+        <h4>Frecuencia le gana a perfección</h4>
+        <p>Cinco piezas medias publicadas valen más que una perfecta esperando aprobación. Volumen sostenido gana.</p>
+      </div>
+    </div>
+
+    <div class="mand-item">
+      <div class="mand-num">10</div>
+      <div class="mand-text">
+        <h4>CTA suave, no agresivo</h4>
+        <p>"Te cuento más en mi bio" gana a "Compra ya". El venezolano huye de la presión, busca al pana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section class="closing">
+  <div class="eyebrow" style="margin-bottom: 40px;">Próximos pasos</div>
+
+  <h2>Pelotear,<br><span class="italic">aprobar,</span><br>bajar a tierra.</h2>
+
+  <p>Una vez aprobados los pilares y los mandamientos, el siguiente movimiento es construir el calendario editorial de 30 días por pilar y abrir el pipeline UGC del Pilar 02 como primer always-on.</p>
+
+  <div class="closing-footer">
+    <span>Mamasan × Predictive Growth</span>
+    <span>Documento de Trabajo · v2.0</span>
+    <span>Junio 2026</span>
+  </div>
+</section>
+
 </body>
 </html>
